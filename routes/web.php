@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,18 @@ Route::middleware('auth')->group(function () {
         Route::resource('carriers', CarrierController::class)->except(['show']);
         Route::resource('locations', LocationController::class)->except(['show']);
         Route::resource('users', UserController::class)->except(['show']);
+
+        // Pengaturan Global Delay Threshold
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+    });
+
+    // -------------------------------------------------------------------------
+    // Modul Kendala Operasional (Exceptions) - Khusus Admin dan Operator
+    // -------------------------------------------------------------------------
+    Route::middleware('role:admin,operator')->group(function () {
+        Route::get('/exceptions', [ExceptionController::class, 'index'])->name('exceptions.index');
+        Route::patch('/exceptions/{exception}', [ExceptionController::class, 'update'])->name('exceptions.update');
     });
 
     // -------------------------------------------------------------------------
@@ -54,6 +68,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/shipments/{shipment}/edit', [ShipmentController::class, 'edit'])->name('shipments.edit');
         Route::put('/shipments/{shipment}', [ShipmentController::class, 'update'])->name('shipments.update');
         Route::post('/shipments/{shipment}/status', [ShipmentController::class, 'updateStatus'])->name('shipments.status.update');
+
+        // Checkpoint Tracking & Pelaporan Exception
+        Route::post('/shipments/{shipment}/tracking', [ShipmentController::class, 'storeTracking'])->name('shipments.tracking.store');
+        Route::post('/shipments/{shipment}/exceptions', [ShipmentController::class, 'storeException'])->name('shipments.exceptions.store');
     });
 
     // Hapus Shipment: Khusus Admin (dengan validasi status CREATED/CANCELLED)

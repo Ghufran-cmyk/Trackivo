@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReportExceptionRequest;
 use App\Http\Requests\StoreShipmentRequest;
+use App\Http\Requests\StoreTrackingEventRequest;
 use App\Http\Requests\UpdateShipmentRequest;
 use App\Http\Requests\UpdateShipmentStatusRequest;
 use App\Models\AuditLog;
@@ -10,15 +12,22 @@ use App\Models\Carrier;
 use App\Models\Location;
 use App\Models\Shipment;
 use App\Models\User;
+use App\Services\EtaService;
+use App\Services\ExceptionService;
 use App\Services\ShipmentService;
+use App\Services\TrackingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ShipmentController extends Controller
 {
     public function __construct(
-        protected ShipmentService $shipmentService
+        protected ShipmentService $shipmentService,
+        protected EtaService $etaService,
+        protected TrackingService $trackingService,
+        protected ExceptionService $exceptionService
     ) {}
 
     /**
@@ -103,16 +112,19 @@ class ShipmentController extends Controller
             auth()->user()
         );
 
+        // Sinkronkan evaluasi delay awal
+        $this->etaService->syncShipmentDelay($shipment);
+
         return redirect()->route('shipments.show', $shipment)
             ->with('success', "Pengiriman {$shipment->tracking_number} berhasil dibuat.");
     }
 
     /**
-     * Tampilkan detail lengkap shipment beserta tracking events dan panel status.
+     * Tampilkan detail lengkap shipment beserta tracking events, panel status, lokasi terkini, dan analisis delay.
      */
     public function show(Shipment $shipment): View
     {
-        // Otorisasi ketat untuk Customer
+        // Otorisasi ketat untuk Customer (hanya milik sendiri, selain itu abort 403)
         if (auth()->user()->isCustomer() && $shipment->customer_id !== auth()->id()) {
             abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk melihat pengiriman ini.');
         }
@@ -127,11 +139,17 @@ class ShipmentController extends Controller
             'trackingEvents' => fn ($q) => $q->orderBy('event_time', 'asc'),
             'trackingEvents.location',
             'trackingEvents.creator',
+            'exceptions' => fn ($q) => $q->latest('detected_at'),
+            'exceptions.reporter',
+            'exceptions.resolver',
         ]);
 
         $allowedNextStatuses = $this->shipmentService->getAllowedNextStatuses($shipment->status);
+        $currentLocation = $this->trackingService->getCurrentLocation($shipment);
+        $delayAnalysis = $this->etaService->evaluateDelay($shipment);
+        $locations = Location::orderBy('name')->get();
 
-        return view('shipments.show', compact('shipment', 'allowedNextStatuses'));
+        return view('shipments.show', compact('shipment', 'allowedNextStatuses', 'currentLocation', 'delayAnalysis', 'locations'));
     }
 
     /**
@@ -165,6 +183,9 @@ class ShipmentController extends Controller
                 auth()->user()
             );
 
+            // Sinkronkan kalkulasi keterlambatan
+            $this->etaService->syncShipmentDelay($shipment);
+
             return redirect()->route('shipments.show', $shipment)
                 ->with('success', "Pengiriman {$shipment->tracking_number} berhasil diperbarui.");
         } catch (\DomainException $e) {
@@ -187,6 +208,48 @@ class ShipmentController extends Controller
 
         return redirect()->route('shipments.show', $shipment)
             ->with('success', "Status pengiriman berhasil diperbarui menjadi {$shipment->status}.");
+    }
+
+    /**
+     * Tambah tracking checkpoint event baru (Admin & Operator).
+     */
+    public function storeTracking(StoreTrackingEventRequest $request, Shipment $shipment): RedirectResponse
+    {
+        try {
+            $this->trackingService->addTrackingEvent(
+                $shipment,
+                $request->validated(),
+                auth()->user()
+            );
+
+            return redirect()->route('shipments.show', $shipment)
+                ->with('success', "Checkpoint tracking baru berhasil dicatat pada riwayat pengiriman.");
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Laporkan kendala / exception baru pada shipment (Admin & Operator).
+     */
+    public function storeException(ReportExceptionRequest $request, Shipment $shipment): RedirectResponse
+    {
+        try {
+            $exception = $this->exceptionService->reportException(
+                $shipment,
+                $request->validated(),
+                auth()->user()
+            );
+
+            return redirect()->route('shipments.show', $shipment)
+                ->with('success', "Kendala operasional {$exception->type} ({$exception->severity}) berhasil dilaporkan.");
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
 
     /**
