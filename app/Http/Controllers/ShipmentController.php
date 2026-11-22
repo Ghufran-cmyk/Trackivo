@@ -74,6 +74,53 @@ class ShipmentController extends Controller
             $query->where('destination_location_id', $request->destination_location_id);
         }
 
+        // Filter Rentang Tanggal Keberangkatan (expected_departure)
+        if ($request->filled('date_from')) {
+            $query->whereDate('expected_departure', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('expected_departure', '<=', $request->date_to);
+        }
+
+        // Filter Status Keterlambatan (delay_status)
+        if ($request->filled('delay_status')) {
+            $delayStatus = $request->delay_status;
+            if ($delayStatus === 'on_time') {
+                $query->where('delay_hours', '<=', 0)
+                      ->where('delay_severity', 'NONE');
+            } elseif ($delayStatus === 'delayed') {
+                $query->where(function ($q) {
+                    $q->where('delay_hours', '>', 0)
+                      ->orWhere('delay_severity', '!=', 'NONE');
+                });
+            } elseif (in_array($delayStatus, ['LOW', 'MEDIUM', 'HIGH'], true)) {
+                $query->where('delay_severity', $delayStatus);
+            }
+        }
+
+        // Pengurutan (Sorting) dengan whitelist aman bebas SQL Injection
+        $sort = $request->input('sort', 'latest');
+        $allowedSorts = [
+            'latest'     => ['column' => 'created_at', 'direction' => 'desc'],
+            'eta_asc'    => ['column' => 'estimated_arrival', 'direction' => 'asc'],
+            'eta_desc'   => ['column' => 'estimated_arrival', 'direction' => 'desc'],
+            'delay_desc' => ['column' => 'delay_hours', 'direction' => 'desc'],
+            'number_asc' => ['column' => 'tracking_number', 'direction' => 'asc'],
+        ];
+
+        if (array_key_exists($sort, $allowedSorts)) {
+            $sortConfig = $allowedSorts[$sort];
+            if ($sort === 'eta_asc') {
+                $query->orderByRaw('estimated_arrival IS NULL, estimated_arrival ASC');
+            } elseif ($sort === 'eta_desc') {
+                $query->orderByRaw('estimated_arrival IS NULL, estimated_arrival DESC');
+            } else {
+                $query->orderBy($sortConfig['column'], $sortConfig['direction']);
+            }
+        } else {
+            $query->latest();
+        }
+
         $shipments = $query->with([
             'customer',
             'carrier',
@@ -81,7 +128,6 @@ class ShipmentController extends Controller
             'destinationLocation',
             'items',
         ])
-        ->latest()
         ->paginate(10)
         ->withQueryString();
 

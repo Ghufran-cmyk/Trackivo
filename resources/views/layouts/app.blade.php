@@ -69,7 +69,7 @@
                     </a>
                 </div>
 
-                <!-- Center: Role-Based Navigation Menu -->
+                <!-- Center: Role-Based Navigation Menu (Tetap rapi 1 baris) -->
                 <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 flex-nowrap shrink-0">
                     @auth
                         @php
@@ -78,19 +78,19 @@
 
                         <!-- Common: Dashboard -->
                         <a href="{{ route('dashboard') }}" 
-                           class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('dashboard') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                           class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('dashboard') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                             Dashboard
                         </a>
 
                         @if ($role === 'admin')
                             <!-- Admin Menu: Dashboard, Shipments, Exceptions, Carriers, Locations, Users, Audit Logs, Settings -->
-                            <a href="{{ route('shipments.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
-                            <a href="{{ route('exceptions.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Exceptions</a>
-                            <a href="{{ route('carriers.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Carriers</a>
-                            <a href="{{ route('locations.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Locations</a>
-                            <a href="{{ route('users.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Users</a>
-                            <a href="#" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Audit Logs</a>
-                            <a href="{{ route('settings.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('settings.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Settings</a>
+                            <a href="{{ route('shipments.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
+                            <a href="{{ route('exceptions.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Exceptions</a>
+                            <a href="{{ route('carriers.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Carriers</a>
+                            <a href="{{ route('locations.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Locations</a>
+                            <a href="{{ route('users.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Users</a>
+                            <a href="{{ route('audit-logs.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('audit-logs.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Audit Logs</a>
+                            <a href="{{ route('settings.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('settings.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Settings</a>
                         @elseif ($role === 'operator')
                             <!-- Operator Menu: Dashboard, Shipments, Exceptions -->
                             <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
@@ -98,14 +98,44 @@
                         @elseif ($role === 'customer')
                             <!-- Customer Menu: Dashboard, My Shipments, Notifications -->
                             <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">My Shipments</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Notifications</a>
+                            <a href="{{ route('notifications.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition flex items-center space-x-1.5 {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                                <span>Notifications</span>
+                                @if(($unreadNotificationsCount ?? 0) > 0)
+                                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-rose-500 text-white">
+                                        {{ $unreadNotificationsCount }}
+                                    </span>
+                                @endif
+                            </a>
                         @endif
                     @endauth
                 </nav>
 
                 <!-- Right: User Info & Actions -->
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2.5">
                     @auth
+                        @php
+                            $role = auth()->user()->role;
+                        @endphp
+
+                        <!-- Notification Bell for Admin & Operator -->
+                        @if(in_array($role, ['admin', 'operator']))
+                            <a href="{{ route('notifications.index') }}" 
+                               class="relative h-9 w-9 rounded-full bg-slate-900 border border-slate-700/80 hover:border-slate-500 text-slate-300 hover:text-white flex items-center justify-center transition shadow-sm"
+                               title="Notifikasi Sistem ({{ $unreadNotificationsCount ?? 0 }} belum dibaca)">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                @if(($unreadNotificationsCount ?? 0) > 0)
+                                    <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-white text-[9px] font-bold items-center justify-center">
+                                            {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
+                                        </span>
+                                    </span>
+                                @endif
+                            </a>
+                        @endif
+
                         <!-- User Capsule Profile -->
                         <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full pl-3 pr-1.5 py-1 text-sm">
                             <div class="flex flex-col text-right mr-3 hidden sm:block">
@@ -160,14 +190,22 @@
                 <a href="{{ route('carriers.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Carriers</a>
                 <a href="{{ route('locations.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Locations</a>
                 <a href="{{ route('users.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Users</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Audit Logs</a>
+                <a href="{{ route('audit-logs.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('audit-logs.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Audit Logs</a>
                 <a href="{{ route('settings.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('settings.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Settings</a>
+                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
+                    Notif ({{ $unreadNotificationsCount ?? 0 }})
+                </a>
             @elseif (auth()->user()->role === 'operator')
                 <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Shipments</a>
                 <a href="{{ route('exceptions.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Exceptions</a>
+                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
+                    Notif ({{ $unreadNotificationsCount ?? 0 }})
+                </a>
             @elseif (auth()->user()->role === 'customer')
                 <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">My Shipments</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Notifications</a>
+                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
+                    Notifications ({{ $unreadNotificationsCount ?? 0 }})
+                </a>
             @endif
         </div>
     @endauth

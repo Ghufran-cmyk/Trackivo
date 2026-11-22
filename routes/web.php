@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\UserController;
@@ -46,6 +48,9 @@ Route::middleware('auth')->group(function () {
         // Pengaturan Global Delay Threshold
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+        // Audit Logs (Khusus Administrator)
+        Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
     });
 
     // -------------------------------------------------------------------------
@@ -82,4 +87,11 @@ Route::middleware('auth')->group(function () {
 
     // Detail Pengiriman: Semua peran terautentikasi (Otorisasi Customer dicek di controller)
     Route::get('/shipments/{shipment}', [ShipmentController::class, 'show'])->name('shipments.show');
+
+    // -------------------------------------------------------------------------
+    // Modul In-App Notifications (Semua Pengguna Terautentikasi)
+    // -------------------------------------------------------------------------
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 });

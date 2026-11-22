@@ -16,7 +16,7 @@
                 {{ auth()->user()->isCustomer() ? 'Pengiriman Saya (My Shipments)' : 'Daftar Pengiriman Global' }}
             </h1>
             <p class="text-sm text-slate-500 mt-1">
-                {{ auth()->user()->isCustomer() ? 'Pantau status, estimasi waktu tiba, dan riwayat checkpoint muatan kargo Anda.' : 'Pantau pergerakan seluruh kargo lintas samudera, udara, dan darat dalam sistem Trackivo.' }}
+                {{ auth()->user()->isCustomer() ? 'Pantau status, estimasi waktu tiba, anomali delay, dan riwayat perjalanan muatan kargo Anda.' : 'Pantau pergerakan seluruh kargo lintas samudera, udara, dan darat dalam sistem Trackivo.' }}
             </p>
         </div>
 
@@ -32,16 +32,18 @@
         @endif
     </div>
 
-    <!-- Filter & Search Panel -->
+    <!-- Filter, Search & Sorting Panel -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 mb-6">
         <form method="GET" action="{{ route('shipments.index') }}" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+            
+            <!-- Row 1: Search, Status, Carrier, Sorting & Action Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
                 
-                <!-- Search input -->
-                <div class="lg:col-span-2">
-                    <label for="search" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Cari Nomor Resi / Kargo</label>
+                <!-- Search input (4 cols) -->
+                <div class="lg:col-span-4">
+                    <label for="search" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Cari Nomor Resi / Jenis Kargo</label>
                     <div class="relative">
-                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: TRK-2026-..., Elektronik, Tekstil"
+                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: TRK-2026-..., Elektronik, Garment"
                                class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
                         <svg class="h-4 w-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -49,9 +51,9 @@
                     </div>
                 </div>
 
-                <!-- Filter Status -->
-                <div>
-                    <label for="status" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Status</label>
+                <!-- Filter Status (2 cols) -->
+                <div class="lg:col-span-2">
+                    <label for="status" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Status Pengiriman</label>
                     <select name="status" id="status" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
                         <option value="">Semua Status</option>
                         @foreach(['CREATED', 'BOOKED', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED', 'CANCELLED'] as $st)
@@ -60,8 +62,8 @@
                     </select>
                 </div>
 
-                <!-- Filter Carrier -->
-                <div>
+                <!-- Filter Carrier (2 cols) -->
+                <div class="lg:col-span-2">
                     <label for="carrier_id" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Carrier</label>
                     <select name="carrier_id" id="carrier_id" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
                         <option value="">Semua Carrier</option>
@@ -71,40 +73,86 @@
                     </select>
                 </div>
 
-                <!-- Action Filter Buttons -->
-                <div class="flex items-end space-x-2">
-                    <button type="submit" class="flex-1 px-4 py-2 rounded-xl bg-slate-900 text-[#d4f93a] text-sm font-semibold hover:bg-slate-800 transition">
-                        Filter
+                <!-- Sorting / Pengurutan (2 cols) -->
+                <div class="lg:col-span-2">
+                    <label for="sort" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Urutkan</label>
+                    <select name="sort" id="sort" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                        <option value="latest" {{ request('sort', 'latest') == 'latest' ? 'selected' : '' }}>Terbaru Dibuat</option>
+                        <option value="eta_asc" {{ request('sort') == 'eta_asc' ? 'selected' : '' }}>Estimasi Tiba Terdekat</option>
+                        <option value="eta_desc" {{ request('sort') == 'eta_desc' ? 'selected' : '' }}>Estimasi Tiba Terjauh</option>
+                        <option value="delay_desc" {{ request('sort') == 'delay_desc' ? 'selected' : '' }}>Keterlambatan Terlama</option>
+                        <option value="number_asc" {{ request('sort') == 'number_asc' ? 'selected' : '' }}>Nomor Resi A–Z</option>
+                    </select>
+                </div>
+
+                <!-- Action Filter Buttons (2 cols) -->
+                <div class="lg:col-span-2 flex items-end space-x-2">
+                    <button type="submit" class="flex-1 px-4 py-2 rounded-xl bg-slate-900 text-[#d4f93a] text-sm font-semibold hover:bg-slate-800 transition shadow-sm">
+                        Terapkan
                     </button>
-                    @if(request()->hasAny(['search', 'status', 'carrier_id', 'origin_location_id', 'destination_location_id']))
-                        <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition" title="Reset Filter">
+                    @if(request()->hasAny(['search', 'status', 'carrier_id', 'origin_location_id', 'destination_location_id', 'date_from', 'date_to', 'delay_status', 'sort']))
+                        <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition" title="Reset Semua Filter">
                             Reset
                         </a>
                     @endif
                 </div>
+
             </div>
 
-            <!-- Advanced Location Filters Row (Collapsible or compact) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3 border-t border-slate-100">
+            <!-- Row 2: Origin, Destination, Tanggal Berangkat (From/To), Delay Status -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-3 border-t border-slate-100">
+                
+                <!-- Titik Asal (Origin) -->
                 <div>
                     <label for="origin_location_id" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Titik Asal (Origin)</label>
                     <select name="origin_location_id" id="origin_location_id" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
                         <option value="">Semua Titik Asal</option>
                         @foreach($locations as $loc)
-                            <option value="{{ $loc->id }}" {{ request('origin_location_id') == $loc->id ? 'selected' : '' }}>{{ $loc->name }} ({{ $loc->code }} - {{ $loc->country }})</option>
+                            <option value="{{ $loc->id }}" {{ request('origin_location_id') == $loc->id ? 'selected' : '' }}>{{ $loc->name }} ({{ $loc->code }})</option>
                         @endforeach
                     </select>
                 </div>
+
+                <!-- Titik Tujuan (Destination) -->
                 <div>
                     <label for="destination_location_id" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Titik Tujuan (Destination)</label>
                     <select name="destination_location_id" id="destination_location_id" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
                         <option value="">Semua Titik Tujuan</option>
                         @foreach($locations as $loc)
-                            <option value="{{ $loc->id }}" {{ request('destination_location_id') == $loc->id ? 'selected' : '' }}>{{ $loc->name }} ({{ $loc->code }} - {{ $loc->country }})</option>
+                            <option value="{{ $loc->id }}" {{ request('destination_location_id') == $loc->id ? 'selected' : '' }}>{{ $loc->name }} ({{ $loc->code }})</option>
                         @endforeach
                     </select>
                 </div>
+
+                <!-- Keberangkatan Dari (date_from) -->
+                <div>
+                    <label for="date_from" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Berangkat Dari Tanggal</label>
+                    <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
+                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                </div>
+
+                <!-- Keberangkatan Sampai (date_to) -->
+                <div>
+                    <label for="date_to" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Berangkat Sampai Tanggal</label>
+                    <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
+                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                </div>
+
+                <!-- Status Keterlambatan (delay_status) -->
+                <div>
+                    <label for="delay_status" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Status Keterlambatan</label>
+                    <select name="delay_status" id="delay_status" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                        <option value="">Semua Kondisi Delay</option>
+                        <option value="on_time" {{ request('delay_status') == 'on_time' ? 'selected' : '' }}>On-Time (Tepat Waktu)</option>
+                        <option value="delayed" {{ request('delay_status') == 'delayed' ? 'selected' : '' }}>Delayed (Semua Keterlambatan)</option>
+                        <option value="LOW" {{ request('delay_status') == 'LOW' ? 'selected' : '' }}>Delay Ringan (LOW)</option>
+                        <option value="MEDIUM" {{ request('delay_status') == 'MEDIUM' ? 'selected' : '' }}>Delay Sedang (MEDIUM)</option>
+                        <option value="HIGH" {{ request('delay_status') == 'HIGH' ? 'selected' : '' }}>Delay Kritis (HIGH)</option>
+                    </select>
+                </div>
+
             </div>
+
         </form>
     </div>
 
@@ -128,6 +176,7 @@
                             <th class="py-3.5 px-4 sm:px-5">Pelanggan</th>
                         @endif
                         <th class="py-3.5 px-4 sm:px-5">Est. Tiba</th>
+                        <th class="py-3.5 px-4 sm:px-5">Kondisi Delay</th>
                         <th class="py-3.5 px-4 sm:px-5 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -209,6 +258,25 @@
                                 <span class="text-[11px] text-slate-400">{{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('H:i') . ' WIB' : '' }}</span>
                             </td>
 
+                            <!-- Kondisi Delay -->
+                            <td class="py-3.5 px-4 sm:px-5 whitespace-nowrap">
+                                @if ($shipment->delay_hours > 0)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold
+                                        {{ $shipment->delay_severity === 'HIGH' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 
+                                          ($shipment->delay_severity === 'MEDIUM' ? 'bg-orange-100 text-orange-700 border border-orange-200' : 
+                                          'bg-amber-100 text-amber-700 border border-amber-200') }}">
+                                        +{{ $shipment->delay_hours }}h ({{ $shipment->delay_severity }})
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center space-x-1 text-emerald-600 text-xs font-semibold">
+                                        <svg class="h-3.5 w-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>On-Time</span>
+                                    </span>
+                                @endif
+                            </td>
+
                             <!-- Actions -->
                             <td class="py-3.5 px-4 sm:px-5 text-right whitespace-nowrap">
                                 <div class="inline-flex items-center space-x-1.5">
@@ -243,13 +311,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ auth()->user()->isCustomer() ? 7 : 8 }}" class="py-12 text-center text-slate-400">
+                            <td colspan="{{ auth()->user()->isCustomer() ? 8 : 9 }}" class="py-12 text-center text-slate-400">
                                 <div class="max-w-sm mx-auto text-center">
                                     <svg class="h-10 w-10 text-slate-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                     </svg>
-                                    <p class="text-sm font-semibold text-slate-600">Tidak ada pengiriman yang ditemukan.</p>
-                                    <p class="text-xs text-slate-400 mt-1">Coba sesuaikan kata kunci pencarian atau filter yang dipilih.</p>
+                                    <p class="text-sm font-semibold text-slate-600">Tidak ada pengiriman yang sesuai kriteria.</p>
+                                    <p class="text-xs text-slate-400 mt-1">Coba sesuaikan kata kunci pencarian, rentang tanggal, atau filter kondisi delay.</p>
                                 </div>
                             </td>
                         </tr>
