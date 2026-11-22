@@ -6,11 +6,27 @@ use App\Http\Requests\StoreLocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
 use App\Models\AuditLog;
 use App\Models\Location;
+use App\Services\GeocodingService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class LocationController extends Controller
 {
+    /**
+     * Cari koordinat geospasial via GeocodingService (OpenStreetMap Nominatim).
+     */
+    public function geocode(Request $request, GeocodingService $geocodingService): JsonResponse
+    {
+        $query = (string) $request->query('q', '');
+        $limit = (int) $request->query('limit', 5);
+
+        $result = $geocodingService->search($query, $limit);
+
+        return response()->json($result);
+    }
+
     /**
      * Tampilkan daftar seluruh lokasi beserta kode unik, tipe, negara, dan koordinat.
      */

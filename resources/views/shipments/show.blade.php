@@ -121,157 +121,305 @@
         </div>
     </div>
 
-    <!-- Row 1: Lokasi Terkini (Current Location) & Analisis ETA & Delay Deterministik -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-
-        <!-- Blok 1: Lokasi Terkini (Current Location) -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                <div class="flex items-center space-x-2.5">
-                    <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lokasi Terkini (Current Location)</h2>
-                        <p class="text-[11px] text-slate-500">Posisi geospasial aktual berdasarkan checkpoint pelacakan terakhir.</p>
-                    </div>
+    <!-- Map Section: Peta Rute & Pelacakan Geospasial (OpenStreetMap) -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mb-8">
+        <div class="p-5 sm:p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="h-2.5 w-2.5 rounded-full bg-[#d4f93a] animate-pulse"></span>
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                        Peta Rute & Pelacakan Geospasial (OpenStreetMap)
+                    </h2>
                 </div>
-                @if($currentLocation && !($currentLocation['is_fallback'] ?? false))
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">
-                        Live Checkpoint
-                    </span>
-                @else
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 uppercase">
-                        Origin Hub
-                    </span>
-                @endif
+                <p class="text-xs text-slate-500 mt-0.5">
+                    Visualisasi spasial perjalanan kargo dari titik asal (Origin), riwayat checkpoint, hingga destinasi akhir.
+                </p>
             </div>
 
-            @if($currentLocation)
-                <div class="space-y-4">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="text-base font-extrabold text-slate-900">
-                                {{ $currentLocation['location_name'] }}
-                            </div>
-                            <div class="text-xs text-slate-500 flex items-center space-x-1.5 mt-0.5">
-                                <span class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-[10px]">{{ $currentLocation['location_code'] }}</span>
-                                <span>&bull;</span>
-                                <span>{{ $currentLocation['country'] }} ({{ $currentLocation['type'] }})</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-[#d4f93a] text-xs font-mono font-bold">
-                                {{ $currentLocation['status'] }}
-                            </span>
-                        </div>
-                    </div>
+            <!-- Legend Pelacakan Geospasial -->
+            <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
+                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-900 text-white">
+                    <span class="h-2 w-2 rounded-full bg-[#d4f93a]"></span>
+                    <span>Origin Hub</span>
+                </span>
+                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    <span>Destination Hub</span>
+                </span>
+                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800">
+                    <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                    <span>Checkpoint</span>
+                </span>
+                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800">
+                    <span class="h-2 w-2 rounded-full bg-rose-600"></span>
+                    <span>Exception</span>
+                </span>
+            </div>
+        </div>
 
-                    <div class="grid grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase block">Koordinat Geospasial</span>
-                            <span class="font-mono font-semibold text-slate-800">
-                                @if($currentLocation['latitude'] !== null && $currentLocation['longitude'] !== null)
-                                    {{ number_format((float)$currentLocation['latitude'], 4) }}°, {{ number_format((float)$currentLocation['longitude'], 4) }}°
-                                @else
-                                    <span class="text-slate-400 font-sans italic">Belum tersedia</span>
-                                @endif
-                            </span>
-                        </div>
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase block">Waktu Pembaruan Terakhir</span>
-                            <span class="font-medium text-slate-800">
-                                {{ $currentLocation['event_time'] ? \Carbon\Carbon::parse($currentLocation['event_time'])->format('d M Y, H:i') . ' WIB' : '-' }}
-                            </span>
-                        </div>
+        <!-- Wadah Peta Leaflet.js -->
+        <div class="relative">
+            <div id="shipment-map" style="height: 400px; width: 100%;" class="z-10"></div>
+            
+            @php
+                $hasOriginCoord = $mapData['origin']['latitude'] !== null && $mapData['origin']['longitude'] !== null;
+                $hasDestCoord = $mapData['destination']['latitude'] !== null && $mapData['destination']['longitude'] !== null;
+                $hasEventCoord = count($mapData['events']) > 0;
+            @endphp
+            @if(!$hasOriginCoord && !$hasDestCoord && !$hasEventCoord)
+                <div class="absolute inset-0 z-20 bg-slate-50/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center">
+                    <div class="h-12 w-12 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center mb-3">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        </svg>
                     </div>
-
-                    <div class="text-xs text-slate-600 bg-slate-50/50 p-2.5 rounded-lg border border-slate-100/80">
-                        <span class="font-semibold text-slate-700">Keterangan Checkpoint:</span>
-                        {{ $currentLocation['description'] }}
-                    </div>
-                </div>
-            @else
-                <div class="py-8 text-center text-slate-400 text-xs">
-                    Informasi koordinat lokasi terkini belum tersedia.
+                    <div class="text-sm font-bold text-slate-800">Koordinat Geospasial Belum Lengkap</div>
+                    <p class="text-xs text-slate-500 max-w-md mt-1">
+                        Informasi titik koordinat latitude dan longitude belum tersedia pada lokasi origin, destination, maupun checkpoint kargo ini.
+                    </p>
                 </div>
             @endif
         </div>
+    </div>
 
-        <!-- Blok 2: Analisis ETA & Deteksi Keterlambatan (Rule-Based) -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                <div class="flex items-center space-x-2.5">
-                    <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+    <!-- Row 1: Lokasi Terkini, Cuaca Terkini (External API), dan Analisis ETA (Rule-Based) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
+        <!-- Blok 1: Lokasi Terkini (Current Location) -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Lokasi Terkini</h2>
+                            <p class="text-[11px] text-slate-500">Posisi geospasial aktual checkpoint.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Analisis ETA & Keterlambatan (Rule-Based)</h2>
-                        <p class="text-[11px] text-slate-500">Evaluasi deterministik berbasis selisih jadwal dan threshold aktif.</p>
-                    </div>
+                    @if($currentLocation && !($currentLocation['is_fallback'] ?? false))
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase font-mono">
+                            LIVE
+                        </span>
+                    @else
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 uppercase font-mono">
+                            ORIGIN
+                        </span>
+                    @endif
                 </div>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase {{ $delayAnalysis['is_delayed'] ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800' }}">
-                    {{ $delayAnalysis['is_delayed'] ? 'DELAY DETECTED' : 'ON-TIME' }}
-                </span>
+
+                @if($currentLocation)
+                    <div class="space-y-3.5">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="text-sm font-extrabold text-slate-900 leading-snug">
+                                    {{ $currentLocation['location_name'] }}
+                                </div>
+                                <div class="text-xs text-slate-500 flex items-center space-x-1.5 mt-0.5">
+                                    <span class="font-mono font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded text-[10px]">{{ $currentLocation['location_code'] }}</span>
+                                    <span>&bull;</span>
+                                    <span>{{ $currentLocation['country'] }}</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-0.5 rounded-lg bg-slate-900 text-[#d4f93a] text-xs font-mono font-bold">
+                                    {{ $currentLocation['status'] }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Koordinat</span>
+                                <span class="font-mono font-semibold text-slate-800 text-[11px]">
+                                    @if($currentLocation['latitude'] !== null && $currentLocation['longitude'] !== null)
+                                        {{ number_format((float)$currentLocation['latitude'], 4) }}°, {{ number_format((float)$currentLocation['longitude'], 4) }}°
+                                    @else
+                                        <span class="text-slate-400 font-sans italic">Belum ada</span>
+                                    @endif
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Pembaruan</span>
+                                <span class="font-medium text-slate-800 text-[11px]">
+                                    {{ $currentLocation['event_time'] ? \Carbon\Carbon::parse($currentLocation['event_time'])->format('d M, H:i') . ' WIB' : '-' }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-slate-600 bg-slate-50/50 p-2.5 rounded-lg border border-slate-100/80">
+                            <span class="font-semibold text-slate-700">Keterangan:</span>
+                            {{ $currentLocation['description'] }}
+                        </div>
+                    </div>
+                @else
+                    <div class="py-8 text-center text-slate-400 text-xs">
+                        Informasi koordinat lokasi terkini belum tersedia.
+                    </div>
+                @endif
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[10px] text-slate-400">
+                Pembaruan checkpoint tervalidasi oleh sistem TrackingService.
+            </div>
+        </div>
+
+        <!-- Blok 2: Informasi Cuaca Lokasi Terkini (External API) -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Cuaca Lokasi Terkini</h2>
+                            <p class="text-[11px] text-slate-500">Kondisi meteorologi aktual di sekitar titik kargo.</p>
+                        </div>
+                    </div>
+                    @if($weatherData['available'])
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 uppercase font-mono">
+                            OPEN-METEO
+                        </span>
+                    @else
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 uppercase font-mono">
+                            OFFLINE
+                        </span>
+                    @endif
+                </div>
+
+                @if($weatherData['available'])
+                    <div class="space-y-3.5">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Titik Pantau Cuaca</span>
+                                <div class="text-sm font-extrabold text-slate-900 leading-snug">
+                                    {{ $weatherData['location_label'] }}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-800 text-xs font-bold border border-blue-100">
+                                    {{ $weatherData['condition'] }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Metrik Utama Cuaca -->
+                        <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-50 border border-slate-100 text-center">
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Suhu</span>
+                                <span class="text-base font-extrabold font-mono text-slate-900">
+                                    {{ number_format($weatherData['temperature_c'], 1) }}°C
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Kelembapan</span>
+                                <span class="text-base font-extrabold font-mono text-slate-900">
+                                    {{ $weatherData['humidity_pct'] !== null ? $weatherData['humidity_pct'] . '%' : '-' }}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase block">Angin</span>
+                                <span class="text-base font-extrabold font-mono text-slate-900">
+                                    {{ $weatherData['wind_speed_kmh'] !== null ? number_format($weatherData['wind_speed_kmh'], 1) : '-' }} <span class="text-[9px] font-sans font-medium text-slate-500">km/j</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[11px] text-slate-500 px-0.5">
+                            <span>Observasi: <strong class="text-slate-700">{{ $weatherData['observed_at'] ?? '-' }}</strong></span>
+                            <span class="font-mono text-[10px] text-slate-400">{{ $weatherData['source'] }}</span>
+                        </div>
+                    </div>
+                @else
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 space-y-1.5">
+                        <div class="font-semibold text-slate-800 flex items-center space-x-1.5">
+                            <svg class="h-4 w-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Informasi Cuaca Tidak Dapat Dimuat</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">
+                            {{ $weatherData['error'] ?? 'Layanan Open-Meteo API tidak merespons atau koordinat pengiriman belum lengkap.' }}
+                        </p>
+                    </div>
+                @endif
             </div>
 
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center">
-                    
-                    <!-- Expected Arrival -->
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Target Expected</span>
-                        <span class="text-xs font-bold text-slate-800 block">
-                            {{ $shipment->expected_arrival ? $shipment->expected_arrival->format('d/m/Y H:i') : '-' }}
-                        </span>
-                    </div>
+            <!-- Catatan Disclaimer WAJIB -->
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-[10px] text-slate-400 leading-relaxed">
+                    * Data cuaca dari layanan eksternal ini hanya bersifat informasi operasional dan tidak digunakan sebagai klaim prediksi keterlambatan (delay).
+                </p>
+            </div>
+        </div>
 
-                    <!-- Estimated Arrival -->
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Estimasi Aktual</span>
-                        <span class="text-xs font-bold text-slate-800 block">
-                            {{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d/m/Y H:i') : '-' }}
-                        </span>
+        <!-- Blok 3: Analisis ETA & Deteksi Keterlambatan (Rule-Based) -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Analisis ETA & Delay</h2>
+                            <p class="text-[11px] text-slate-500">Evaluasi deterministik threshold.</p>
+                        </div>
                     </div>
-
-                    <!-- Delay Duration -->
-                    <div class="p-2.5 rounded-xl {{ $delayAnalysis['delay_hours'] > 0 ? 'bg-rose-50 border border-rose-100' : 'bg-emerald-50 border border-emerald-100' }}">
-                        <span class="text-[10px] font-bold {{ $delayAnalysis['delay_hours'] > 0 ? 'text-rose-600' : 'text-emerald-600' }} uppercase block mb-1">Durasi Delay</span>
-                        <span class="text-xs font-extrabold font-mono {{ $delayAnalysis['delay_hours'] > 0 ? 'text-rose-700' : 'text-emerald-700' }} block">
-                            {{ $delayAnalysis['delay_hours'] > 0 ? '+' . $delayAnalysis['delay_hours'] . ' Jam' : '0 Jam' }}
-                        </span>
-                    </div>
-
-                    <!-- Severity Badge -->
-                    <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Severity</span>
-                        <span class="text-xs font-bold uppercase inline-block px-2 py-0.5 rounded
-                            {{ $delayAnalysis['delay_severity'] === 'HIGH' ? 'bg-rose-100 text-rose-800' : 
-                              ($delayAnalysis['delay_severity'] === 'MEDIUM' ? 'bg-orange-100 text-orange-800' : 
-                              ($delayAnalysis['delay_severity'] === 'LOW' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800')) }}">
-                            {{ $delayAnalysis['delay_severity'] }}
-                        </span>
-                    </div>
-
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase {{ $delayAnalysis['is_delayed'] ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800' }}">
+                        {{ $delayAnalysis['is_delayed'] ? 'DELAY DETECTED' : 'ON-TIME' }}
+                    </span>
                 </div>
 
-                <!-- Alasan Deterministik & Threshold Aktif -->
-                <div class="p-3.5 rounded-xl bg-slate-50/90 border border-slate-100 text-xs space-y-1.5">
-                    <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono">
-                        <span>Threshold Sistem Aktif:</span>
-                        <span class="font-bold text-slate-700">
-                            LOW: &le; {{ $delayAnalysis['low_max_hours'] }}j &bull; MEDIUM: &gt; {{ $delayAnalysis['low_max_hours'] }}–{{ $delayAnalysis['high_min_hours'] }}j &bull; HIGH: &gt; {{ $delayAnalysis['high_min_hours'] }}j
-                        </span>
+                <div class="space-y-3.5">
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Target</span>
+                            <span class="text-[11px] font-bold text-slate-800 block">
+                                {{ $shipment->expected_arrival ? $shipment->expected_arrival->format('d/m/Y H:i') : '-' }}
+                            </span>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Estimasi</span>
+                            <span class="text-[11px] font-bold text-slate-800 block">
+                                {{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d/m/Y H:i') : '-' }}
+                            </span>
+                        </div>
                     </div>
-                    <p class="text-slate-700 leading-relaxed font-sans text-xs pt-1 border-t border-slate-200/60">
-                        <strong class="text-slate-900 font-semibold">Penjelasan Aturan:</strong> {{ $delayAnalysis['reason'] }}
-                    </p>
+
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 rounded-xl {{ $delayAnalysis['delay_hours'] > 0 ? 'bg-rose-50 border border-rose-100' : 'bg-emerald-50 border border-emerald-100' }}">
+                            <span class="text-[10px] font-bold {{ $delayAnalysis['delay_hours'] > 0 ? 'text-rose-600' : 'text-emerald-600' }} uppercase block mb-0.5">Durasi Delay</span>
+                            <span class="text-xs font-extrabold font-mono {{ $delayAnalysis['delay_hours'] > 0 ? 'text-rose-700' : 'text-emerald-700' }} block">
+                                {{ $delayAnalysis['delay_hours'] > 0 ? '+' . $delayAnalysis['delay_hours'] . ' Jam' : '0 Jam' }}
+                            </span>
+                        </div>
+                        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Severity</span>
+                            <span class="text-xs font-bold uppercase inline-block px-2 py-0.2 rounded
+                                {{ $delayAnalysis['delay_severity'] === 'HIGH' ? 'bg-rose-100 text-rose-800' : 
+                                  ($delayAnalysis['delay_severity'] === 'MEDIUM' ? 'bg-orange-100 text-orange-800' : 
+                                  ($delayAnalysis['delay_severity'] === 'LOW' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800')) }}">
+                                {{ $delayAnalysis['delay_severity'] }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-[11px] text-slate-600 leading-relaxed">
+                        <strong class="text-slate-800">Aturan:</strong> {{ $delayAnalysis['reason'] }}
+                    </div>
                 </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 text-[10px] text-slate-400">
+                Threshold: LOW &le; {{ $delayAnalysis['low_max_hours'] }}j &bull; HIGH &gt; {{ $delayAnalysis['high_min_hours'] }}j
             </div>
         </div>
 
@@ -724,4 +872,199 @@
     </div>
 
 </div>
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+    .leaflet-popup-content-wrapper {
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        padding: 4px;
+    }
+    .leaflet-popup-content {
+        margin: 12px 14px;
+        line-height: 1.5;
+    }
+    .leaflet-container {
+        font-family: inherit;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const mapData = @json($mapData);
+
+    const mapElement = document.getElementById('shipment-map');
+    if (!mapElement) return;
+
+    // Inisialisasi peta Leaflet dengan center default koordinat Indonesia
+    const defaultCenter = [-6.1751, 106.8650];
+    const map = L.map('shipment-map', {
+        scrollWheelZoom: false,
+        attributionControl: true
+    }).setView(defaultCenter, 4);
+
+    // Tile Layer OpenStreetMap resmi WAJIB mencantumkan atribusi
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const boundsPoints = [];
+    const traveledPoints = [];
+
+    // Factory helper DivIcon kustom tanpa dependensi asset PNG eksternal
+    function createDivIcon(bgColor, textColor, innerHtml, size = 32) {
+        return L.divIcon({
+            className: 'custom-map-icon',
+            html: `<div style="background-color: ${bgColor}; color: ${textColor}; width: ${size}px; height: ${size}px; border-radius: 50%; border: 2.5px solid #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;">${innerHtml}</div>`,
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2],
+            popupAnchor: [0, -(size / 2 + 4)]
+        });
+    }
+
+    // 1. Pasang Marker Origin
+    if (mapData.origin && mapData.origin.latitude !== null && mapData.origin.longitude !== null) {
+        const originLatLng = [mapData.origin.latitude, mapData.origin.longitude];
+        boundsPoints.push(originLatLng);
+        traveledPoints.push(originLatLng);
+
+        const originIcon = createDivIcon('#0e1117', '#d4f93a', `
+            <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+            </svg>
+        `, 34);
+
+        const originPopup = `
+            <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 200px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="font-size: 10px; font-weight: 800; background: #0e1117; color: #d4f93a; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">ORIGIN</span>
+                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #64748b;">[${escapeHtml(mapData.origin.code)}]</span>
+                </div>
+                <div style="font-weight: 800; color: #0f172a; font-size: 13px;">${escapeHtml(mapData.origin.name)}</div>
+                <div style="color: #64748b; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.origin.type)}</strong></div>
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #334155;">
+                    <span style="color: #64748b;">Jadwal Berangkat:</span><br>
+                    <strong>${escapeHtml(mapData.origin.expected_departure || 'Belum ditentukan')}</strong>
+                </div>
+            </div>
+        `;
+
+        L.marker(originLatLng, { icon: originIcon }).addTo(map).bindPopup(originPopup);
+    }
+
+    // 2. Pasang Marker Tracking Events (Normal & Exception)
+    if (mapData.events && mapData.events.length > 0) {
+        mapData.events.forEach((ev) => {
+            const evLatLng = [ev.latitude, ev.longitude];
+            boundsPoints.push(evLatLng);
+            traveledPoints.push(evLatLng);
+
+            const isException = Boolean(ev.is_exception);
+            const bgColor = isException ? '#e11d48' : '#f59e0b';
+            const iconHtml = isException ? '!' : `<span style="width: 7px; height: 7px; background-color: #ffffff; border-radius: 50%;"></span>`;
+            const evIcon = createDivIcon(bgColor, '#ffffff', iconHtml, isException ? 30 : 26);
+
+            const evPopup = `
+                <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 220px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 6px;">
+                        <span style="font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; ${isException ? 'background: #ffe4e6; color: #be123c;' : 'background: #fef3c7; color: #92400e;'}">
+                            ${isException ? 'EXCEPTION: ' : 'CHECKPOINT: '}${escapeHtml(ev.status)}
+                        </span>
+                        <span style="font-size: 10px; font-family: monospace; color: #64748b;">${escapeHtml(ev.event_time)}</span>
+                    </div>
+                    <div style="font-weight: 700; color: #0f172a; font-size: 12px;">${escapeHtml(ev.location_name)}</div>
+                    <div style="margin-top: 4px; font-size: 11px; color: #475569; background: #f8fafc; padding: 6px; border-radius: 6px; border: 1px solid #e2e8f0; line-height: 1.35;">
+                        ${escapeHtml(ev.description)}
+                    </div>
+                </div>
+            `;
+
+            L.marker(evLatLng, { icon: evIcon }).addTo(map).bindPopup(evPopup);
+        });
+    }
+
+    // 3. Pasang Marker Destination
+    let destLatLng = null;
+    if (mapData.destination && mapData.destination.latitude !== null && mapData.destination.longitude !== null) {
+        destLatLng = [mapData.destination.latitude, mapData.destination.longitude];
+        boundsPoints.push(destLatLng);
+
+        const destIcon = createDivIcon('#059669', '#ffffff', `
+            <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        `, 34);
+
+        const destPopup = `
+            <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 200px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                    <span style="font-size: 10px; font-weight: 800; background: #ecfdf5; color: #065f46; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">DESTINATION</span>
+                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #64748b;">[${escapeHtml(mapData.destination.code)}]</span>
+                </div>
+                <div style="font-weight: 800; color: #065f46; font-size: 13px;">${escapeHtml(mapData.destination.name)}</div>
+                <div style="color: #64748b; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.destination.type)}</strong></div>
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #334155; space-y-1;">
+                    <div><span style="color: #64748b;">Target Tiba:</span> <strong>${escapeHtml(mapData.destination.expected_arrival || '-')}</strong></div>
+                    <div><span style="color: #64748b;">Estimasi Tiba:</span> <strong>${escapeHtml(mapData.destination.estimated_arrival || '-')}</strong></div>
+                </div>
+            </div>
+        `;
+
+        L.marker(destLatLng, { icon: destIcon }).addTo(map).bindPopup(destPopup);
+    }
+
+    // 4. Gambar Garis Polylines
+    // Rute yang sudah dilalui: Solid line (Origin -> urutan Checkpoints)
+    if (traveledPoints.length >= 2) {
+        L.polyline(traveledPoints, {
+            color: '#0e1117',
+            weight: 3.5,
+            opacity: 0.85
+        }).addTo(map);
+    }
+
+    // Garis putus-putus (Dashed line) dari titik terakhir menuju Destination
+    if (traveledPoints.length > 0 && destLatLng) {
+        const lastTraveled = traveledPoints[traveledPoints.length - 1];
+        L.polyline([lastTraveled, destLatLng], {
+            color: '#059669',
+            weight: 3,
+            dashArray: '6, 8',
+            opacity: 0.85
+        }).addTo(map);
+    } else if (traveledPoints.length === 0 && mapData.origin && mapData.origin.latitude !== null && destLatLng) {
+        // Fallback jika belum ada checkpoint: garis putus-putus langsung dari origin ke destination
+        L.polyline([[mapData.origin.latitude, mapData.origin.longitude], destLatLng], {
+            color: '#64748b',
+            weight: 2.5,
+            dashArray: '6, 8',
+            opacity: 0.7
+        }).addTo(map);
+    }
+
+    // 5. Fit Bounds ke seluruh koordinat
+    if (boundsPoints.length > 1) {
+        map.fitBounds(L.latLngBounds(boundsPoints), {
+            padding: [45, 45],
+            maxZoom: 13
+        });
+    } else if (boundsPoints.length === 1) {
+        map.setView(boundsPoints[0], 9);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        const p = document.createElement('p');
+        p.textContent = str;
+        return p.innerHTML;
+    }
+});
+</script>
+@endpush
 @endsection

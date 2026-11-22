@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     // Modul Master Data (Khusus Administrator)
     // -------------------------------------------------------------------------
     Route::middleware('role:admin')->group(function () {
+        Route::get('/locations/geocode', [LocationController::class, 'geocode'])->name('locations.geocode');
         Route::resource('carriers', CarrierController::class)->except(['show']);
         Route::resource('locations', LocationController::class)->except(['show']);
         Route::resource('users', UserController::class)->except(['show']);

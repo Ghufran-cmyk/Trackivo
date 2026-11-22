@@ -35,4 +35,21 @@ return [
         ],
     ],
 
+    'weather' => [
+        'url' => env('WEATHER_API_URL', 'https://api.open-meteo.com/v1/forecast'),
+        'key' => env('WEATHER_API_KEY'),
+        'timeout' => (int) env('WEATHER_API_TIMEOUT', 10),
+    ],
+
+    'geocoding' => [
+        'url' => env('GEOCODING_API_URL', 'https://nominatim.openstreetmap.org/search'),
+        'user_agent' => env('GEOCODING_USER_AGENT', 'TrackivoGlobalLogistics/1.0 (contact@trackivo.com)'),
+        'timeout' => (int) env('GEOCODING_API_TIMEOUT', 10),
+    ],
+
+    'http_client' => [
+        'ca_bundle' => env('HTTP_CLIENT_CA_BUNDLE'),
+        'verify_ssl' => env('HTTP_CLIENT_VERIFY_SSL', true),
+    ],
+
 ];

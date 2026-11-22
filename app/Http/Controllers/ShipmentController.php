@@ -16,6 +16,8 @@ use App\Services\EtaService;
 use App\Services\ExceptionService;
 use App\Services\ShipmentService;
 use App\Services\TrackingService;
+use App\Services\WeatherService;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -27,7 +29,8 @@ class ShipmentController extends Controller
         protected ShipmentService $shipmentService,
         protected EtaService $etaService,
         protected TrackingService $trackingService,
-        protected ExceptionService $exceptionService
+        protected ExceptionService $exceptionService,
+        protected WeatherService $weatherService
     ) {}
 
     /**
@@ -149,7 +152,85 @@ class ShipmentController extends Controller
         $delayAnalysis = $this->etaService->evaluateDelay($shipment);
         $locations = Location::orderBy('name')->get();
 
-        return view('shipments.show', compact('shipment', 'allowedNextStatuses', 'currentLocation', 'delayAnalysis', 'locations'));
+        // Siapkan struktur mapData untuk Leaflet.js
+        $originLoc = $shipment->originLocation;
+        $destLoc = $shipment->destinationLocation;
+
+        $mapData = [
+            'origin' => [
+                'name' => $originLoc?->name ?? 'Origin Hub',
+                'code' => $originLoc?->code ?? 'ORG',
+                'type' => $originLoc?->type ?? 'PORT',
+                'latitude' => $originLoc?->latitude !== null ? (float) $originLoc->latitude : null,
+                'longitude' => $originLoc?->longitude !== null ? (float) $originLoc->longitude : null,
+                'expected_departure' => $shipment->expected_departure
+                    ? $shipment->expected_departure->format('d M Y, H:i') . ' WIB'
+                    : null,
+            ],
+            'destination' => [
+                'name' => $destLoc?->name ?? 'Destination Hub',
+                'code' => $destLoc?->code ?? 'DST',
+                'type' => $destLoc?->type ?? 'PORT',
+                'latitude' => $destLoc?->latitude !== null ? (float) $destLoc->latitude : null,
+                'longitude' => $destLoc?->longitude !== null ? (float) $destLoc->longitude : null,
+                'expected_arrival' => $shipment->expected_arrival
+                    ? $shipment->expected_arrival->format('d M Y, H:i') . ' WIB'
+                    : null,
+                'estimated_arrival' => $shipment->estimated_arrival
+                    ? $shipment->estimated_arrival->format('d M Y, H:i') . ' WIB'
+                    : null,
+            ],
+            'events' => [],
+        ];
+
+        // Daftar tracking events urut kronologis yang memiliki koordinat valid
+        foreach ($shipment->trackingEvents as $event) {
+            $lat = $event->latitude ?? $event->location?->latitude;
+            $lng = $event->longitude ?? $event->location?->longitude;
+
+            if ($lat !== null && $lng !== null) {
+                $mapData['events'][] = [
+                    'id' => $event->id,
+                    'status' => $event->status,
+                    'is_exception' => (bool) $event->is_exception,
+                    'latitude' => (float) $lat,
+                    'longitude' => (float) $lng,
+                    'location_name' => $event->location?->name ?? 'Titik Koordinat Lapangan',
+                    'location_code' => $event->location?->code ?? 'GPS',
+                    'event_time' => $event->event_time
+                        ? Carbon::parse($event->event_time)->format('d M Y, H:i') . ' WIB'
+                        : '-',
+                    'description' => $event->description ?? '',
+                ];
+            }
+        }
+
+        // Koordinat untuk integrasi cuaca: utamakan lokasi terkini kargo, fallback ke origin jika kosong
+        $weatherLat = null;
+        $weatherLng = null;
+        $weatherLabel = null;
+
+        if ($currentLocation && $currentLocation['latitude'] !== null && $currentLocation['longitude'] !== null) {
+            $weatherLat = (float) $currentLocation['latitude'];
+            $weatherLng = (float) $currentLocation['longitude'];
+            $weatherLabel = $currentLocation['location_name'] ?? 'Lokasi Terkini Kargo';
+        } elseif ($mapData['origin']['latitude'] !== null && $mapData['origin']['longitude'] !== null) {
+            $weatherLat = $mapData['origin']['latitude'];
+            $weatherLng = $mapData['origin']['longitude'];
+            $weatherLabel = $mapData['origin']['name'] . ' (Origin Fallback)';
+        }
+
+        $weatherData = $this->weatherService->getCurrentWeather($weatherLat, $weatherLng, $weatherLabel);
+
+        return view('shipments.show', compact(
+            'shipment',
+            'allowedNextStatuses',
+            'currentLocation',
+            'delayAnalysis',
+            'locations',
+            'mapData',
+            'weatherData'
+        ));
     }
 
     /**
