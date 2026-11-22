@@ -1,0 +1,692 @@
+{
+	"info": {
+		"_postman_id": "c1f7a070-5b58-47c0-a7d1-9f794326f634",
+		"name": "Trackivo REST API Collection",
+		"description": "Koleksi Postman REST API lengkap untuk platform pelacak pengiriman global Trackivo, dilengkapi autentikasi Laravel Sanctum dan skrip otomatis penyimpan token.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Budi Santoso\",\n    \"email\": \"budi.santoso@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"company_name\": \"PT Nusantara Sentosa\",\n    \"phone\": \"+6281234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "register"]
+						},
+						"description": "Registrasi pengguna baru (role dikunci di server sebagai customer)."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"        console.log(\"Sanctum token tersimpan otomatis ke collection variable {{token}}\");",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@trackivo.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						},
+						"description": "Autentikasi akun dan mendapatkan Sanctum Bearer token."
+					},
+					"response": []
+				},
+				{
+					"name": "User Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": ["{{base_url}}"],
+							"path": ["api", "user"]
+						},
+						"description": "Mengambil data profil pengguna yang sedang login."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "logout"]
+						},
+						"description": "Menghapus token aktif yang sedang digunakan."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shipments",
+			"item": [
+				{
+					"name": "Get Shipments List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/shipments?search=&status=&carrier_id=&origin_location_id=&destination_location_id=&date_from=&date_to=&delay_status=&sort=latest&per_page=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments"],
+							"query": [
+								{"key": "search", "value": ""},
+								{"key": "status", "value": ""},
+								{"key": "carrier_id", "value": ""},
+								{"key": "origin_location_id", "value": ""},
+								{"key": "destination_location_id", "value": ""},
+								{"key": "date_from", "value": ""},
+								{"key": "date_to", "value": ""},
+								{"key": "delay_status", "value": ""},
+								{"key": "sort", "value": "latest"},
+								{"key": "per_page", "value": "10"}
+							]
+						},
+						"description": "Daftar pengiriman dengan filter komprehensif dan paginasi server-side."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Shipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\": 3,\n    \"carrier_id\": 1,\n    \"origin_location_id\": 1,\n    \"destination_location_id\": 2,\n    \"transport_mode\": \"OCEAN\",\n    \"cargo_type\": \"Komponen Elektronik Presisi\",\n    \"weight_kg\": 1250.50,\n    \"expected_departure\": \"2026-12-01T08:00:00Z\",\n    \"expected_arrival\": \"2026-12-10T17:00:00Z\",\n    \"items\": [\n        {\n            \"item_name\": \"Microchip STM32\",\n            \"quantity\": 500,\n            \"weight_kg\": 250.0,\n            \"description\": \"Kemasan ESD anti-statis\"\n        },\n        {\n            \"item_name\": \"Power Inverter 5kW\",\n            \"quantity\": 100,\n            \"weight_kg\": 1000.5,\n            \"description\": \"Palet kayu sertifikasi ISPM-15\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/shipments",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments"]
+						},
+						"description": "Membuat pengiriman baru beserta daftar items (Khusus Admin & Operator)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Shipment Detail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1"]
+						},
+						"description": "Detail rincian shipment, items, current_location, dan delay_analysis."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cargo_type\": \"Komponen Elektronik & Sensor IoT\",\n    \"weight_kg\": 1320.00,\n    \"status\": \"BOOKED\",\n    \"note\": \"Slot kapal kargo telah dikonfirmasi oleh Maersk\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1"]
+						},
+						"description": "Perbarui informasi shipment atau transisi status melalui State Machine (Khusus Admin & Operator)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Shipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1"]
+						},
+						"description": "Menghapus shipment berstatus CREATED/CANCELLED (Khusus Admin)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tracking",
+			"item": [
+				{
+					"name": "Get Tracking Timeline",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1/tracking",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1", "tracking"]
+						},
+						"description": "Mengambil riwayat tracking checkpoint urut kronologis beserta lokasi terkini."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Tracking Checkpoint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"IN_TRANSIT\",\n    \"location_id\": 1,\n    \"latitude\": -6.1018,\n    \"longitude\": 106.8833,\n    \"event_time\": \"2026-12-02T10:30:00Z\",\n    \"description\": \"Kapal telah bertolak dari Pelabuhan Tanjung Priok menuju Selat Sunda.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1/tracking",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1", "tracking"]
+						},
+						"description": "Menambahkan checkpoint tracking baru (Khusus Admin & Operator)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carriers",
+			"item": [
+				{
+					"name": "Get Carriers List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/carriers?search=&is_active=1&per_page=15",
+							"host": ["{{base_url}}"],
+							"path": ["api", "carriers"],
+							"query": [
+								{"key": "search", "value": ""},
+								{"key": "is_active", "value": "1"},
+								{"key": "per_page", "value": "15"}
+							]
+						},
+						"description": "Daftar carrier rekanan pengiriman dengan filter aktif dan paginasi."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Carrier",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"EMC\",\n    \"name\": \"Evergreen Marine Corporation\",\n    \"contact_email\": \"ops@evergreen-marine.com\",\n    \"contact_phone\": \"+886-2-2501-1111\",\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/carriers",
+							"host": ["{{base_url}}"],
+							"path": ["api", "carriers"]
+						},
+						"description": "Menambahkan carrier baru ke sistem (Khusus Admin)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "Get Locations List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/locations?search=&type=&per_page=15",
+							"host": ["{{base_url}}"],
+							"path": ["api", "locations"],
+							"query": [
+								{"key": "search", "value": ""},
+								{"key": "type", "value": ""},
+								{"key": "per_page", "value": "15"}
+							]
+						},
+						"description": "Daftar simpul logistik (Port, Airport, Warehouse, Checkpoint)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Location",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"ID-TPP\",\n    \"name\": \"Pelabuhan Tanjung Perak\",\n    \"country\": \"Indonesia\",\n    \"type\": \"PORT\",\n    \"latitude\": -7.2008,\n    \"longitude\": 112.7335\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/locations",
+							"host": ["{{base_url}}"],
+							"path": ["api", "locations"]
+						},
+						"description": "Menambahkan titik lokasi baru (Khusus Admin)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exceptions",
+			"item": [
+				{
+					"name": "Get Shipment Exceptions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1/exceptions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1", "exceptions"]
+						},
+						"description": "Daftar kendala operasional pada pengiriman tertentu."
+					},
+					"response": []
+				},
+				{
+					"name": "Report Exception",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"WEATHER_DELAY\",\n    \"severity\": \"MEDIUM\",\n    \"delay_impact_hours\": 12,\n    \"description\": \"Badai tropis di Laut Cina Selatan memaksa armada kapal memperlambat laju dan mengambil rute memutar.\",\n    \"detected_at\": \"2026-12-04T14:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/shipments/1/exceptions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shipments", "1", "exceptions"]
+						},
+						"description": "Melaporkan kendala operasional baru (Khusus Admin & Operator)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Exception Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"RESOLVED\",\n    \"resolution_note\": \"Cuaca telah membaik dan kapal telah melanjutkan perjalanan dengan kecepatan normal.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/exceptions/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "exceptions", "1"]
+						},
+						"description": "Memperbarui status penanganan kendala hingga resolusi (Khusus Admin & Operator)."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

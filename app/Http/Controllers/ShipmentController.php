@@ -384,27 +384,14 @@ class ShipmentController extends Controller
      */
     public function destroy(Shipment $shipment): RedirectResponse
     {
-        if (! in_array($shipment->status, ['CREATED', 'CANCELLED'], true)) {
-            return back()->with('error', "Pengiriman berstatus '{$shipment->status}' tidak dapat dihapus demi keamanan audit operasional. Hanya status CREATED atau CANCELLED yang dapat dihapus.");
+        try {
+            $trackingNumber = $shipment->tracking_number;
+            $this->shipmentService->deleteShipment($shipment, auth()->user());
+
+            return redirect()->route('shipments.index')
+                ->with('success', "Pengiriman '{$trackingNumber}' berhasil dihapus dari sistem.");
+        } catch (ValidationException $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        $oldValues = $shipment->toArray();
-        $trackingNumber = $shipment->tracking_number;
-        $shipmentId = $shipment->id;
-
-        $shipment->delete();
-
-        AuditLog::create([
-            'user_id' => auth()->id(),
-            'action' => 'DELETE_SHIPMENT',
-            'target_type' => Shipment::class,
-            'target_id' => $shipmentId,
-            'old_values' => $oldValues,
-            'new_values' => null,
-            'ip_address' => request()->ip(),
-        ]);
-
-        return redirect()->route('shipments.index')
-            ->with('success', "Pengiriman '{$trackingNumber}' berhasil dihapus dari sistem.");
     }
 }

@@ -166,36 +166,36 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-slate-50/80 text-slate-500 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200/80">
-                        <th class="py-3.5 px-4 sm:px-5">Nomor Resi</th>
-                        <th class="py-3.5 px-4 sm:px-5">Status</th>
-                        <th class="py-3.5 px-4 sm:px-5">Moda & Kargo</th>
-                        <th class="py-3.5 px-4 sm:px-5">Rute (Asal &rarr; Tujuan)</th>
-                        <th class="py-3.5 px-4 sm:px-5">Carrier</th>
+                    <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10.5px] font-bold tracking-wider border-b border-slate-200/80">
+                        <th class="py-3 px-3 sm:px-3.5 whitespace-nowrap">Nomor Resi</th>
+                        <th class="py-3 px-3 sm:px-3.5 whitespace-nowrap">Status</th>
+                        <th class="py-3 px-3 sm:px-3.5 whitespace-nowrap">Moda & Kargo</th>
+                        <th class="py-3 px-3 sm:px-3.5">Rute</th>
+                        <th class="py-3 px-3 sm:px-3.5">Carrier</th>
                         @if(!auth()->user()->isCustomer())
-                            <th class="py-3.5 px-4 sm:px-5">Pelanggan</th>
+                            <th class="py-3 px-3 sm:px-3.5">Pelanggan</th>
                         @endif
-                        <th class="py-3.5 px-4 sm:px-5">Est. Tiba</th>
-                        <th class="py-3.5 px-4 sm:px-5">Kondisi Delay</th>
-                        <th class="py-3.5 px-4 sm:px-5 text-right">Aksi</th>
+                        <th class="py-3 px-3 sm:px-3.5 whitespace-nowrap">Est. Tiba</th>
+                        <th class="py-3 px-3 sm:px-3.5 whitespace-nowrap">Delay</th>
+                        <th class="py-3 px-3 sm:px-3.5 text-right whitespace-nowrap">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                     @forelse($shipments as $shipment)
-                        <tr class="hover:bg-slate-50/60 transition">
+                        <tr class="hover:bg-slate-50/60 transition text-xs sm:text-[13px]">
                             <!-- Tracking Number -->
-                            <td class="py-3.5 px-4 sm:px-5">
-                                <a href="{{ route('shipments.show', $shipment) }}" class="font-mono font-bold text-slate-900 hover:text-blue-600 flex items-center space-x-1.5 group">
+                            <td class="py-3 px-3 sm:px-3.5 whitespace-nowrap">
+                                <a href="{{ route('shipments.show', $shipment) }}" class="font-mono font-bold text-xs text-slate-900 hover:text-blue-600 inline-flex items-center space-x-1 group">
                                     <span>{{ $shipment->tracking_number }}</span>
-                                    <svg class="h-3.5 w-3.5 text-slate-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="h-3 w-3 text-slate-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                     </svg>
                                 </a>
-                                <span class="text-[11px] text-slate-400 block">{{ $shipment->items->count() }} item barang</span>
+                                <span class="text-[10.5px] text-slate-400 block">{{ $shipment->items->count() }} item</span>
                             </td>
 
                             <!-- Status Badge -->
-                            <td class="py-3.5 px-4 sm:px-5 whitespace-nowrap">
+                            <td class="py-3 px-3 sm:px-3.5 whitespace-nowrap">
                                 @php
                                     $statusBadges = [
                                         'CREATED'    => 'bg-slate-100 text-slate-700 border-slate-300',
@@ -206,69 +206,69 @@
                                         'CANCELLED'  => 'bg-rose-50 text-rose-700 border-rose-200',
                                     ];
                                 @endphp
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border {{ $statusBadges[$shipment->status] ?? 'bg-slate-100 text-slate-700' }}">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold border {{ $statusBadges[$shipment->status] ?? 'bg-slate-100 text-slate-700' }}">
                                     {{ $shipment->status }}
                                 </span>
                             </td>
 
                             <!-- Transport Mode & Cargo -->
-                            <td class="py-3.5 px-4 sm:px-5">
-                                <div class="flex items-center space-x-2">
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
+                            <td class="py-3 px-3 sm:px-3.5">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wider
                                         {{ $shipment->transport_mode === 'OCEAN' ? 'bg-cyan-100 text-cyan-800' :
                                           ($shipment->transport_mode === 'AIR' ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800') }}">
                                         {{ $shipment->transport_mode }}
                                     </span>
-                                    <span class="font-medium text-slate-800 text-xs sm:text-sm truncate max-w-[150px]">{{ $shipment->cargo_type }}</span>
+                                    <span class="font-medium text-slate-800 truncate max-w-[130px]">{{ $shipment->cargo_type }}</span>
                                 </div>
-                                <span class="text-[11px] text-slate-400 block mt-0.5">{{ number_format($shipment->weight_kg, 1) }} kg</span>
+                                <span class="text-[10.5px] text-slate-400 block mt-0.5">{{ number_format($shipment->weight_kg, 1) }} kg</span>
                             </td>
 
                             <!-- Route -->
-                            <td class="py-3.5 px-4 sm:px-5">
-                                <div class="flex items-center space-x-1.5 text-xs font-semibold text-slate-800">
-                                    <span class="px-1.5 py-0.5 bg-slate-100 rounded text-slate-700">{{ $shipment->originLocation?->code ?? '-' }}</span>
-                                    <span class="text-slate-400">&rarr;</span>
-                                    <span class="px-1.5 py-0.5 bg-slate-100 rounded text-slate-700">{{ $shipment->destinationLocation?->code ?? '-' }}</span>
+                            <td class="py-3 px-3 sm:px-3.5">
+                                <div class="flex items-center space-x-1 font-semibold text-slate-800">
+                                    <span class="px-1 py-0.5 bg-slate-100 rounded text-slate-700 text-[11px]">{{ $shipment->originLocation?->code ?? '-' }}</span>
+                                    <span class="text-slate-400 text-xs">&rarr;</span>
+                                    <span class="px-1 py-0.5 bg-slate-100 rounded text-slate-700 text-[11px]">{{ $shipment->destinationLocation?->code ?? '-' }}</span>
                                 </div>
-                                <span class="text-[11px] text-slate-400 block truncate max-w-[180px]">
+                                <span class="text-[10.5px] text-slate-400 block truncate max-w-[160px]">
                                     {{ $shipment->originLocation?->name }} &rarr; {{ $shipment->destinationLocation?->name }}
                                 </span>
                             </td>
 
                             <!-- Carrier -->
-                            <td class="py-3.5 px-4 sm:px-5 text-slate-700 text-xs sm:text-sm">
-                                <span class="font-medium block">{{ $shipment->carrier?->name ?? '-' }}</span>
-                                <span class="text-[11px] text-slate-400 font-mono">{{ $shipment->carrier?->code }}</span>
+                            <td class="py-3 px-3 sm:px-3.5 text-slate-700">
+                                <span class="font-medium block truncate max-w-[130px]">{{ $shipment->carrier?->name ?? '-' }}</span>
+                                <span class="text-[10.5px] text-slate-400 font-mono">{{ $shipment->carrier?->code }}</span>
                             </td>
 
                             <!-- Customer (for Admin & Operator) -->
                             @if(!auth()->user()->isCustomer())
-                                <td class="py-3.5 px-4 sm:px-5 text-slate-700 text-xs sm:text-sm">
-                                    <span class="font-medium block text-slate-900">{{ $shipment->customer?->name ?? '-' }}</span>
+                                <td class="py-3 px-3 sm:px-3.5 text-slate-700">
+                                    <span class="font-medium block text-slate-900 truncate max-w-[120px]">{{ $shipment->customer?->name ?? '-' }}</span>
                                     @if($shipment->customer?->company_name)
-                                        <span class="text-[11px] text-slate-400 block truncate max-w-[140px]">{{ $shipment->customer->company_name }}</span>
+                                        <span class="text-[10.5px] text-slate-400 block truncate max-w-[120px]">{{ $shipment->customer->company_name }}</span>
                                     @endif
                                 </td>
                             @endif
 
                             <!-- Est. Arrival -->
-                            <td class="py-3.5 px-4 sm:px-5 text-slate-700 text-xs whitespace-nowrap">
+                            <td class="py-3 px-3 sm:px-3.5 text-slate-700 whitespace-nowrap">
                                 <div>{{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d M Y') : '-' }}</div>
-                                <span class="text-[11px] text-slate-400">{{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('H:i') . ' WIB' : '' }}</span>
+                                <span class="text-[10.5px] text-slate-400">{{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('H:i') . ' WIB' : '' }}</span>
                             </td>
 
                             <!-- Kondisi Delay -->
-                            <td class="py-3.5 px-4 sm:px-5 whitespace-nowrap">
+                            <td class="py-3 px-3 sm:px-3.5 whitespace-nowrap">
                                 @if ($shipment->delay_hours > 0)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10.5px] font-bold
                                         {{ $shipment->delay_severity === 'HIGH' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 
                                           ($shipment->delay_severity === 'MEDIUM' ? 'bg-orange-100 text-orange-700 border border-orange-200' : 
                                           'bg-amber-100 text-amber-700 border border-amber-200') }}">
                                         +{{ $shipment->delay_hours }}h ({{ $shipment->delay_severity }})
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center space-x-1 text-emerald-600 text-xs font-semibold">
+                                    <span class="inline-flex items-center space-x-1 text-emerald-600 font-semibold text-xs">
                                         <svg class="h-3.5 w-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                         </svg>
@@ -278,8 +278,8 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="py-3.5 px-4 sm:px-5 text-right whitespace-nowrap">
-                                <div class="inline-flex items-center space-x-1.5">
+                            <td class="py-3 px-3 sm:px-3.5 text-right whitespace-nowrap">
+                                <div class="inline-flex items-center space-x-1">
                                     <!-- View Detail -->
                                     <a href="{{ route('shipments.show', $shipment) }}" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition" title="Lihat Rincian">
                                         Detail
@@ -288,7 +288,7 @@
                                     <!-- Edit (Admin & Operator, only if non-terminal) -->
                                     @if((auth()->user()->isAdmin() || auth()->user()->isOperator()) && !in_array($shipment->status, ['DELIVERED', 'CANCELLED']))
                                         <a href="{{ route('shipments.edit', $shipment) }}" class="p-1 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition" title="Edit Shipment">
-                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </a>

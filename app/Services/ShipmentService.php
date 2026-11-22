@@ -274,4 +274,34 @@ class ShipmentService
             ]);
         });
     }
+
+    /**
+     * Hapus shipment beserta items dan audit log (hanya status CREATED atau CANCELLED).
+     */
+    public function deleteShipment(Shipment $shipment, User $actor): void
+    {
+        if (! in_array($shipment->status, ['CREATED', 'CANCELLED'], true)) {
+            throw ValidationException::withMessages([
+                'status' => "Pengiriman berstatus '{$shipment->status}' tidak dapat dihapus demi keamanan audit operasional. Hanya status CREATED atau CANCELLED yang dapat dihapus.",
+            ]);
+        }
+
+        DB::transaction(function () use ($shipment, $actor) {
+            $oldValues = $shipment->toArray();
+            $shipmentId = $shipment->id;
+
+            $shipment->items()->delete();
+            $shipment->delete();
+
+            AuditLog::create([
+                'user_id' => $actor->id,
+                'action' => 'DELETE_SHIPMENT',
+                'target_type' => Shipment::class,
+                'target_id' => $shipmentId,
+                'old_values' => $oldValues,
+                'new_values' => null,
+                'ip_address' => request()->ip(),
+            ]);
+        });
+    }
 }

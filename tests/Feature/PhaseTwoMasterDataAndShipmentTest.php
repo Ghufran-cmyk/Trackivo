@@ -9,11 +9,15 @@ use App\Models\Shipment;
 use App\Models\TrackingEvent;
 use App\Models\User;
 use App\Services\ShipmentService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class PhaseTwoMasterDataAndShipmentTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected bool $seed = true;
     protected User $admin;
     protected User $operator;
     protected User $customer1;
