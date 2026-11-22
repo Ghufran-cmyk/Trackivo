@@ -53,9 +53,8 @@
 
             <!-- Brand Logo Area (Latar belakang gelap kontras untuk logo putih) -->
             <div class="relative z-10">
-                <div class="inline-flex items-center space-x-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
-                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo Logo" class="h-8 w-auto object-contain">
-                    <span class="text-lg font-bold tracking-tight text-white">Trackivo</span>
+                <div class="inline-flex items-center bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
+                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-9 w-auto object-contain">
                 </div>
             </div>
 
@@ -66,10 +65,10 @@
                     <span>Global Shipment Visibility</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                    Real-time Tracking Across Oceans, Skies & Terrains.
+                    Pemantauan Status & Riwayat Pengiriman Global.
                 </h1>
                 <p class="mt-4 text-sm sm:text-base text-slate-400 font-normal leading-relaxed">
-                    Sistem pemantauan pengiriman global end-to-end terintegrasi dengan deteksi delay prediktif dan manajemen anomali logistik lintas benua.
+                    Sistem pemantauan status & riwayat pengiriman global terintegrasi dengan deteksi keterlambatan otomatis berbasis aturan (rule-based) dan manajemen anomali logistik lintas benua.
                 </p>
             </div>
 

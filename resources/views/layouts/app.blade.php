@@ -61,49 +61,44 @@
             <div class="flex items-center justify-between h-20">
                 
                 <!-- Left: Logo & Brand Name -->
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 group">
-                        <div class="p-1.5 rounded-xl bg-slate-900/80 border border-slate-700/60 shadow-inner flex items-center justify-center">
-                            <img src="{{ asset('images/logo.png') }}" alt="Trackivo Logo" class="h-9 w-auto object-contain transition duration-200 group-hover:scale-105">
-                        </div>
-                        <div>
-                            <span class="text-xl font-bold tracking-tight text-white block leading-none">Trackivo</span>
-                            <span class="text-[11px] font-medium text-slate-400 tracking-wider uppercase">Global Visibility</span>
+                <div class="flex items-center shrink-0">
+                    <a href="{{ route('dashboard') }}" class="flex items-center group">
+                        <div class="p-1 rounded-xl bg-slate-900/80 border border-slate-700/60 shadow-inner flex items-center justify-center">
+                            <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-9 w-auto object-contain transition duration-200 group-hover:scale-105">
                         </div>
                     </a>
                 </div>
 
                 <!-- Center: Role-Based Navigation Menu -->
-                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 flex-nowrap shrink-0">
                     @auth
                         @php
                             $role = auth()->user()->role;
-                            $currentRoute = Route::currentRouteName();
                         @endphp
 
                         <!-- Common: Dashboard -->
                         <a href="{{ route('dashboard') }}" 
-                           class="px-3.5 py-2 rounded-xl text-sm font-medium transition {{ $currentRoute == 'dashboard' ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                           class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('dashboard') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                             Dashboard
                         </a>
 
                         @if ($role === 'admin')
                             <!-- Admin Menu: Dashboard, Shipments, Exceptions, Carriers, Locations, Users, Audit Logs, Settings -->
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Shipments</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Exceptions</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Carriers</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Locations</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Users</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Audit Logs</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Settings</a>
+                            <a href="{{ route('shipments.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
+                            <a href="#" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Exceptions</a>
+                            <a href="{{ route('carriers.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Carriers</a>
+                            <a href="{{ route('locations.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Locations</a>
+                            <a href="{{ route('users.index') }}" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Users</a>
+                            <a href="#" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Audit Logs</a>
+                            <a href="#" class="px-2.5 py-1.5 lg:px-3 lg:py-2 rounded-xl text-xs lg:text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Settings</a>
                         @elseif ($role === 'operator')
                             <!-- Operator Menu: Dashboard, Shipments, Exceptions -->
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Shipments</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Exceptions</a>
+                            <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
+                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Exceptions</a>
                         @elseif ($role === 'customer')
                             <!-- Customer Menu: Dashboard, My Shipments, Notifications -->
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">My Shipments</a>
-                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Notifications</a>
+                            <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">My Shipments</a>
+                            <a href="#" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-800/80 transition">Notifications</a>
                         @endif
                     @endauth
                 </nav>
@@ -158,21 +153,21 @@
     <!-- Mobile Sub-Menu (for mobile viewports) -->
     @auth
         <div class="md:hidden bg-[#131722] border-b border-slate-800 px-4 py-2.5 overflow-x-auto flex space-x-2 text-xs">
-            <a href="{{ route('dashboard') }}" class="px-2.5 py-1 rounded-lg {{ Route::currentRouteName() == 'dashboard' ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ Route::currentRouteName() == 'dashboard' ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Dashboard</a>
             @if (auth()->user()->role === 'admin')
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Shipments</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Exceptions</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Carriers</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Locations</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Users</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Audit Logs</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Settings</a>
+                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Shipments</a>
+                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Exceptions</a>
+                <a href="{{ route('carriers.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Carriers</a>
+                <a href="{{ route('locations.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Locations</a>
+                <a href="{{ route('users.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Users</a>
+                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Audit Logs</a>
+                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Settings</a>
             @elseif (auth()->user()->role === 'operator')
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Shipments</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Exceptions</a>
+                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Shipments</a>
+                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Exceptions</a>
             @elseif (auth()->user()->role === 'customer')
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">My Shipments</a>
-                <a href="#" class="px-2.5 py-1 rounded-lg text-slate-300">Notifications</a>
+                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">My Shipments</a>
+                <a href="#" class="px-2.5 py-1 rounded-lg whitespace-nowrap text-slate-300">Notifications</a>
             @endif
         </div>
     @endauth

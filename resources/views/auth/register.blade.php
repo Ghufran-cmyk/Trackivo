@@ -51,9 +51,8 @@
 
             <!-- Brand Logo Area -->
             <div class="relative z-10">
-                <div class="inline-flex items-center space-x-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
-                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo Logo" class="h-8 w-auto object-contain">
-                    <span class="text-lg font-bold tracking-tight text-white">Trackivo</span>
+                <div class="inline-flex items-center bg-black/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
+                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-9 w-auto object-contain">
                 </div>
             </div>
 
@@ -66,14 +65,14 @@
                     Bergabung dengan Jaringan Logistik Global Trackivo.
                 </h1>
                 <p class="mt-4 text-sm text-slate-400 font-normal leading-relaxed">
-                    Dapatkan visibilitas 100% terhadap seluruh kargo Anda. Pantau pergerakan kontainer laut, kargo udara, estimasi kedatangan akurat, dan peringatan dini insiden pengiriman.
+                    Dapatkan visibilitas penuh terhadap seluruh kargo Anda. Pantau status pengiriman kargo laut, udara, dan darat dengan deteksi keterlambatan otomatis berbasis aturan (rule-based).
                 </p>
 
                 <!-- Value Proposition Highlights -->
                 <div class="mt-8 space-y-3 text-xs text-slate-300">
                     <div class="flex items-center space-x-2.5">
                         <div class="h-5 w-5 rounded-full bg-[#d4f93a]/20 text-[#d4f93a] flex items-center justify-center font-bold">✓</div>
-                        <span>Pelacakan real-time nomor resi & kontainer global</span>
+                        <span>Pemantauan status & riwayat nomor resi kargo global</span>
                     </div>
                     <div class="flex items-center space-x-2.5">
                         <div class="h-5 w-5 rounded-full bg-[#d4f93a]/20 text-[#d4f93a] flex items-center justify-center font-bold">✓</div>

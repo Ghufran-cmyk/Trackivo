@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ShipmentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,4 +31,36 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // -------------------------------------------------------------------------
+    // Modul Master Data (Khusus Administrator)
+    // -------------------------------------------------------------------------
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('carriers', CarrierController::class)->except(['show']);
+        Route::resource('locations', LocationController::class)->except(['show']);
+        Route::resource('users', UserController::class)->except(['show']);
+    });
+
+    // -------------------------------------------------------------------------
+    // Modul Pengiriman (Shipments)
+    // -------------------------------------------------------------------------
+    // Read: Semua pengguna terautentikasi (Customer dibatasi di controller)
+    Route::get('/shipments', [ShipmentController::class, 'index'])->name('shipments.index');
+
+    // Mutasi Data: Khusus Admin dan Operator
+    Route::middleware('role:admin,operator')->group(function () {
+        Route::get('/shipments/create', [ShipmentController::class, 'create'])->name('shipments.create');
+        Route::post('/shipments', [ShipmentController::class, 'store'])->name('shipments.store');
+        Route::get('/shipments/{shipment}/edit', [ShipmentController::class, 'edit'])->name('shipments.edit');
+        Route::put('/shipments/{shipment}', [ShipmentController::class, 'update'])->name('shipments.update');
+        Route::post('/shipments/{shipment}/status', [ShipmentController::class, 'updateStatus'])->name('shipments.status.update');
+    });
+
+    // Hapus Shipment: Khusus Admin (dengan validasi status CREATED/CANCELLED)
+    Route::delete('/shipments/{shipment}', [ShipmentController::class, 'destroy'])
+        ->middleware('role:admin')
+        ->name('shipments.destroy');
+
+    // Detail Pengiriman: Semua peran terautentikasi (Otorisasi Customer dicek di controller)
+    Route::get('/shipments/{shipment}', [ShipmentController::class, 'show'])->name('shipments.show');
 });

@@ -38,7 +38,7 @@
                     @if($user->isAdmin())
                         Anda memiliki hak akses penuh Administrator pada platform Trackivo untuk mengelola shipments, carriers, locations, user, dan audit log global.
                     @elseif($user->isOperator())
-                        Anda masuk sebagai Operator Operasional. Pantau jalur kontainer aktif, anomali rute pengiriman, dan pembaruan checkpoint real-time.
+                        Anda masuk sebagai Operator Operasional. Pantau jalur kontainer aktif, anomali rute pengiriman, dan pembaruan riwayat status pengiriman kargo.
                     @else
                         Selamat datang di portal pelacakan kargo Anda. Pantau status pengiriman, estimasi tiba di tujuan, dan riwayat perjalanan barang Anda.
                     @endif
@@ -220,7 +220,12 @@
                                 <tr class="hover:bg-slate-50/80 transition">
                                     <td class="py-3.5 font-bold text-slate-900">
                                         <div class="flex items-center space-x-2">
-                                            <span class="font-mono text-xs">{{ $shipment->tracking_number }}</span>
+                                            <a href="{{ route('shipments.show', $shipment) }}" class="font-mono text-xs hover:text-blue-600 transition flex items-center space-x-1">
+                                                <span>{{ $shipment->tracking_number }}</span>
+                                                <svg class="h-3 w-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                </svg>
+                                            </a>
                                         </div>
                                         <div class="text-[10px] text-slate-400 font-normal">
                                             {{ $shipment->cargo_type }} &bull; {{ number_format($shipment->weight_kg, 0) }} kg
@@ -285,51 +290,43 @@
             <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm">
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
                     <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Akses Menu Cepat</h3>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-500">Tahap 1</span>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-[#0e1117] text-[#d4f93a]">Tahap 2</span>
                 </div>
                 
                 <div class="space-y-2 text-xs">
                     @if ($user->isAdmin())
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Shipments Management</span>
+                        <a href="{{ route('shipments.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Kelola Shipments & Status</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Exception & Anomali Resolver</span>
+                        <a href="{{ route('shipments.create') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-[#0e1117] text-[#d4f93a] hover:bg-slate-800 transition group">
+                            <span class="font-bold">+ Buat Shipment Baru</span>
+                            <span class="group-hover:translate-x-0.5 transition">&rarr;</span>
+                        </a>
+                        <a href="{{ route('carriers.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Kelola Carriers (Jasa Pengangkut)</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Carrier & Port Locations</span>
+                        <a href="{{ route('locations.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Kelola Lokasi & Titik Kargo</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Audit Logs & Activity</span>
-                            <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
-                        </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Global System Settings</span>
+                        <a href="{{ route('users.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Kelola Pengguna (Users & Roles)</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
                     @elseif ($user->isOperator())
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Monitor Active Shipments</span>
+                        <a href="{{ route('shipments.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Monitor Seluruh Shipments</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Input Checkpoint Tracking</span>
-                            <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
-                        </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Kelola Exception & Delay</span>
-                            <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
+                        <a href="{{ route('shipments.create') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-[#0e1117] text-[#d4f93a] hover:bg-slate-800 transition group">
+                            <span class="font-bold">+ Buat Shipment Baru</span>
+                            <span class="group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
                     @else
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Daftar Pengiriman Saya</span>
-                            <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
-                        </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
-                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Cek Notifikasi & Update Kargo</span>
+                        <a href="{{ route('shipments.index') }}" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 transition group border border-slate-100">
+                            <span class="font-semibold text-slate-700 group-hover:text-slate-900">Daftar Pengiriman Kargo Saya</span>
                             <span class="text-slate-400 group-hover:translate-x-0.5 transition">&rarr;</span>
                         </a>
                     @endif
