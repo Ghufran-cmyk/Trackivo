@@ -29,6 +29,7 @@ class DashboardController extends Controller
             'activeExceptions' => $dashboardData['activeExceptions'],
             'recentNotifications' => $dashboardData['recentNotifications'],
             'unreadNotificationsCount' => $dashboardData['unreadNotificationsCount'],
+            'mapShipments' => $dashboardData['mapShipments'],
         ]);
     }
 }

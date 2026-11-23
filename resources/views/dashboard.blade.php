@@ -244,6 +244,89 @@
 
     </div>
 
+    <!-- Kartu Peta Sebaran Pengiriman Global / Pengiriman Saya -->
+    <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm mb-8 relative">
+        <!-- Header Kartu -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-100 gap-4 mb-4">
+            <div>
+                <div class="flex items-center space-x-2.5">
+                    <h2 class="text-base font-bold text-slate-900 tracking-tight">
+                        {{ $user->isCustomer() ? 'Peta Sebaran Pengiriman Saya' : 'Peta Sebaran Pengiriman Global' }}
+                    </h2>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700">
+                        <span id="map-shipment-count">{{ count($mapShipments) }}</span>&nbsp;Pengiriman Tampil
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">
+                    Seluruh posisi dan rute ditarik langsung dari data operasional aktual sistem Trackivo.
+                </p>
+            </div>
+
+            <!-- Toolbar Filter Sisi Klien & Tombol Reset -->
+            <div class="flex flex-wrap items-center gap-1.5">
+                <button type="button" data-filter="all" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0f172a] text-white shadow-sm transition">
+                    Semua
+                </button>
+                <button type="button" data-filter="OCEAN" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Ocean
+                </button>
+                <button type="button" data-filter="AIR" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Air
+                </button>
+                <button type="button" data-filter="LAND" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Land
+                </button>
+                <button type="button" data-filter="delayed" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Delayed
+                </button>
+                <button type="button" id="map-reset-btn" title="Reset Tampilan Peta" class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition ml-1">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Reset Tampilan</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Wadah Peta Leaflet.js -->
+        <div class="relative rounded-2xl overflow-hidden border border-slate-200/80">
+            <div id="dashboard-global-map" style="height: 440px; width: 100%;" class="z-10"></div>
+
+            <!-- Empty notice overlay jika tidak ada pengiriman yang tampil -->
+            <div id="map-empty-overlay" style="display: none;" class="absolute inset-0 bg-slate-900/10 backdrop-blur-xs z-20 flex items-center justify-center pointer-events-none">
+                <div class="bg-white/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-slate-200 text-center">
+                    <p class="text-xs font-bold text-slate-800">Belum ada pengiriman aktif untuk ditampilkan</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Semua data rute kargo akan muncul secara otomatis saat shipment terdata.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legenda Ringkas Peta -->
+        <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-3">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-[#0284c7] inline-block"></span>
+                    <span class="font-medium text-[11px]">Kapal = Ocean</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-[#4f46e5] inline-block"></span>
+                    <span class="font-medium text-[11px]">Pesawat = Air</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <span class="w-3 h-3 rounded-full bg-[#059669] inline-block"></span>
+                    <span class="font-medium text-[11px]">Truk = Land</span>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-500 bg-white inline-block"></span>
+                    <span class="font-medium text-[11px]">Ring Merah/Oranye = Terlambat</span>
+                </div>
+            </div>
+            <div class="text-[11px] text-slate-400">
+                Garis solid: Origin &rarr; Posisi Terkini &bull; Garis putus-putus: Posisi Terkini &rarr; Tujuan
+            </div>
+        </div>
+    </div>
+
     <!-- Bagian Bawah Dashboard: Recent Shipments & Side Panel (Active Exceptions / Notifications) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
@@ -447,9 +530,34 @@
 </div>
 @endsection
 
+@push('styles')
+<!-- Leaflet.js Official Stylesheet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+    .leaflet-popup-content-wrapper {
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        padding: 4px;
+    }
+    .leaflet-popup-content {
+        margin: 12px 14px;
+        line-height: 1.5;
+    }
+    .leaflet-container {
+        font-family: inherit;
+    }
+    .trackivo-map-marker {
+        background: transparent;
+        border: none;
+    }
+</style>
+@endpush
+
 @push('scripts')
 <!-- Chart.js Official CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Leaflet.js Official CDN -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Data Status dari Backend
@@ -571,6 +679,235 @@
                 }
             });
         }
+
+        // 3. Inisialisasi Peta Sebaran Pengiriman Global / Pengiriman Saya (Leaflet.js)
+        const mapElement = document.getElementById('dashboard-global-map');
+        if (!mapElement) return;
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        const map = L.map('dashboard-global-map', {
+            scrollWheelZoom: false,
+            attributionControl: true
+        }).setView([15, 10], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const routesLayer = L.layerGroup().addTo(map);
+        const markersLayer = L.layerGroup().addTo(map);
+
+        const mapShipmentsData = @json($mapShipments);
+
+        function createPopupContent(s) {
+            const delayBadge = s.delay_hours > 0
+                ? `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;">+${s.delay_hours}h (${escapeHtml(s.delay_severity)})</span>`
+                : `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#d1fae5;color:#047857;border:1px solid #a7f3d0;">On-Time</span>`;
+
+            const statusBadgeColors = {
+                'CREATED': 'background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;',
+                'BOOKED': 'background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;',
+                'PICKED_UP': 'background:#fffbeb;color:#b45309;border:1px solid #fde68a;',
+                'IN_TRANSIT': 'background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;',
+                'DELIVERED': 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;',
+                'CANCELLED': 'background:#fff1f2;color:#be123c;border:1px solid #fecdd3;',
+            };
+            const stStyle = statusBadgeColors[s.status] || 'background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;';
+
+            return `
+                <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 230px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <span style="font-family: monospace; font-size: 11px; font-weight: 800; color: #0f172a;">${escapeHtml(s.tracking_number)}</span>
+                        <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; ${stStyle}">${escapeHtml(s.status)}</span>
+                    </div>
+                    <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">
+                        <span style="font-weight: 700; color: #0f172a;">${escapeHtml(s.transport_mode)}</span> &bull; ${escapeHtml(s.carrier_name)}
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 6px 8px; margin-bottom: 8px; border: 1px solid #e2e8f0;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: #1e293b; font-size: 11px;">
+                            <span>${escapeHtml(s.origin.code)}</span>
+                            <span style="color: #94a3b8; font-weight: normal;">&rarr;</span>
+                            <span>${escapeHtml(s.destination.code)}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; color: #64748b; font-size: 10px; margin-top: 2px;">
+                            <span class="truncate" style="max-width: 100px;">${escapeHtml(s.origin.name)}</span>
+                            <span class="truncate" style="max-width: 100px; text-align: right;">${escapeHtml(s.destination.name)}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 11px; color: #64748b;">Status Keterlambatan:</span>
+                        ${delayBadge}
+                    </div>
+                    <a href="${escapeHtml(s.detail_url)}" style="display: block; width: 100%; text-align: center; padding: 6px 12px; background: #0f172a; color: #ffffff; border-radius: 8px; font-weight: 700; font-size: 11px; text-decoration: none; transition: background 0.2s;">
+                        Lihat Detail Pengiriman &rarr;
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderMapShipments(filter = 'all') {
+            markersLayer.clearLayers();
+            routesLayer.clearLayers();
+
+            const filtered = mapShipmentsData.filter(s => {
+                if (filter === 'all') return true;
+                if (filter === 'OCEAN') return s.transport_mode === 'OCEAN';
+                if (filter === 'AIR') return s.transport_mode === 'AIR';
+                if (filter === 'LAND') return s.transport_mode === 'LAND';
+                if (filter === 'delayed') {
+                    return (s.delay_hours > 0) || (s.delay_severity === 'MEDIUM') || (s.delay_severity === 'HIGH');
+                }
+                return true;
+            });
+
+            const countElem = document.getElementById('map-shipment-count');
+            if (countElem) {
+                countElem.textContent = filtered.length;
+            }
+
+            const emptyNotice = document.getElementById('map-empty-overlay');
+
+            if (filtered.length === 0) {
+                if (emptyNotice) emptyNotice.style.display = 'flex';
+                map.setView([15, 10], 2);
+                return;
+            } else {
+                if (emptyNotice) emptyNotice.style.display = 'none';
+            }
+
+            const boundsPoints = [];
+
+            filtered.forEach(s => {
+                const originLatLng = [s.origin.lat, s.origin.lng];
+                const destLatLng = [s.destination.lat, s.destination.lng];
+                const currentLatLng = [s.current.lat, s.current.lng];
+
+                boundsPoints.push(originLatLng, destLatLng, currentLatLng);
+
+                const modeColor = s.transport_mode === 'OCEAN' ? '#0284c7' : (s.transport_mode === 'AIR' ? '#4f46e5' : '#059669');
+
+                // Garis solid halus Origin -> Current
+                const traveledLine = L.polyline([originLatLng, currentLatLng], {
+                    color: modeColor,
+                    weight: 2.5,
+                    opacity: 0.85,
+                });
+                routesLayer.addLayer(traveledLine);
+
+                // Garis putus-putus halus Current -> Destination
+                const remainingLine = L.polyline([currentLatLng, destLatLng], {
+                    color: modeColor,
+                    weight: 2,
+                    opacity: 0.65,
+                    dashArray: '6, 6',
+                });
+                routesLayer.addLayer(remainingLine);
+
+                // Titik kecil Origin
+                const originPoint = L.circleMarker(originLatLng, {
+                    radius: 4.5,
+                    fillColor: '#0f172a',
+                    color: '#ffffff',
+                    weight: 2,
+                    fillOpacity: 0.9,
+                }).bindTooltip(`${escapeHtml(s.origin.code)} (Origin)`, { direction: 'top', offset: [0, -4] });
+                routesLayer.addLayer(originPoint);
+
+                // Titik kecil Destination
+                const destPoint = L.circleMarker(destLatLng, {
+                    radius: 4.5,
+                    fillColor: '#64748b',
+                    color: '#ffffff',
+                    weight: 2,
+                    fillOpacity: 0.9,
+                }).bindTooltip(`${escapeHtml(s.destination.code)} (Destination)`, { direction: 'top', offset: [0, -4] });
+                routesLayer.addLayer(destPoint);
+
+                // Custom DivIcon Marker Current Location
+                const isDelayed = s.delay_severity === 'HIGH' || s.delay_severity === 'MEDIUM';
+                const ringBorder = s.delay_severity === 'HIGH' ? '#f43f5e' : (s.delay_severity === 'MEDIUM' ? '#f97316' : '#ffffff');
+                const ringShadow = isDelayed
+                    ? `0 0 0 4px ${s.delay_severity === 'HIGH' ? 'rgba(244,63,94,0.45)' : 'rgba(249,115,22,0.45)'}, 0 4px 12px rgba(0,0,0,0.3)`
+                    : '0 4px 10px rgba(0,0,0,0.25)';
+
+                let iconSvg = '';
+                if (s.transport_mode === 'OCEAN') {
+                    iconSvg = `<svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="currentColor"><path d="M20 21c-1.39 0-2.78-.47-4-1.32-2.44 1.71-5.56 1.71-8 0C6.78 20.53 5.39 21 4 21H2v2h2c1.38 0 2.74-.35 4-.99 2.52 1.29 5.48 1.29 8 0 1.26.65 2.62.99 4 .99h2v-2h-2zM3.95 19H4c1.6 0 3.02-.88 4-2 .98 1.12 2.4 2 4 2s3.02-.88 4-2c.98 1.12 2.4 2 4 2h.05l1.89-6.68c.08-.26.06-.54-.06-.78s-.33-.41-.6-.46L19 13.01V5c0-.55-.45-1-1-1h-5V1h-2v3H6c-.55 0-1 .45-1 1v8.01l-2.28-.07c-.27.05-.48.22-.6.46s-.14.52-.06.78L3.95 19zM8 6h8v5.5l-4-1-4 1V6z"/></svg>`;
+                } else if (s.transport_mode === 'AIR') {
+                    iconSvg = `<svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>`;
+                } else {
+                    iconSvg = `<svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="currentColor"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-2 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`;
+                }
+
+                const markerHtml = `
+                    <div style="background-color: ${modeColor}; color: #ffffff; width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid ${ringBorder}; box-shadow: ${ringShadow}; display: flex; align-items: center; justify-content: center; position: relative;">
+                        ${iconSvg}
+                        ${isDelayed ? `<span style="position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; background-color: ${ringBorder}; border-radius: 50%; border: 1.5px solid #ffffff;"></span>` : ''}
+                    </div>
+                `;
+
+                const customIcon = L.divIcon({
+                    className: 'trackivo-map-marker',
+                    html: markerHtml,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17],
+                    popupAnchor: [0, -20],
+                });
+
+                const marker = L.marker(currentLatLng, { icon: customIcon });
+                marker.bindPopup(createPopupContent(s));
+                markersLayer.addLayer(marker);
+            });
+
+            if (boundsPoints.length > 0) {
+                map.fitBounds(L.latLngBounds(boundsPoints).pad(0.12));
+            }
+        }
+
+        // Filter Buttons Event Listeners
+        const filterButtons = document.querySelectorAll('.map-filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-[#0f172a]', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+                });
+                this.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+                this.classList.add('bg-[#0f172a]', 'text-white', 'shadow-sm');
+                renderMapShipments(filter);
+            });
+        });
+
+        // Reset Button Event Listener
+        const resetBtn = document.getElementById('map-reset-btn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function() {
+                const allBtn = document.querySelector('.map-filter-btn[data-filter="all"]');
+                if (allBtn) {
+                    allBtn.click();
+                } else {
+                    renderMapShipments('all');
+                }
+            });
+        }
+
+        // Inisialisasi awal render peta
+        renderMapShipments('all');
+
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 250);
     });
 </script>
 @endpush

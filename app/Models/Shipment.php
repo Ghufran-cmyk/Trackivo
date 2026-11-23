@@ -63,6 +63,11 @@ class Shipment extends Model
         return $this->belongsTo(Location::class, 'destination_location_id');
     }
 
+    public function currentLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'current_location_id');
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');

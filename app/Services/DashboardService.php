@@ -117,6 +117,70 @@ class DashboardService
             ->where('is_read', false)
             ->count();
 
+        // 9. Data Peta Sebaran Pengiriman Aktif Berbasis Koordinat Geospasial Aktual
+        $mapShipmentsQuery = $isCustomer
+            ? Shipment::where('customer_id', $user->id)
+            : Shipment::query();
+
+        $rawMapShipments = $mapShipmentsQuery
+            ->where('status', '!=', 'CANCELLED')
+            ->with(['originLocation', 'destinationLocation', 'currentLocation', 'carrier'])
+            ->get();
+
+        $mapShipments = [];
+        foreach ($rawMapShipments as $shipment) {
+            $origin = $shipment->originLocation;
+            $destination = $shipment->destinationLocation;
+
+            // Pastikan setiap item hanya dimasukkan jika minimal originLocation dan destinationLocation memiliki koordinat valid
+            if (! $origin || $origin->latitude === null || $origin->longitude === null) {
+                continue;
+            }
+
+            if (! $destination || $destination->latitude === null || $destination->longitude === null) {
+                continue;
+            }
+
+            // Jika currentLocation belum ada, gunakan koordinat originLocation sebagai posisi marker saat ini
+            $current = $shipment->currentLocation;
+            $hasValidCurrent = $current && $current->latitude !== null && $current->longitude !== null;
+
+            $currentData = [
+                'name' => $hasValidCurrent ? $current->name : $origin->name,
+                'code' => $hasValidCurrent ? $current->code : $origin->code,
+                'country' => $hasValidCurrent ? ($current->country ?? '') : ($origin->country ?? ''),
+                'lat' => (float) ($hasValidCurrent ? $current->latitude : $origin->latitude),
+                'lng' => (float) ($hasValidCurrent ? $current->longitude : $origin->longitude),
+            ];
+
+            $mapShipments[] = [
+                'id' => $shipment->id,
+                'tracking_number' => $shipment->tracking_number,
+                'status' => $shipment->status,
+                'transport_mode' => $shipment->transport_mode,
+                'cargo_type' => $shipment->cargo_type,
+                'carrier_name' => $shipment->carrier?->name ?? '-',
+                'delay_severity' => $shipment->delay_severity ?? 'NONE',
+                'delay_hours' => (int) $shipment->delay_hours,
+                'origin' => [
+                    'name' => $origin->name,
+                    'code' => $origin->code,
+                    'country' => $origin->country ?? '',
+                    'lat' => (float) $origin->latitude,
+                    'lng' => (float) $origin->longitude,
+                ],
+                'destination' => [
+                    'name' => $destination->name,
+                    'code' => $destination->code,
+                    'country' => $destination->country ?? '',
+                    'lat' => (float) $destination->latitude,
+                    'lng' => (float) $destination->longitude,
+                ],
+                'current' => $currentData,
+                'detail_url' => route('shipments.show', $shipment),
+            ];
+        }
+
         return [
             'kpis' => $kpis,
             'statusDistribution' => $statusDistribution,
@@ -125,6 +189,7 @@ class DashboardService
             'activeExceptions' => $activeExceptions,
             'recentNotifications' => $recentNotifications,
             'unreadNotificationsCount' => $unreadNotificationsCount,
+            'mapShipments' => $mapShipments,
         ];
     }
 }
