@@ -3,20 +3,20 @@
 @section('title', 'Manajemen Lokasi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+<div class="space-y-6">
 
     <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900 text-[#d4f93a] text-xs font-semibold mb-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#d4f93a]"></span>
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2 border border-[#C8DACD]">
+                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
                 <span>Master Data Khusus Administrator</span>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Manajemen Lokasi & Hub Kargo</h1>
-            <p class="text-sm text-slate-500 mt-1">Kelola pelabuhan (Port), bandara (Airport), gudang transit (Warehouse), dan checkpoint geospasial Trackivo.</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">Manajemen Lokasi & Hub Kargo</h1>
+            <p class="text-xs sm:text-sm text-[#6F756C] mt-1">Kelola pelabuhan (Port), bandara (Airport), gudang transit (Warehouse), dan checkpoint geospasial Trackivo.</p>
         </div>
         <div class="shrink-0">
-            <a href="{{ route('locations.create') }}" class="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-[#0e1117] hover:bg-slate-800 text-[#d4f93a] text-sm font-semibold shadow-sm transition">
+            <a href="{{ route('locations.create') }}" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-[#556E5C] hover:bg-[#425848] text-white text-xs sm:text-sm font-semibold shadow-xs transition">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                 </svg>
@@ -26,16 +26,16 @@
     </div>
 
     <!-- Locations Table Card -->
-    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-            <h2 class="text-base font-bold text-slate-800">Daftar Titik Logistik Global</h2>
-            <span class="text-xs text-slate-500">Total: <span class="font-semibold text-slate-700">{{ $locations->total() }}</span> lokasi</span>
+    <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] overflow-hidden">
+        <div class="p-6 border-b border-[#DFE1D8]/60 flex items-center justify-between">
+            <h2 class="text-base font-bold text-[#1C1E1B]">Daftar Titik Logistik Global</h2>
+            <span class="text-xs text-[#6F756C]">Total: <span class="font-bold text-[#1C1E1B]">{{ $locations->total() }}</span> lokasi</span>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-slate-50/80 text-slate-500 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200/80">
+                    <tr class="bg-[#FAF9F5] text-[#6F756C] uppercase text-[10.5px] font-bold tracking-wider border-b border-[#DFE1D8]/60">
                         <th class="py-3.5 px-5">Kode</th>
                         <th class="py-3.5 px-5">Nama Lokasi</th>
                         <th class="py-3.5 px-5">Negara</th>
@@ -45,43 +45,43 @@
                         <th class="py-3.5 px-5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-[#DFE1D8]/40">
                     @forelse($locations as $location)
-                        <tr class="hover:bg-slate-50/60 transition">
-                            <td class="py-3.5 px-5 font-mono font-bold text-slate-800">
-                                <span class="px-2 py-1 rounded-md bg-slate-100 border border-slate-200 text-xs">{{ $location->code }}</span>
+                        <tr class="hover:bg-[#F5F6F1] transition text-xs sm:text-[13px]">
+                            <td class="py-3.5 px-5 font-mono font-bold text-[#1C1E1B]">
+                                <span class="px-2.5 py-1 rounded-md bg-[#F5F6F1] border border-[#DFE1D8] text-xs">{{ $location->code }}</span>
                             </td>
-                            <td class="py-3.5 px-5 font-semibold text-slate-900">
+                            <td class="py-3.5 px-5 font-semibold text-[#1C1E1B]">
                                 {{ $location->name }}
                             </td>
-                            <td class="py-3.5 px-5 text-slate-700 font-medium">
+                            <td class="py-3.5 px-5 text-[#6F756C] font-medium">
                                 {{ $location->country }}
                             </td>
                             <td class="py-3.5 px-5">
                                 @php
                                     $typeStyles = [
-                                        'PORT' => 'bg-sky-50 text-sky-700 border-sky-200',
-                                        'AIRPORT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
-                                        'WAREHOUSE' => 'bg-amber-50 text-amber-700 border-amber-200',
-                                        'CHECKPOINT' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                        'PORT' => 'bg-[#E6F0E9] text-[#2F6846]',
+                                        'AIRPORT' => 'bg-[#EDF1EC] text-[#556E5C]',
+                                        'WAREHOUSE' => 'bg-[#F7EFE1] text-[#9A6721]',
+                                        'CHECKPOINT' => 'bg-[#F1F2EC] text-[#6F756C]',
                                     ];
                                 @endphp
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border {{ $typeStyles[$location->type] ?? 'bg-slate-100 text-slate-700 border-slate-200' }}">
+                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold {{ $typeStyles[$location->type] ?? 'bg-[#F1F2EC] text-[#6F756C]' }}">
                                     {{ $location->type }}
                                 </span>
                             </td>
-                            <td class="py-3.5 px-5 font-mono text-xs text-slate-600">
+                            <td class="py-3.5 px-5 font-mono text-xs text-[#6F756C]">
                                 {{ number_format($location->latitude, 4) }}, {{ number_format($location->longitude, 4) }}
                             </td>
                             <td class="py-3.5 px-5 text-center">
-                                <span class="inline-flex items-center space-x-1 text-xs">
-                                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium" title="Sebagai Asal">Asal: {{ $location->origin_shipments_count }}</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium" title="Sebagai Tujuan">Tujuan: {{ $location->destination_shipments_count }}</span>
+                                <span class="inline-flex items-center space-x-1.5 text-xs">
+                                    <span class="px-2.5 py-0.5 rounded-full bg-[#F5F6F1] text-[#1C1E1B] font-medium border border-[#DFE1D8]" title="Sebagai Asal">Asal: {{ $location->origin_shipments_count }}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full bg-[#F5F6F1] text-[#1C1E1B] font-medium border border-[#DFE1D8]" title="Sebagai Tujuan">Tujuan: {{ $location->destination_shipments_count }}</span>
                                 </span>
                             </td>
                             <td class="py-3.5 px-5 text-right whitespace-nowrap">
                                 <div class="inline-flex items-center space-x-2">
-                                    <a href="{{ route('locations.edit', $location) }}" class="p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition" title="Edit Lokasi">
+                                    <a href="{{ route('locations.edit', $location) }}" class="p-1.5 rounded-full text-[#6F756C] hover:text-[#1C1E1B] hover:bg-[#F1F2EC] transition" title="Edit Lokasi">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
@@ -90,7 +90,7 @@
                                     <form method="POST" action="{{ route('locations.destroy', $location) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus lokasi {{ $location->name }}?');" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-50 transition" title="Hapus Lokasi">
+                                        <button type="submit" class="p-1.5 rounded-full text-[#B84242] hover:bg-[#F9E6E6] transition" title="Hapus Lokasi">
                                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
@@ -101,7 +101,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">
+                            <td colspan="7" class="py-12 text-center text-[#6F756C]">
                                 Belum ada lokasi yang ditambahkan ke sistem.
                             </td>
                         </tr>
@@ -111,7 +111,7 @@
         </div>
 
         @if($locations->hasPages())
-            <div class="p-4 border-t border-slate-100">
+            <div class="p-5 border-t border-[#DFE1D8]/60">
                 {{ $locations->links() }}
             </div>
         @endif

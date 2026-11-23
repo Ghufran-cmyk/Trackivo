@@ -42,8 +42,8 @@
     </div>
 
     <!-- Main Header Card -->
-    <div class="bg-gradient-to-r from-[#0e1117] via-[#141923] to-[#1c2333] rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-800 mb-8 relative overflow-hidden">
-        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-[#d4f93a]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="bg-gradient-to-br from-[#7B9581] via-[#556E5C] to-[#425848] rounded-[24px] p-6 sm:p-8 text-white shadow-sm mb-8 relative overflow-hidden">
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -51,36 +51,36 @@
                     <!-- Status Badge -->
                     @php
                         $statusStyles = [
-                            'CREATED'    => 'bg-slate-800 text-slate-200 border-slate-700',
-                            'BOOKED'     => 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-                            'PICKED_UP'  => 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-                            'IN_TRANSIT' => 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
-                            'DELIVERED'  => 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-                            'CANCELLED'  => 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+                            'CREATED'    => 'bg-white/20 text-white border-white/20',
+                            'BOOKED'     => 'bg-white/20 text-white border-white/20',
+                            'PICKED_UP'  => 'bg-[#F7EFE1] text-[#9A6721] border-[#E6D8BF]',
+                            'IN_TRANSIT' => 'bg-[#F7EFE1] text-[#9A6721] border-[#E6D8BF]',
+                            'DELIVERED'  => 'bg-[#E6F0E9] text-[#2F6846] border-[#C8DACD]',
+                            'CANCELLED'  => 'bg-[#F9E6E6] text-[#B84242] border-[#F0C9C9]',
                         ];
                     @endphp
-                    <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ $statusStyles[$shipment->status] ?? 'bg-slate-800 text-slate-300' }}">
-                        <span class="h-1.5 w-1.5 rounded-full {{ in_array($shipment->status, ['DELIVERED', 'IN_TRANSIT']) ? 'bg-emerald-400' : ($shipment->status === 'CANCELLED' ? 'bg-rose-400' : 'bg-[#d4f93a]') }}"></span>
+                    <span class="inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider border {{ $statusStyles[$shipment->status] ?? 'bg-white/20 text-white border-white/20' }}">
+                        <span class="h-2 w-2 rounded-full {{ in_array($shipment->status, ['DELIVERED', 'IN_TRANSIT']) ? 'bg-white' : ($shipment->status === 'CANCELLED' ? 'bg-[#B84242]' : 'bg-white') }}"></span>
                         <span>STATUS: {{ $shipment->status }}</span>
                     </span>
 
                     <!-- Transport Mode -->
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 text-white border border-white/10">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/15 text-white border border-white/10">
                         {{ $shipment->transport_mode }}
                     </span>
 
                     <!-- Carrier -->
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/5 text-slate-300 border border-white/5">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-white border border-white/10">
                         {{ $shipment->carrier?->name }} ({{ $shipment->carrier?->code }})
                     </span>
 
                     <!-- Delay status badge if delayed -->
                     @if($delayAnalysis['is_delayed'])
-                        <span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        <span class="inline-flex items-center space-x-1 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#F9E6E6] text-[#B84242] border border-[#F0C9C9]">
                             <span>DELAY {{ $delayAnalysis['delay_severity'] }} (+{{ $delayAnalysis['delay_hours'] }} Jam)</span>
                         </span>
                     @else
-                        <span class="inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span class="inline-flex items-center space-x-1 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#E6F0E9] text-[#2F6846] border border-[#C8DACD]">
                             <span>ON-TIME</span>
                         </span>
                     @endif
@@ -92,29 +92,29 @@
                     </h1>
                 </div>
 
-                <p class="text-sm text-slate-300 mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <p class="text-sm text-white/90 mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span class="font-medium text-white">{{ $shipment->cargo_type }}</span>
-                    <span class="text-slate-500">&bull;</span>
+                    <span class="text-white/60">&bull;</span>
                     <span>Total Berat: <strong class="text-white">{{ number_format($shipment->weight_kg, 2) }} kg</strong></span>
                     @if($shipment->volume_cbm)
-                        <span class="text-slate-500">&bull;</span>
+                        <span class="text-white/60">&bull;</span>
                         <span>Volume: <strong class="text-white">{{ number_format($shipment->volume_cbm, 2) }} cbm</strong></span>
                     @endif
                 </p>
             </div>
 
             <!-- Route Summary Pill on Header -->
-            <div class="bg-black/50 backdrop-blur-md rounded-2xl p-4 border border-white/10 shrink-0">
-                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Rute & Hub Kargo</div>
+            <div class="bg-black/25 backdrop-blur-md rounded-[20px] p-4 border border-white/15 shrink-0">
+                <div class="text-[11px] font-bold text-white/75 uppercase tracking-wider mb-2">Rute & Hub Kargo</div>
                 <div class="flex items-center space-x-3 text-sm">
                     <div>
-                        <span class="text-xs font-mono font-bold text-[#d4f93a] block">[{{ $shipment->originLocation?->code }}]</span>
-                        <span class="text-white font-medium text-xs">{{ $shipment->originLocation?->name }}</span>
+                        <span class="text-xs font-mono font-bold text-white block">[{{ $shipment->originLocation?->code }}]</span>
+                        <span class="text-white/90 font-medium text-xs">{{ $shipment->originLocation?->name }}</span>
                     </div>
-                    <div class="text-slate-400">&rarr;</div>
+                    <div class="text-white/60">&rarr;</div>
                     <div>
-                        <span class="text-xs font-mono font-bold text-[#d4f93a] block">[{{ $shipment->destinationLocation?->code }}]</span>
-                        <span class="text-white font-medium text-xs">{{ $shipment->destinationLocation?->name }}</span>
+                        <span class="text-xs font-mono font-bold text-white block">[{{ $shipment->destinationLocation?->code }}]</span>
+                        <span class="text-white/90 font-medium text-xs">{{ $shipment->destinationLocation?->name }}</span>
                     </div>
                 </div>
             </div>
@@ -122,36 +122,36 @@
     </div>
 
     <!-- Map Section: Peta Rute & Pelacakan Geospasial (OpenStreetMap) -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mb-8">
-        <div class="p-5 sm:p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] overflow-hidden mb-8">
+        <div class="p-5 sm:p-6 border-b border-[#DFE1D8]/60 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <div class="flex items-center space-x-2">
-                    <span class="h-2.5 w-2.5 rounded-full bg-[#d4f93a] animate-pulse"></span>
-                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                    <span class="h-2.5 w-2.5 rounded-full bg-[#556E5C] animate-pulse"></span>
+                    <h2 class="text-sm font-bold text-[#1C1E1B] uppercase tracking-wider">
                         Peta Rute & Pelacakan Geospasial (OpenStreetMap)
                     </h2>
                 </div>
-                <p class="text-xs text-slate-500 mt-0.5">
+                <p class="text-xs text-[#6F756C] mt-0.5">
                     Visualisasi spasial perjalanan kargo dari titik asal (Origin), riwayat checkpoint, hingga destinasi akhir.
                 </p>
             </div>
 
             <!-- Legend Pelacakan Geospasial -->
             <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-900 text-white">
-                    <span class="h-2 w-2 rounded-full bg-[#d4f93a]"></span>
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#1C1E1B] text-white">
+                    <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
                     <span>Origin Hub</span>
                 </span>
-                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800">
-                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846]">
+                    <span class="h-2 w-2 rounded-full bg-[#2F6846]"></span>
                     <span>Destination Hub</span>
                 </span>
-                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800">
-                    <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#F7EFE1] text-[#9A6721]">
+                    <span class="h-2 w-2 rounded-full bg-[#D4AF77]"></span>
                     <span>Checkpoint</span>
                 </span>
-                <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-rose-100 text-rose-800">
-                    <span class="h-2 w-2 rounded-full bg-rose-600"></span>
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#F9E6E6] text-[#B84242]">
+                    <span class="h-2 w-2 rounded-full bg-[#B84242]"></span>
                     <span>Exception</span>
                 </span>
             </div>
@@ -186,12 +186,12 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
 
         <!-- Blok 1: Lokasi Terkini (Current Location) -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+        <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6 relative overflow-hidden flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
                     <div class="flex items-center space-x-2.5">
-                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="h-8 w-8 rounded-full bg-[#EDF1EC] text-[#4E6756] border border-[#DCE5DA] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4 text-[#4E6756]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -202,11 +202,11 @@
                         </div>
                     </div>
                     @if($currentLocation && !($currentLocation['is_fallback'] ?? false))
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase font-mono">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E6F0E9] text-[#2F6846] border border-[#CFE2D5] uppercase font-mono">
                             LIVE
                         </span>
                     @else
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 uppercase font-mono">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 uppercase font-mono">
                             ORIGIN
                         </span>
                     @endif
@@ -226,7 +226,17 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span class="px-2 py-0.5 rounded-lg bg-slate-900 text-[#d4f93a] text-xs font-mono font-bold">
+                                @php
+                                    $locStatus = $currentLocation['status'] ?? '';
+                                    if (in_array($locStatus, ['DELIVERED', 'ON TIME', 'LIVE'])) {
+                                        $locStatusStyle = 'bg-[#E6F0E9] text-[#2F6846] border-[#CFE2D5]';
+                                    } elseif (in_array($locStatus, ['DELAYED', 'CANCELLED', 'HIGH'])) {
+                                        $locStatusStyle = 'bg-[#F9E6E6] text-[#B84242] border-[#F0D0D0]';
+                                    } else {
+                                        $locStatusStyle = 'bg-[#F7EFE1] text-[#9A6721] border-[#EADBC0]';
+                                    }
+                                @endphp
+                                <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold border {{ $locStatusStyle }}">
                                     {{ $currentLocation['status'] }}
                                 </span>
                             </div>
@@ -268,12 +278,12 @@
         </div>
 
         <!-- Blok 2: Informasi Cuaca Lokasi Terkini (External API) -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+        <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6 relative overflow-hidden flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
                     <div class="flex items-center space-x-2.5">
-                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="h-8 w-8 rounded-full bg-[#EDF1EC] text-[#4E6756] border border-[#DCE5DA] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4 text-[#4E6756]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z" />
                             </svg>
                         </div>
@@ -283,11 +293,11 @@
                         </div>
                     </div>
                     @if($weatherData['available'])
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 uppercase font-mono">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200 uppercase font-mono">
                             OPEN-METEO
                         </span>
                     @else
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 uppercase font-mono">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200 uppercase font-mono">
                             OFFLINE
                         </span>
                     @endif
@@ -303,7 +313,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span class="px-2 py-1 rounded-lg bg-blue-50 text-blue-800 text-xs font-bold border border-blue-100">
+                                <span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-100">
                                     {{ $weatherData['condition'] }}
                                 </span>
                             </div>
@@ -360,12 +370,12 @@
         </div>
 
         <!-- Blok 3: Analisis ETA & Deteksi Keterlambatan (Rule-Based) -->
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 relative overflow-hidden flex flex-col justify-between">
+        <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6 relative overflow-hidden flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
                     <div class="flex items-center space-x-2.5">
-                        <div class="h-8 w-8 rounded-xl bg-slate-900 text-[#d4f93a] flex items-center justify-center font-bold">
-                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="h-8 w-8 rounded-full bg-[#EDF1EC] text-[#4E6756] border border-[#DCE5DA] flex items-center justify-center font-bold">
+                            <svg class="h-4 w-4 text-[#4E6756]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                         </div>
@@ -374,7 +384,7 @@
                             <p class="text-[11px] text-slate-500">Evaluasi deterministik threshold.</p>
                         </div>
                     </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold font-mono uppercase {{ $delayAnalysis['is_delayed'] ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800' }}">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase border {{ $delayAnalysis['is_delayed'] ? 'bg-[#F9E6E6] text-[#B84242] border-[#F0D0D0]' : 'bg-[#E6F0E9] text-[#2F6846] border-[#CFE2D5]' }}">
                         {{ $delayAnalysis['is_delayed'] ? 'DELAY DETECTED' : 'ON-TIME' }}
                     </span>
                 </div>
@@ -404,10 +414,10 @@
                         </div>
                         <div class="p-2 rounded-xl bg-slate-50 border border-slate-100">
                             <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Severity</span>
-                            <span class="text-xs font-bold uppercase inline-block px-2 py-0.2 rounded
-                                {{ $delayAnalysis['delay_severity'] === 'HIGH' ? 'bg-rose-100 text-rose-800' : 
-                                  ($delayAnalysis['delay_severity'] === 'MEDIUM' ? 'bg-orange-100 text-orange-800' : 
-                                  ($delayAnalysis['delay_severity'] === 'LOW' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800')) }}">
+                            <span class="text-xs font-semibold uppercase inline-block px-2.5 py-0.5 rounded-full border
+                                {{ $delayAnalysis['delay_severity'] === 'HIGH' ? 'bg-[#F9E6E6] text-[#B84242] border-[#F0D0D0]' : 
+                                  ($delayAnalysis['delay_severity'] === 'MEDIUM' ? 'bg-[#F7EFE1] text-[#9A6721] border-[#EADBC0]' : 
+                                  ($delayAnalysis['delay_severity'] === 'LOW' ? 'bg-[#F7EFE1] text-[#9A6721] border-[#EADBC0]' : 'bg-[#E6F0E9] text-[#2F6846] border-[#CFE2D5]')) }}">
                                 {{ $delayAnalysis['delay_severity'] }}
                             </span>
                         </div>
@@ -432,7 +442,7 @@
         <div class="lg:col-span-2 space-y-8">
 
             <!-- Card 1: Manifest Muatan Kargo -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] overflow-hidden">
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                     <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
                         <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -471,7 +481,7 @@
             </div>
 
             <!-- Card 2: Riwayat Exception Pengiriman Ini (Read-only untuk Admin, Operator & Customer) -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] overflow-hidden">
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <div class="h-6 w-6 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xs">
@@ -482,7 +492,7 @@
                         </h2>
                     </div>
                     @if(auth()->user()->isAdmin() || auth()->user()->isOperator())
-                        <a href="#form-exception" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline">
+                        <a href="#form-exception" class="text-xs font-bold text-[#556E5C] hover:text-[#425848] hover:underline">
                             + Laporkan Kendala Baru
                         </a>
                     @endif
@@ -552,7 +562,7 @@
             </div>
 
             <!-- Card 3: Vertical Timeline of Tracking Events (Normal vs Exception) -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+            <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6">
                 <div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
                     <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center space-x-2">
                         <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -574,7 +584,7 @@
                                 </div>
                             @else
                                 <div class="absolute -left-[27px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white 
-                                    {{ $loop->last ? 'bg-[#0e1117] ring-4 ring-[#d4f93a]/30' : 'bg-slate-400' }}"></div>
+                                    {{ $loop->last ? 'bg-[#556E5C] ring-4 ring-[#556E5C]/20' : 'bg-slate-400' }}"></div>
                             @endif
 
                             <!-- Event Box: Styling Mencolok Jika Exception -->
@@ -591,9 +601,9 @@
                                                 {{ $event->status }}
                                             </span>
                                         @else
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                                {{ $event->status === 'DELIVERED' ? 'bg-emerald-100 text-emerald-800' : 
-                                                  ($event->status === 'CANCELLED' ? 'bg-rose-100 text-rose-800' : 'bg-slate-200 text-slate-800') }}">
+                                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border
+                                                {{ $event->status === 'DELIVERED' ? 'bg-[#E6F0E9] text-[#2F6846] border-[#CFE2D5]' : 
+                                                  ($event->status === 'CANCELLED' ? 'bg-[#F9E6E6] text-[#B84242] border-[#F0D0D0]' : 'bg-[#F7EFE1] text-[#9A6721] border-[#EADBC0]') }}">
                                                 {{ $event->status }}
                                             </span>
                                         @endif
@@ -639,10 +649,10 @@
             @if((auth()->user()->isAdmin() || auth()->user()->isOperator()) && !in_array($shipment->status, ['DELIVERED', 'CANCELLED']))
                 
                 <!-- Action Form 1: Tambah Tracking Event (Checkpoint) -->
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
                         <div class="flex items-center space-x-2">
-                            <span class="h-2 w-2 rounded-full bg-[#d4f93a]"></span>
+                            <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
                             <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Tambah Checkpoint Tracking</h3>
                         </div>
                         <span class="text-[10px] text-slate-400 font-mono">Event Baru</span>
@@ -654,7 +664,7 @@
                         <!-- Lokasi -->
                         <div>
                             <label for="track_location_id" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Pilih Lokasi Checkpoint</label>
-                            <select name="location_id" id="track_location_id" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                            <select name="location_id" id="track_location_id" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">
                                 <option value="">-- Pilih Hub / Lokasi (Opsional) --</option>
                                 @foreach($locations as $loc)
                                     <option value="{{ $loc->id }}" {{ old('location_id') == $loc->id ? 'selected' : '' }}>
@@ -668,7 +678,7 @@
                         <!-- Status Transisi (Opsional) -->
                         <div>
                             <label for="track_status" class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Status Kargo Saat Ini</label>
-                            <select name="status" id="track_status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                            <select name="status" id="track_status" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">
                                 <option value="{{ $shipment->status }}" selected>Tetap: {{ $shipment->status }} (Hanya Checkpoint)</option>
                                 @foreach($allowedNextStatuses as $nextSt)
                                     <option value="{{ $nextSt }}">Perbarui ke: {{ $nextSt }}</option>
@@ -683,7 +693,7 @@
                                    name="event_time" 
                                    id="track_event_time" 
                                    value="{{ old('event_time', now()->format('Y-m-d\TH:i')) }}"
-                                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                                   class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">
                         </div>
 
                         <!-- Deskripsi -->
@@ -694,17 +704,17 @@
                                       rows="2" 
                                       required
                                       placeholder="Contoh: Kargo telah tiba di checkpoint transit..."
-                                      class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">{{ old('description') }}</textarea>
+                                      class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">{{ old('description') }}</textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#0e1117] hover:bg-slate-800 text-[#d4f93a] text-xs font-bold transition shadow-sm">
+                        <button type="submit" class="w-full py-2.5 px-5 rounded-full bg-[#556E5C] hover:bg-[#425848] text-white text-xs font-bold transition shadow-xs">
                             Simpan Checkpoint Tracking
                         </button>
                     </form>
                 </div>
 
                 <!-- Action Form 2: Laporkan Exception (Kendala Operasional) -->
-                <div id="form-exception" class="bg-white rounded-2xl border border-rose-200 shadow-sm p-6">
+                <div id="form-exception" class="bg-white rounded-[24px] border border-rose-200 shadow-sm p-6">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-rose-100">
                         <div class="flex items-center space-x-2">
                             <span class="h-2 w-2 rounded-full bg-rose-500"></span>
@@ -779,19 +789,19 @@
                                       class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-400">{{ old('description') }}</textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition shadow-sm">
+                        <button type="submit" class="w-full py-2.5 px-5 rounded-full bg-[#B84242] hover:bg-[#A33838] text-white text-xs font-bold transition shadow-xs">
                             Laporkan Insiden Exception
                         </button>
                     </form>
                 </div>
 
                 <!-- Action Form 3: State Machine Status Transition -->
-                <div class="bg-white rounded-2xl border-2 border-slate-900 shadow-md p-6">
+                <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-[#0e1117] text-[#d4f93a]">
+                        <span class="text-xs font-semibold tracking-wide uppercase px-3 py-1 rounded-full bg-[#EDF1EC] text-[#425848] border border-[#D4DFD2]">
                             State Machine
                         </span>
-                        <span class="text-xs text-slate-400 font-medium">Status: <strong>{{ $shipment->status }}</strong></span>
+                        <span class="text-xs text-slate-500 font-medium">Status: <strong>{{ $shipment->status }}</strong></span>
                     </div>
 
                     <h3 class="text-sm font-bold text-slate-900 mb-1">Transisi Status Operasional</h3>
@@ -807,7 +817,7 @@
                                 Status Berikutnya yang Sah <span class="text-rose-500">*</span>
                             </label>
                             <select name="status" id="new_status" required
-                                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">
                                 <option value="">-- Pilih Status Berikutnya --</option>
                                 @foreach($allowedNextStatuses as $nextStatus)
                                     <option value="{{ $nextStatus }}">{{ $nextStatus }}</option>
@@ -820,10 +830,10 @@
                                 Catatan Transisi (Opsional)
                             </label>
                             <textarea name="note" id="note" rows="2" placeholder="Contoh: Kargo telah diserahterimakan..."
-                                      class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#d4f93a]"></textarea>
+                                      class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]"></textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-[#0e1117] hover:bg-slate-800 text-[#d4f93a] text-xs font-bold shadow-sm transition">
+                        <button type="submit" class="w-full py-2.5 px-5 rounded-full bg-[#556E5C] hover:bg-[#425848] text-white text-xs font-bold shadow-xs transition">
                             Simpan Transisi Status &rarr;
                         </button>
                     </form>
@@ -831,7 +841,7 @@
 
             @elseif(in_array($shipment->status, ['DELIVERED', 'CANCELLED']))
                 <!-- Status Final Notice -->
-                <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm text-slate-700 text-xs">
+                <div class="p-5 rounded-[24px] bg-white border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] text-slate-700 text-xs">
                     <div class="flex items-center space-x-2 font-bold mb-1.5 {{ $shipment->status === 'DELIVERED' ? 'text-emerald-700' : 'text-rose-700' }}">
                         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -843,7 +853,7 @@
             @endif
 
             <!-- Stakeholder Card -->
-            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 space-y-4 text-xs">
+            <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-5 space-y-4 text-xs">
                 <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider pb-2 border-b border-slate-100">
                     Informasi Pihak Terkait
                 </div>
@@ -934,7 +944,7 @@ document.addEventListener('DOMContentLoaded', function () {
         boundsPoints.push(originLatLng);
         traveledPoints.push(originLatLng);
 
-        const originIcon = createDivIcon('#0e1117', '#d4f93a', `
+        const originIcon = createDivIcon('#1C1E1B', '#ffffff', `
             <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
             </svg>
@@ -943,13 +953,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const originPopup = `
             <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 200px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                    <span style="font-size: 10px; font-weight: 800; background: #0e1117; color: #d4f93a; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">ORIGIN</span>
-                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #64748b;">[${escapeHtml(mapData.origin.code)}]</span>
+                    <span style="font-size: 10px; font-weight: 800; background: #1C1E1B; color: #ffffff; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">ORIGIN</span>
+                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #6F756C;">[${escapeHtml(mapData.origin.code)}]</span>
                 </div>
-                <div style="font-weight: 800; color: #0f172a; font-size: 13px;">${escapeHtml(mapData.origin.name)}</div>
-                <div style="color: #64748b; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.origin.type)}</strong></div>
-                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #334155;">
-                    <span style="color: #64748b;">Jadwal Berangkat:</span><br>
+                <div style="font-weight: 800; color: #1C1E1B; font-size: 13px;">${escapeHtml(mapData.origin.name)}</div>
+                <div style="color: #6F756C; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.origin.type)}</strong></div>
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #DFE1D8; font-size: 11px; color: #1C1E1B;">
+                    <span style="color: #6F756C;">Jadwal Berangkat:</span><br>
                     <strong>${escapeHtml(mapData.origin.expected_departure || 'Belum ditentukan')}</strong>
                 </div>
             </div>
@@ -995,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', function () {
         destLatLng = [mapData.destination.latitude, mapData.destination.longitude];
         boundsPoints.push(destLatLng);
 
-        const destIcon = createDivIcon('#059669', '#ffffff', `
+        const destIcon = createDivIcon('#556E5C', '#ffffff', `
             <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>
@@ -1004,14 +1014,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const destPopup = `
             <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 200px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                    <span style="font-size: 10px; font-weight: 800; background: #ecfdf5; color: #065f46; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">DESTINATION</span>
-                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #64748b;">[${escapeHtml(mapData.destination.code)}]</span>
+                    <span style="font-size: 10px; font-weight: 800; background: #E6F0E9; color: #2F6846; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">DESTINATION</span>
+                    <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #6F756C;">[${escapeHtml(mapData.destination.code)}]</span>
                 </div>
-                <div style="font-weight: 800; color: #065f46; font-size: 13px;">${escapeHtml(mapData.destination.name)}</div>
-                <div style="color: #64748b; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.destination.type)}</strong></div>
-                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #334155; space-y-1;">
-                    <div><span style="color: #64748b;">Target Tiba:</span> <strong>${escapeHtml(mapData.destination.expected_arrival || '-')}</strong></div>
-                    <div><span style="color: #64748b;">Estimasi Tiba:</span> <strong>${escapeHtml(mapData.destination.estimated_arrival || '-')}</strong></div>
+                <div style="font-weight: 800; color: #2F6846; font-size: 13px;">${escapeHtml(mapData.destination.name)}</div>
+                <div style="color: #6F756C; font-size: 11px; margin-top: 2px;">Tipe: <strong>${escapeHtml(mapData.destination.type)}</strong></div>
+                <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #DFE1D8; font-size: 11px; color: #1C1E1B; space-y-1;">
+                    <div><span style="color: #6F756C;">Target Tiba:</span> <strong>${escapeHtml(mapData.destination.expected_arrival || '-')}</strong></div>
+                    <div><span style="color: #6F756C;">Estimasi Tiba:</span> <strong>${escapeHtml(mapData.destination.estimated_arrival || '-')}</strong></div>
                 </div>
             </div>
         `;
@@ -1023,7 +1033,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Rute yang sudah dilalui: Solid line (Origin -> urutan Checkpoints)
     if (traveledPoints.length >= 2) {
         L.polyline(traveledPoints, {
-            color: '#0e1117',
+            color: '#1C1E1B',
             weight: 3.5,
             opacity: 0.85
         }).addTo(map);
@@ -1033,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (traveledPoints.length > 0 && destLatLng) {
         const lastTraveled = traveledPoints[traveledPoints.length - 1];
         L.polyline([lastTraveled, destLatLng], {
-            color: '#059669',
+            color: '#556E5C',
             weight: 3,
             dashArray: '6, 8',
             opacity: 0.85
@@ -1041,7 +1051,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (traveledPoints.length === 0 && mapData.origin && mapData.origin.latitude !== null && destLatLng) {
         // Fallback jika belum ada checkpoint: garis putus-putus langsung dari origin ke destination
         L.polyline([[mapData.origin.latitude, mapData.origin.longitude], destLatLng], {
-            color: '#64748b',
+            color: '#6F756C',
             weight: 2.5,
             dashArray: '6, 8',
             opacity: 0.7

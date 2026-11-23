@@ -21,16 +21,24 @@
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        trackivo: {
-                            50: '#f6f8fb',
-                            100: '#edf1f7',
-                            200: '#dbe2ee',
-                            800: '#151922',
-                            900: '#0d1017',
-                            dark: '#0f1219',
-                            card: '#151921',
-                            accent: '#d4f93a',
-                            accentHover: '#c4e72f',
+                        canvas: '#E9EAE4',
+                        charcoal: '#1C1E1B',
+                        muted: '#6F756C',
+                        sage: {
+                            50: '#F4F7F4',
+                            100: '#E6F0E9',
+                            200: '#C8DACD',
+                            500: '#556E5C',
+                            600: '#425848',
+                            700: '#35473A',
+                            800: '#2A382E',
+                        },
+                        sand: {
+                            50: '#FAF9F5',
+                            100: '#F5F6F1',
+                            200: '#E9EAE4',
+                            300: '#DFE1D8',
+                            400: '#C9CCC0',
                         }
                     }
                 }
@@ -41,234 +49,769 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #E9EAE4;
+            color: #1C1E1B;
+            top: 0 !important;
+            position: static !important;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: rgba(156, 163, 175, 0.4);
+            background-color: rgba(111, 117, 108, 0.25);
             border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+        /* Sembunyikan Google Translate Toolbar & Banner Bawaan */
+        .goog-te-banner-frame.skiptranslate,
+        iframe.skiptranslate,
+        .goog-te-gadget,
+        #goog-gt-tt,
+        .goog-te-balloon-frame,
+        #goog-gt-vt,
+        .goog-tooltip {
+            display: none !important;
+        }
+        .goog-text-highlight {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        #google_translate_element {
+            display: none !important;
         }
     </style>
     @stack('styles')
 </head>
-<body class="bg-[#f0f3f8] text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-[#E9EAE4] text-[#1C1E1B] antialiased min-h-screen selection:bg-[#556E5C] selection:text-white">
 
-    <!-- Top Dark Header / Navbar (Latar belakang gelap kontras agar logo putih terlihat tajam) -->
-    <header class="bg-[#0e1117] border-b border-slate-800 text-white sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+    @auth
+        @php
+            $role = auth()->user()->role;
+        @endphp
+
+        <!-- Desktop Top Left Logo (Sejajar horizontal dengan sidebar left-5 w-[68px] dan sejajar vertikal dengan Hello, Trackivo!) -->
+        <div class="hidden md:flex fixed left-5 top-6 w-[68px] items-center justify-center z-40">
+            <a href="{{ route('dashboard') }}" class="h-14 w-14 flex items-center justify-center hover:scale-105 transition-transform shrink-0" title="Trackivo Dashboard">
+                <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-14 w-14 object-contain">
+            </a>
+        </div>
+
+        <!-- Fixed Rail Wrapper for Left Sidebar (Desktop: Diam Terpaku di Sisi Kiri Layar) -->
+        <aside class="hidden md:flex fixed left-5 top-[104px] bottom-5 w-[68px] items-center justify-center z-40 pointer-events-none">
+            <nav class="pointer-events-auto overflow-visible w-[68px] h-full max-h-[660px] min-h-[500px] bg-white rounded-full py-5 px-2 shadow-[0_8px_28px_rgba(28,30,27,0.07)] border border-[#E2E4DC]/80 flex flex-col items-center justify-between">
                 
-                <!-- Left: Logo & Brand Name -->
-                <div class="flex items-center shrink-0">
-                    <a href="{{ route('dashboard') }}" class="flex items-center group">
-                        <div class="p-1 rounded-xl bg-slate-900/80 border border-slate-700/60 shadow-inner flex items-center justify-center">
-                            <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-9 w-auto object-contain transition duration-200 group-hover:scale-105">
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Center: Role-Based Navigation Menu (Tetap rapi 1 baris) -->
-                <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 flex-nowrap shrink-0">
-                    @auth
-                        @php
-                            $role = auth()->user()->role;
-                        @endphp
-
-                        <!-- Common: Dashboard -->
+                <!-- Menu Bagian Atas -->
+                <div class="flex flex-col items-center gap-2.5 w-full">
+                    
+                    <!-- Dashboard (Common) -->
+                    <div class="relative group flex items-center justify-center">
                         <a href="{{ route('dashboard') }}" 
-                           class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('dashboard') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
-                            Dashboard
+                           class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('dashboard') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                            <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            </svg>
                         </a>
+                        <!-- Tooltip -->
+                        <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            Dashboard
+                        </div>
+                    </div>
 
-                        @if ($role === 'admin')
-                            <!-- Admin Menu: Dashboard, Shipments, Exceptions, Carriers, Locations, Users, Audit Logs, Settings -->
-                            <a href="{{ route('shipments.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
-                            <a href="{{ route('exceptions.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Exceptions</a>
-                            <a href="{{ route('carriers.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Carriers</a>
-                            <a href="{{ route('locations.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Locations</a>
-                            <a href="{{ route('users.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Users</a>
-                            <a href="{{ route('audit-logs.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('audit-logs.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Audit Logs</a>
-                            <a href="{{ route('settings.index') }}" class="px-2 py-1.5 lg:px-2.5 lg:py-2 rounded-xl text-xs lg:text-[13px] font-medium whitespace-nowrap transition {{ request()->routeIs('settings.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Settings</a>
-                        @elseif ($role === 'operator')
-                            <!-- Operator Menu: Dashboard, Shipments, Exceptions -->
-                            <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Shipments</a>
-                            <a href="{{ route('exceptions.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">Exceptions</a>
-                        @elseif ($role === 'customer')
-                            <!-- Customer Menu: Dashboard, My Shipments, Notifications -->
-                            <a href="{{ route('shipments.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">My Shipments</a>
-                            <a href="{{ route('notifications.index') }}" class="px-3 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition flex items-center space-x-1.5 {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
-                                <span>Notifications</span>
-                                @if(($unreadNotificationsCount ?? 0) > 0)
-                                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-extrabold bg-rose-500 text-white">
-                                        {{ $unreadNotificationsCount }}
-                                    </span>
-                                @endif
+                    <!-- Shipments / My Shipments -->
+                    <div class="relative group flex items-center justify-center">
+                        <a href="{{ route('shipments.index') }}" 
+                           class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('shipments.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                            <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </a>
+                        <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            {{ $role === 'customer' ? 'My Shipments' : 'Shipments' }}
+                        </div>
+                    </div>
+
+                    @if ($role === 'admin' || $role === 'operator')
+                        <!-- Exceptions -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('exceptions.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('exceptions.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
                             </a>
-                        @endif
-                    @endauth
-                </nav>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Exceptions
+                            </div>
+                        </div>
+                    @endif
 
-                <!-- Right: User Info & Actions -->
-                <div class="flex items-center space-x-2.5">
-                    @auth
-                        @php
-                            $role = auth()->user()->role;
-                        @endphp
+                    @if ($role === 'admin')
+                        <!-- Carriers -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('carriers.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('carriers.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 17h4V5H2v12h3"></path>
+                                    <path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1"></path>
+                                    <circle cx="7.5" cy="17.5" r="2.5"></circle>
+                                    <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                                </svg>
+                            </a>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Carriers
+                            </div>
+                        </div>
 
-                        <!-- Notification Bell for Admin & Operator -->
-                        @if(in_array($role, ['admin', 'operator']))
+                        <!-- Locations -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('locations.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('locations.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </a>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Locations
+                            </div>
+                        </div>
+
+                        <!-- Users -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('users.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('users.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </a>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Users
+                            </div>
+                        </div>
+
+                        <!-- Audit Logs -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('audit-logs.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('audit-logs.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </a>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Audit Logs
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($role === 'customer')
+                        <!-- Notifications Menu for Customer in Sidebar -->
+                        <div class="relative group flex items-center justify-center">
                             <a href="{{ route('notifications.index') }}" 
-                               class="relative h-9 w-9 rounded-full bg-slate-900 border border-slate-700/80 hover:border-slate-500 text-slate-300 hover:text-white flex items-center justify-center transition shadow-sm"
-                               title="Notifikasi Sistem ({{ $unreadNotificationsCount ?? 0 }} belum dibaca)">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all relative {{ request()->routeIs('notifications.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
                                 </svg>
                                 @if(($unreadNotificationsCount ?? 0) > 0)
-                                    <span class="absolute -top-1 -right-1 flex h-4 w-4">
-                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                                        <span class="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-white text-[9px] font-bold items-center justify-center">
-                                            {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
-                                        </span>
-                                    </span>
+                                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
                                 @endif
                             </a>
-                        @endif
-
-                        <!-- User Capsule Profile -->
-                        <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full pl-3 pr-1.5 py-1 text-sm">
-                            <div class="flex flex-col text-right mr-3 hidden sm:block">
-                                <span class="text-xs font-semibold text-white leading-tight">{{ auth()->user()->name }}</span>
-                                <div class="flex items-center justify-end space-x-1.5">
-                                    <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full 
-                                        {{ auth()->user()->role === 'admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 
-                                          (auth()->user()->role === 'operator' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 
-                                          'bg-[#d4f93a]/20 text-[#d4f93a] border border-[#d4f93a]/30') }}">
-                                        {{ auth()->user()->role }}
-                                    </span>
-                                    @if(auth()->user()->company_name)
-                                        <span class="text-[10px] text-slate-400 font-medium truncate max-w-[100px]">{{ auth()->user()->company_name }}</span>
-                                    @endif
-                                </div>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Notifications ({{ $unreadNotificationsCount ?? 0 }})
                             </div>
-                            
-                            <!-- Avatar circle -->
-                            <div class="h-8 w-8 rounded-full bg-slate-800 text-slate-200 font-bold flex items-center justify-center text-xs border border-slate-600">
-                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                            </div>
-
-                            <!-- Logout Button -->
-                            <form method="POST" action="{{ route('logout') }}" class="ml-2">
-                                @csrf
-                                <button type="submit" 
-                                        title="Keluar dari akun"
-                                        class="h-8 w-8 rounded-full bg-slate-800/90 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 flex items-center justify-center transition border border-slate-700 hover:border-rose-500/30">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                    </svg>
-                                </button>
-                            </form>
                         </div>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-slate-300 hover:text-white px-3 py-2">Masuk</a>
-                        <a href="{{ route('register') }}" class="text-sm font-semibold bg-[#d4f93a] hover:bg-[#c4e72f] text-black px-4 py-2 rounded-xl transition">Daftar</a>
-                    @endauth
+                    @endif
+
                 </div>
 
-            </div>
-        </div>
-    </header>
+                <!-- Menu Bagian Bawah: Settings, Logout, Avatar -->
+                <div class="mt-auto pt-4 border-t border-[#ECEEE6] flex flex-col items-center gap-2.5 w-full">
+                    
+                    @if ($role === 'admin')
+                        <!-- Settings -->
+                        <div class="relative group flex items-center justify-center">
+                            <a href="{{ route('settings.index') }}" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center transition-all {{ request()->routeIs('settings.*') ? 'bg-[#1C1E1B] text-white shadow-sm' : 'text-[#7C8279] hover:text-[#1C1E1B] hover:bg-[#F1F2EC]' }}">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </a>
+                            <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Settings
+                            </div>
+                        </div>
+                    @endif
 
-    <!-- Mobile Sub-Menu (for mobile viewports) -->
-    @auth
-        <div class="md:hidden bg-[#131722] border-b border-slate-800 px-4 py-2.5 overflow-x-auto flex space-x-2 text-xs">
-            <a href="{{ route('dashboard') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ Route::currentRouteName() == 'dashboard' ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Dashboard</a>
-            @if (auth()->user()->role === 'admin')
-                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Shipments</a>
-                <a href="{{ route('exceptions.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Exceptions</a>
-                <a href="{{ route('carriers.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('carriers.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Carriers</a>
-                <a href="{{ route('locations.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('locations.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Locations</a>
-                <a href="{{ route('users.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('users.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Users</a>
-                <a href="{{ route('audit-logs.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('audit-logs.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Audit Logs</a>
-                <a href="{{ route('settings.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('settings.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Settings</a>
-                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
-                    Notif ({{ $unreadNotificationsCount ?? 0 }})
+                    <!-- Logout -->
+                    <div class="relative group flex items-center justify-center">
+                        <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
+                            @csrf
+                            <button type="submit" 
+                                    class="w-10 h-10 rounded-full text-[#7C8279] hover:text-[#B84242] hover:bg-[#F9E6E6] flex items-center justify-center transition-all"
+                                    title="Logout">
+                                <svg class="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                            </button>
+                        </form>
+                        <div class="absolute left-full ml-3 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            Logout
+                        </div>
+                    </div>
+
+                    <!-- User Avatar -->
+                    <div class="relative group flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-full bg-[#556E5C] text-white text-sm font-semibold flex items-center justify-center ring-2 ring-[#E9EAE4] cursor-default shadow-xs">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                        <div class="absolute left-full ml-3 px-3 py-2 bg-[#1C1E1B] text-white text-xs rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            <div class="font-bold">{{ auth()->user()->name }}</div>
+                            <div class="text-[11px] text-[#A2A9A0] capitalize">Portal {{ ucfirst($role) }}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </nav>
+        </aside>
+
+        <!-- Main Content Container (Identik batas lebar dan horizontal padding antara Header dan Konten) -->
+        <div class="min-h-screen flex flex-col w-full md:pl-[112px] md:pr-8 px-4 pt-6 pb-8">
+            
+            <!-- Mobile Header Top Bar (< md) -->
+            <div class="md:hidden flex items-center justify-between bg-white rounded-2xl p-3.5 shadow-sm border border-[#E2E4DC]/80 mb-4">
+                <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
+                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-8 w-8 object-contain">
+                    <span class="font-bold text-base tracking-tight text-[#1C1E1B] notranslate">Trackivo</span>
                 </a>
-            @elseif (auth()->user()->role === 'operator')
-                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Shipments</a>
-                <a href="{{ route('exceptions.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('exceptions.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">Exceptions</a>
-                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
-                    Notif ({{ $unreadNotificationsCount ?? 0 }})
-                </a>
-            @elseif (auth()->user()->role === 'customer')
-                <a href="{{ route('shipments.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('shipments.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">My Shipments</a>
-                <a href="{{ route('notifications.index') }}" class="px-2.5 py-1 rounded-lg whitespace-nowrap {{ request()->routeIs('notifications.*') ? 'bg-[#d4f93a] text-black font-semibold' : 'text-slate-300' }}">
-                    Notifications ({{ $unreadNotificationsCount ?? 0 }})
+
+                <div class="flex items-center space-x-2">
+                    <a href="{{ route('notifications.index') }}" 
+                       class="w-9 h-9 rounded-full bg-[#F5F6F1] text-[#1C1E1B] flex items-center justify-center relative">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        @if(($unreadNotificationsCount ?? 0) > 0)
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
+                        @endif
+                    </a>
+
+                    <form method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="w-9 h-9 rounded-full bg-[#F5F6F1] text-[#7C8279] hover:text-[#B84242] flex items-center justify-center">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Desktop Top Header Bar (Rata Kanan Sejajar Konten) -->
+            <header class="w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-6 mb-6">
+                
+                <!-- Sisi Kiri: Blok Judul Hello, Trackivo! dan Subjudul Role Bahasa Indonesia -->
+                <div class="min-w-0">
+                    <h1 class="text-2xl md:text-3xl font-bold text-[#1C1E1B] tracking-tight">
+                        Hello, <span class="notranslate">Trackivo</span>!
+                    </h1>
+                    <p class="text-xs sm:text-sm text-[#6F756C] mt-0.5">
+                        @if ($role === 'admin')
+                            Pantau analitik, informasi, dan aktivitas operasional pengiriman global
+                        @elseif ($role === 'operator')
+                            Kelola rute kargo aktif, perbarui pelacakan, dan tangani kendala pengiriman
+                        @else
+                            Lacak pengiriman aktif Anda dan pantau progres pengiriman secara langsung
+                        @endif
+                    </p>
+                </div>
+
+                <!-- Sisi Kanan: Kotak Pencarian Kapsul + Tombol Translate + Tombol Notifikasi + Pill Role -->
+                <div class="flex items-center gap-3 shrink-0 ml-auto">
+                    
+                    <!-- Search Box Kapsul -->
+                    <form method="GET" action="{{ route('shipments.index') }}" class="bg-white rounded-full pl-5 pr-1.5 py-1.5 shadow-sm border border-[#E2E4DC]/80 flex items-center">
+                        <input type="text" 
+                               name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Search tracking number..." 
+                               class="bg-transparent text-xs sm:text-sm text-[#1C1E1B] placeholder-[#9EABA2] focus:outline-none w-64 xl:w-72">
+                        <button type="submit" 
+                                class="w-8 h-8 rounded-full bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-black transition-colors shrink-0" 
+                                title="Search">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Multi-Country Translate Dropdown Button -->
+                    <div class="relative" id="translate-dropdown-container">
+                        <button type="button" 
+                                id="translate-dropdown-btn" 
+                                class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F5F6F1] transition-all relative"
+                                title="Translate">
+                            <svg class="w-5 h-5 text-[#1C1E1B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                            <!-- Indikator Kode Bahasa Kecil -->
+                            <span id="current-lang-code" class="absolute -bottom-1 -right-1 px-1 text-[9px] font-bold rounded-full bg-[#1C1E1B] text-white uppercase notranslate leading-tight">
+                                ID
+                            </span>
+                        </button>
+
+                        <!-- Floating Dropdown Menu (Natural Sage & Sand) -->
+                        <div id="translate-dropdown-menu" 
+                             class="hidden absolute right-0 top-full mt-2 rounded-2xl bg-white shadow-lg border border-[#E2E4DC] p-2 w-48 z-50 notranslate">
+                            <div class="px-3 py-1.5 text-[11px] font-semibold text-[#6F756C] uppercase tracking-wider border-b border-[#E2E4DC]/60 mb-1">
+                                Pilih Bahasa
+                            </div>
+                            <div class="space-y-0.5 max-h-72 overflow-y-auto custom-scrollbar">
+                                <button type="button" data-lang="id" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ID</span><span>Indonesia</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="en" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">EN</span><span>English</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="zh-CN" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ZH</span><span>中文</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="ja" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">JA</span><span>日本語</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="ko" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">KO</span><span>한국어</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="de" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">DE</span><span>Deutsch</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="fr" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">FR</span><span>Français</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="es" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ES</span><span>Español</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="nl" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">NL</span><span>Nederlands</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                                <button type="button" data-lang="ar" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                    <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">AR</span><span>العربية</span></span>
+                                    <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Round Button -->
+                    <div class="relative group">
+                        <a href="{{ route('notifications.index') }}" 
+                           class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F1F2EC] transition-colors relative"
+                           title="Notifications">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                            </svg>
+                            @if(($unreadNotificationsCount ?? 0) > 0)
+                                <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                            @endif
+                        </a>
+                        <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            Notifications ({{ $unreadNotificationsCount ?? 0 }})
+                        </div>
+                    </div>
+
+                    <!-- Active Role Pill -->
+                    <div class="relative group">
+                        <div class="h-11 px-4 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center space-x-2 text-xs font-bold text-[#1C1E1B] cursor-default">
+                            <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
+                            <span class="uppercase tracking-wider">PORTAL {{ strtoupper($role) }}</span>
+                        </div>
+                        <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                            {{ auth()->user()->company_name ?? auth()->user()->email }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+                <!-- Flash Notifications Alert -->
+                @if (session('success'))
+                    <div class="mb-5 bg-[#E6F0E9] border border-[#C8DACD] text-[#2F6846] px-5 py-3.5 rounded-[20px] flex items-center justify-between shadow-xs">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-[#2F6846] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-xs sm:text-sm font-semibold">{{ session('success') }}</span>
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="text-[#2F6846] hover:opacity-75 text-lg font-bold ml-3">&times;</button>
+                    </div>
+                @endif
+
+                @if (session('info'))
+                    <div class="mb-5 bg-[#EDF1EC] border border-[#DFE1D8] text-[#35473A] px-5 py-3.5 rounded-[20px] flex items-center justify-between shadow-xs">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-[#556E5C] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-xs sm:text-sm font-semibold">{{ session('info') }}</span>
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="text-[#35473A] hover:opacity-75 text-lg font-bold ml-3">&times;</button>
+                    </div>
+                @endif
+
+                @if (session('error') || (isset($errors) && $errors->any()))
+                    <div class="mb-5 bg-[#F9E6E6] border border-[#F0C9C9] text-[#B84242] px-5 py-3.5 rounded-[20px] flex items-center justify-between shadow-xs">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-[#B84242] shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="text-xs sm:text-sm font-semibold">
+                                {{ session('error') ?? 'Terjadi kesalahan pada input data Anda.' }}
+                            </div>
+                        </div>
+                        <button type="button" onclick="this.parentElement.remove()" class="text-[#B84242] hover:opacity-75 text-lg font-bold ml-3">&times;</button>
+                    </div>
+                @endif
+
+                <!-- Main Page Yield -->
+                <main class="flex-1 pb-16 md:pb-10">
+                    @yield('content')
+                </main>
+
+                <!-- Footer -->
+                <footer class="pt-6 pb-2 text-xs text-[#6F756C] flex flex-col sm:flex-row items-center justify-between border-t border-[#DFE1D8]/60 gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-[#1C1E1B] notranslate">Trackivo</span>
+                        <span>&bull;</span>
+                        <span>Global Shipment Visibility & Tracking Platform</span>
+                    </div>
+                    <div>
+                        <span>Standard Time: Asia/Jakarta (WIB) &bull; &copy; {{ date('Y') }} <span class="notranslate">Trackivo</span> System.</span>
+                    </div>
+                </footer>
+
+        </div>
+
+        <!-- Mobile Bottom Floating Navigation (< md) -->
+        <nav class="md:hidden fixed bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(28,30,27,0.12)] border border-[#E2E4DC] py-2 px-4 flex items-center justify-around z-50">
+            <a href="{{ route('dashboard') }}" class="p-2 rounded-full {{ request()->routeIs('dashboard') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+            </a>
+
+            <a href="{{ route('shipments.index') }}" class="p-2 rounded-full {{ request()->routeIs('shipments.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                </svg>
+            </a>
+
+            @if ($role === 'admin' || $role === 'operator')
+                <a href="{{ route('exceptions.index') }}" class="p-2 rounded-full {{ request()->routeIs('exceptions.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                 </a>
             @endif
+
+            @if ($role === 'admin')
+                <a href="{{ route('settings.index') }}" class="p-2 rounded-full {{ request()->routeIs('settings.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </a>
+            @endif
+
+            <a href="{{ route('notifications.index') }}" class="p-2 rounded-full relative {{ request()->routeIs('notifications.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                </svg>
+                @if(($unreadNotificationsCount ?? 0) > 0)
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
+                @endif
+            </a>
+        </nav>
+
+    @else
+        <div class="min-h-screen flex flex-col justify-center items-center p-4">
+            @yield('content')
         </div>
     @endauth
 
-    <!-- Flash Alert Notifications -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 w-full">
-        @if (session('success'))
-            <div class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
-                <div class="flex items-center space-x-3">
-                    <svg class="h-5 w-5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-sm font-medium">{{ session('success') }}</span>
-                </div>
-                <button type="button" onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700 text-lg">&times;</button>
-            </div>
-        @endif
+    <!-- Client-Side Google Translate Hidden Container -->
+    <div id="google_translate_element" class="hidden"></div>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            try {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'id',
+                    includedLanguages: 'id,en,zh-CN,ja,ko,de,fr,es,nl,ar',
+                    autoDisplay: false
+                }, 'google_translate_element');
+            } catch (err) {
+                // Silently fallback if blocked or offline
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer onerror="/* safe fallback */"></script>
 
-        @if (session('info'))
-            <div class="mb-4 bg-sky-50 border border-sky-200 text-sky-800 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
-                <div class="flex items-center space-x-3">
-                    <svg class="h-5 w-5 text-sky-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-sm font-medium">{{ session('info') }}</span>
-                </div>
-                <button type="button" onclick="this.parentElement.remove()" class="text-sky-500 hover:text-sky-700 text-lg">&times;</button>
-            </div>
-        @endif
+    <!-- Multi-Country Translate Controller -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownBtn = document.getElementById('translate-dropdown-btn');
+            const dropdownMenu = document.getElementById('translate-dropdown-menu');
+            const currentLangCode = document.getElementById('current-lang-code');
+            const langButtons = document.querySelectorAll('.lang-select-btn');
 
-        @if (session('error') || (isset($errors) && $errors->any()))
-            <div class="mb-4 bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl flex items-center justify-between shadow-sm">
-                <div class="flex items-center space-x-3">
-                    <svg class="h-5 w-5 text-rose-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                    </svg>
-                    <div class="text-sm font-medium">
-                        {{ session('error') ?? 'Terjadi kesalahan pada input data Anda.' }}
-                    </div>
-                </div>
-                <button type="button" onclick="this.parentElement.remove()" class="text-rose-500 hover:text-rose-700 text-lg">&times;</button>
-            </div>
-        @endif
-    </div>
+            function getCookie(name) {
+                const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]+)'));
+                return match ? decodeURIComponent(match[2]) : null;
+            }
 
-    <!-- Main Content Area -->
-    <main class="flex-1 pb-16">
-        @yield('content')
-    </main>
+            function getActiveLang() {
+                const cookieVal = getCookie('googtrans');
+                if (cookieVal) {
+                    const parts = cookieVal.split('/');
+                    if (parts.length >= 3 && parts[2]) {
+                        return parts[2];
+                    }
+                }
+                return 'id';
+            }
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-            <div class="flex items-center space-x-2">
-                <span class="font-bold text-slate-800">Trackivo</span>
-                <span>&bull;</span>
-                <span>Global Shipment Visibility & Tracking Platform</span>
-            </div>
-            <div>
-                <span>Standard Time: Asia/Jakarta (WIB) &bull; &copy; {{ date('Y') }} Trackivo System.</span>
-            </div>
-        </div>
-    </footer>
+            function syncDropdownUI(activeLang) {
+                if (!activeLang) activeLang = 'id';
+                if (currentLangCode) {
+                    currentLangCode.textContent = activeLang.split('-')[0].toUpperCase();
+                }
+                langButtons.forEach(function (btn) {
+                    const lang = btn.getAttribute('data-lang');
+                    const check = btn.querySelector('.lang-check');
+                    if (lang === activeLang || (activeLang === 'id' && lang === 'id')) {
+                        btn.classList.add('bg-[#F5F6F1]', 'text-[#556E5C]', 'font-bold');
+                        if (check) check.classList.remove('hidden');
+                    } else {
+                        btn.classList.remove('bg-[#F5F6F1]', 'text-[#556E5C]', 'font-bold');
+                        if (check) check.classList.add('hidden');
+                    }
+                });
+            }
+
+            function setLanguage(lang) {
+                const domain = window.location.hostname;
+                if (!lang || lang === 'id') {
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + domain + ";";
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + domain + ";";
+                } else {
+                    const val = "/auto/" + lang;
+                    document.cookie = "googtrans=" + val + "; path=/;";
+                    document.cookie = "googtrans=" + val + "; path=/; domain=" + domain + ";";
+                    document.cookie = "googtrans=" + val + "; path=/; domain=." + domain + ";";
+                }
+
+                const combo = document.querySelector('.goog-te-combo');
+                if (combo) {
+                    combo.value = lang;
+                    combo.dispatchEvent(new Event('change'));
+                }
+                window.location.reload();
+            }
+
+            if (dropdownBtn && dropdownMenu) {
+                dropdownBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!dropdownMenu.contains(e.target) && !dropdownBtn.contains(e.target)) {
+                        dropdownMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            langButtons.forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    setLanguage(lang);
+                });
+            });
+
+            syncDropdownUI(getActiveLang());
+        });
+    </script>
+
+    <!-- GSAP & ScrollTrigger Ringan CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+    <!-- GSAP + ScrollTrigger Inisialisasi Ringan -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof gsap === 'undefined') return;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) return;
+
+            if (typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+            }
+
+            // 1. Top Header: Fade-in Halus Cepat
+            const topHeader = document.querySelector('header');
+            if (topHeader) {
+                gsap.from(topHeader, {
+                    y: 10,
+                    opacity: 0,
+                    duration: 0.45,
+                    ease: 'power2.out',
+                    clearProps: 'transform,opacity'
+                });
+            }
+
+            // Kapsul Sidebar: Fade-in Opacity Saja (Tanpa y/transform) agar Fixed Terkunci Sempurna
+            const sidebarCapsule = document.querySelector('aside nav');
+            if (sidebarCapsule) {
+                gsap.from(sidebarCapsule, {
+                    opacity: 0,
+                    duration: 0.4,
+                    ease: 'power2.out',
+                    clearProps: 'all'
+                });
+            }
+
+            // 2. Dashboard Animasi Khusus vs Halaman Lainnya
+            const kpiGrid = document.getElementById('dashboard-kpi-grid');
+            if (kpiGrid) {
+                // 4 Kartu KPI: Staggered Fade-Up
+                const kpiCards = kpiGrid.querySelectorAll('.kpi-card');
+                if (kpiCards.length > 0) {
+                    gsap.from(kpiCards, {
+                        y: 20,
+                        opacity: 0,
+                        stagger: 0.08,
+                        duration: 0.5,
+                        ease: 'power2.out',
+                        clearProps: 'transform,opacity'
+                    });
+                }
+
+                // Count-up Animasi Halus (0.7s) pada Angka Utama KPI
+                const countUpEls = document.querySelectorAll('.kpi-count-up');
+                countUpEls.forEach(function (el) {
+                    const targetVal = parseFloat(el.getAttribute('data-target')) || 0;
+                    if (targetVal === 0) return;
+                    const counterObj = { val: 0 };
+                    gsap.to(counterObj, {
+                        val: targetVal,
+                        duration: 0.7,
+                        ease: 'power2.out',
+                        onUpdate: function () {
+                            el.textContent = Math.round(counterObj.val).toLocaleString('id-ID');
+                        },
+                        onComplete: function () {
+                            el.textContent = Math.round(targetVal).toLocaleString('id-ID');
+                        }
+                    });
+                });
+
+                // Kartu Grafik Chart.js Reveal dengan ScrollTrigger
+                const chartCards = document.querySelectorAll('.chart-reveal-card');
+                chartCards.forEach(function (card) {
+                    gsap.from(card, {
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 90%',
+                            once: true
+                        },
+                        y: 24,
+                        opacity: 0,
+                        duration: 0.55,
+                        ease: 'power2.out',
+                        clearProps: 'transform,opacity'
+                    });
+                });
+
+                // Kartu Peta Sebaran Pengiriman (Leaflet) Reveal dengan ScrollTrigger
+                const mapCard = document.getElementById('dashboard-map-card');
+                if (mapCard) {
+                    gsap.from(mapCard, {
+                        scrollTrigger: {
+                            trigger: mapCard,
+                            start: 'top 90%',
+                            once: true
+                        },
+                        y: 24,
+                        opacity: 0,
+                        duration: 0.55,
+                        ease: 'power2.out',
+                        clearProps: 'transform,opacity',
+                        onComplete: function () {
+                            window.dispatchEvent(new Event('resize'));
+                        }
+                    });
+                }
+            } else {
+                // Halaman Lainnya (Shipments, Exceptions, Carriers, Locations, Users, Audit Logs, Settings)
+                const mainContentCards = document.querySelectorAll('main > div, main .main-content-card');
+                if (mainContentCards.length > 0) {
+                    gsap.from(mainContentCards, {
+                        y: 12,
+                        opacity: 0,
+                        duration: 0.35,
+                        ease: 'power2.out',
+                        clearProps: 'transform,opacity'
+                    });
+                }
+            }
+        });
+    </script>
 
     @stack('scripts')
 </body>

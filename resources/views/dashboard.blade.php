@@ -3,177 +3,115 @@
 @section('title', 'Dashboard Analitik')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+<div class="space-y-6">
 
-    <!-- Welcome & Hero Header -->
-    <div class="bg-gradient-to-r from-[#0f131c] via-[#141a27] to-[#1a2233] rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-800/80 mb-8 relative overflow-hidden">
-        <!-- Ambient background glow -->
-        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-[#d4f93a]/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute right-1/3 -top-20 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-                <!-- Role Tag & Live Indicator -->
-                <div class="flex items-center space-x-2.5 mb-3">
-                    <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                        {{ $user->isAdmin() ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40' : 
-                          ($user->isOperator() ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 
-                          'bg-[#d4f93a]/20 text-[#d4f93a] border border-[#d4f93a]/40') }}">
-                        <span class="h-1.5 w-1.5 rounded-full {{ $user->isAdmin() ? 'bg-purple-400' : ($user->isOperator() ? 'bg-amber-400' : 'bg-[#d4f93a]') }} animate-ping"></span>
-                        <span>Portal {{ ucfirst($user->role) }}</span>
-                    </span>
-
-                    <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs">
-                        <svg class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{{ now()->setTimezone('Asia/Jakarta')->translatedFormat('d M Y, H:i') }} WIB</span>
-                    </span>
-                </div>
-
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                    Dashboard Analitik Kargo
-                </h1>
-                <p class="mt-1 text-sm text-slate-300 max-w-2xl">
-                    @if($user->isAdmin())
-                        Visibilitas data operasional global terintegrasi, pemantauan anomali, metrik keterlambatan, dan distribusi armada.
-                    @elseif($user->isOperator())
-                        Pusat kendali operasional kargo untuk memantau pergerakan kontainer aktif, anomali kendala, dan kepatuhan jadwal tiba.
-                    @else
-                        Pantau seluruh pesanan kargo Anda, status perjalanan real-time, dan pembaruan estimasi waktu tiba terkini.
-                    @endif
-                </p>
-            </div>
-
-            <!-- Quick Account Profile Pill Card -->
-            <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:min-w-[260px] shrink-0">
-                <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Informasi Akun</div>
-                <div class="space-y-1.5 text-xs">
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Pengguna:</span>
-                        <span class="text-white font-medium truncate max-w-[170px]">{{ $user->name }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Perusahaan:</span>
-                        <span class="text-white font-medium">{{ $user->company_name ?? '-' }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Scope Metrik:</span>
-                        <span class="text-[#d4f93a] font-semibold">
-                            {{ $user->isCustomer() ? 'Data Kargo Saya' : 'Seluruh Global Kargo' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 7 Metrik KPI Cards Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3.5 mb-8">
+    <!-- Row 1: 4 Baris KPI Dashboard (Persis Mengikuti Referensi Desain) -->
+    <div id="dashboard-kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         
-        <!-- 1. Total Shipment -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Shipment</span>
-                <span class="p-1 rounded-lg bg-slate-100 text-slate-600">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                </span>
+        <!-- 1. Total Shipment (Spent this month style) -->
+        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+            <div class="space-y-1">
+                <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider block">Total Shipment</span>
+                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                    <span class="kpi-count-up notranslate" data-target="{{ $kpis['total_shipments'] }}">{{ number_format($kpis['total_shipments']) }}</span>
+                </div>
+                <div class="text-[11px] text-[#6F756C]">Total volume terdata</div>
             </div>
-            <div class="mt-2 text-2xl font-extrabold text-slate-900">{{ number_format($kpis['total_shipments']) }}</div>
-            <div class="mt-1 text-[11px] text-slate-500 truncate">Total volume terdata</div>
+            <!-- Mini bar chart decorative SVG -->
+            <div class="flex items-end space-x-1 h-9 px-2">
+                <div class="w-1.5 bg-[#DFE1D8] rounded-full h-4"></div>
+                <div class="w-1.5 bg-[#556E5C] rounded-full h-8"></div>
+                <div class="w-1.5 bg-[#DFE1D8] rounded-full h-5"></div>
+                <div class="w-1.5 bg-[#1C1E1B] rounded-full h-9"></div>
+                <div class="w-1.5 bg-[#DFE1D8] rounded-full h-6"></div>
+            </div>
         </div>
 
-        <!-- 2. In Transit -->
-        <div class="bg-white rounded-2xl p-4 border border-indigo-200/80 bg-indigo-50/20 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-indigo-400 mb-1">
-                <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider">In Transit</span>
-                <span class="p-1 rounded-lg bg-indigo-100 text-indigo-600">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                </span>
+        <!-- 2. In Transit (New clients style) -->
+        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+            <div class="space-y-1">
+                <div class="flex items-center space-x-2">
+                    <span class="w-7 h-7 rounded-full bg-[#F4EFE6] text-[#9A6721] flex items-center justify-center text-xs">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                    </span>
+                    <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider">In Transit</span>
+                </div>
+                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                    <span class="kpi-count-up notranslate" data-target="{{ $kpis['in_transit'] }}">{{ number_format($kpis['in_transit']) }}</span>
+                </div>
+                <div class="text-[11px] text-[#9A6721] font-medium">Dalam rute perjalanan</div>
             </div>
-            <div class="mt-2 text-2xl font-extrabold text-indigo-600">{{ number_format($kpis['in_transit']) }}</div>
-            <div class="mt-1 text-[11px] text-indigo-700/80 font-medium truncate">Dalam rute perjalanan</div>
+            <!-- Mini curve decorative SVG -->
+            <div class="w-16 h-8 text-[#9A6721]/60">
+                <svg viewBox="0 0 64 28" fill="none" class="w-full h-full stroke-current" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M2 24 C 18 24, 26 4, 42 16 C 50 22, 58 10, 62 4" />
+                </svg>
+            </div>
         </div>
 
-        <!-- 3. Delivered -->
-        <div class="bg-white rounded-2xl p-4 border border-emerald-200/80 bg-emerald-50/20 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-emerald-400 mb-1">
-                <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Delivered</span>
-                <span class="p-1 rounded-lg bg-emerald-100 text-emerald-600">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                </span>
+        <!-- 3. Delivered (Earnings style) -->
+        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+            <div class="space-y-1">
+                <div class="flex items-center space-x-2">
+                    <span class="w-7 h-7 rounded-full bg-[#E6F0E9] text-[#2F6846] flex items-center justify-center text-xs">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </span>
+                    <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider">Delivered</span>
+                </div>
+                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                    <span class="kpi-count-up notranslate" data-target="{{ $kpis['delivered'] }}">{{ number_format($kpis['delivered']) }}</span>
+                </div>
+                <div class="text-[11px] text-[#2F6846] font-medium">Tiba sukses di tujuan</div>
             </div>
-            <div class="mt-2 text-2xl font-extrabold text-emerald-600">{{ number_format($kpis['delivered']) }}</div>
-            <div class="mt-1 text-[11px] text-emerald-700/80 font-medium truncate">Tiba sukses di tujuan</div>
+            <!-- Progress Pill Indicator -->
+            <div class="w-14 h-14 rounded-full bg-[#E6F0E9] flex flex-col items-center justify-center text-[#2F6846] font-bold text-xs border border-[#C8DACD]">
+                <span>{{ $kpis['total_shipments'] > 0 ? round(($kpis['delivered'] / $kpis['total_shipments']) * 100) : 0 }}%</span>
+                <span class="text-[9px] font-normal uppercase text-[#2F6846]/75">Done</span>
+            </div>
         </div>
 
-        <!-- 4. Delayed -->
-        <div class="bg-white rounded-2xl p-4 border border-amber-200/80 bg-amber-50/20 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-amber-400 mb-1">
-                <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Delayed</span>
-                <span class="p-1 rounded-lg bg-amber-100 text-amber-700">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </span>
+        <!-- 4. Highlight Sage Card (Kartu Paling Kanan Sesuai Referensi) -->
+        <div class="kpi-card bg-gradient-to-br from-[#7B9581] to-[#4E6756] text-white rounded-[24px] p-6 shadow-sm flex items-center justify-between relative overflow-hidden hover:shadow-md transition">
+            <div class="space-y-1 relative z-10">
+                <span class="text-xs font-semibold text-white/80 uppercase tracking-wider block">Operational Impact</span>
+                <div class="text-3xl font-extrabold text-white tracking-tight">
+                    <span class="kpi-count-up notranslate" data-target="{{ $kpis['delayed'] }}">{{ number_format($kpis['delayed']) }}</span>
+                    <span class="text-xs font-normal text-white/80">delayed</span>
+                </div>
+                <div class="text-[11px] text-white/90">
+                    {{ $kpis['open_exceptions'] }} active exceptions &bull; {{ number_format($kpis['delay_rate'], 1) }}% rate
+                </div>
             </div>
-            <div class="mt-2 text-2xl font-extrabold text-amber-600">{{ number_format($kpis['delayed']) }}</div>
-            <div class="mt-1 text-[11px] text-amber-700/80 font-medium truncate">Mengalami keterlambatan</div>
-        </div>
-
-        <!-- 5. Open Exceptions -->
-        <div class="bg-white rounded-2xl p-4 border border-rose-200/80 bg-rose-50/20 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-rose-400 mb-1">
-                <span class="text-[10px] font-bold text-rose-700 uppercase tracking-wider">Open Exceptions</span>
-                <span class="p-1 rounded-lg bg-rose-100 text-rose-700">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                </span>
+            <!-- Wavy Smooth Curve SVG in Highlight Card -->
+            <div class="w-20 h-10 text-white/80 relative z-10">
+                <svg viewBox="0 0 80 32" fill="none" class="w-full h-full stroke-current" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M2 20 Q 20 2, 40 18 T 78 8" />
+                </svg>
             </div>
-            <div class="mt-2 text-2xl font-extrabold text-rose-600">{{ number_format($kpis['open_exceptions']) }}</div>
-            <div class="mt-1 text-[11px] text-rose-700/80 font-medium truncate">Anomali aktif/investigasi</div>
-        </div>
-
-        <!-- 6. Delay Rate (%) -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Delay Rate</span>
-                <span class="p-1 rounded-lg bg-amber-50 text-amber-600 text-[10px] font-bold">%</span>
-            </div>
-            <div class="mt-2 text-2xl font-extrabold text-slate-900">{{ number_format($kpis['delay_rate'], 1) }}%</div>
-            <div class="mt-1 text-[11px] text-slate-500 truncate">Rasio delay kargo</div>
-        </div>
-
-        <!-- 7. Exception Rate (%) -->
-        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-md transition">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Exception Rate</span>
-                <span class="p-1 rounded-lg bg-rose-50 text-rose-600 text-[10px] font-bold">%</span>
-            </div>
-            <div class="mt-2 text-2xl font-extrabold text-slate-900">{{ number_format($kpis['exception_rate'], 1) }}%</div>
-            <div class="mt-1 text-[11px] text-slate-500 truncate">Kargo terdampak anomali</div>
+            <!-- Background Glow -->
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
         </div>
 
     </div>
 
-    <!-- Chart.js Analytics Grid (2 Graphs) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+    <!-- Chart.js Analytics Grid (2 Graphs: Status Distribution & Carrier Distribution) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         <!-- Grafik 1: Distribusi Status (Doughnut Chart) - Col 5/12 -->
-        <div class="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="chart-reveal-card lg:col-span-5 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between">
+            <div class="flex items-center justify-between pb-3 border-b border-[#DFE1D8]/60 mb-4">
                 <div>
-                    <h2 class="text-base font-bold text-slate-900 tracking-tight">Distribusi Status Pengiriman</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Komposisi kargo berdasarkan status operasional saat ini</p>
+                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">Distribusi Status Pengiriman</h2>
+                    <p class="text-xs text-[#6F756C] mt-0.5">Komposisi kargo berdasarkan status operasional saat ini</p>
                 </div>
-                <span class="p-1.5 rounded-xl bg-slate-100 text-slate-600">
+                <span class="p-2 rounded-xl bg-[#F5F6F1] text-[#556E5C]">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
@@ -182,12 +120,12 @@
             </div>
 
             @if($kpis['total_shipments'] === 0)
-                <div class="h-64 flex flex-col items-center justify-center text-slate-400 text-center p-6">
-                    <svg class="h-12 w-12 text-slate-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="h-64 flex flex-col items-center justify-center text-[#6F756C] text-center p-6">
+                    <svg class="h-10 w-10 text-[#C9CCC0] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    <p class="text-sm font-semibold text-slate-600">Belum Ada Data Pengiriman</p>
-                    <p class="text-xs text-slate-400 mt-1">Grafik status akan otomatis terbentuk saat shipment dibuat.</p>
+                    <p class="text-sm font-semibold text-[#1C1E1B]">Belum Ada Data Pengiriman</p>
+                    <p class="text-xs text-[#6F756C] mt-1">Grafik status akan otomatis terbentuk saat shipment dibuat.</p>
                 </div>
             @else
                 <div class="relative h-64 flex items-center justify-center">
@@ -195,24 +133,24 @@
                 </div>
             @endif
 
-            <div class="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 text-[11px] text-slate-600 mt-3">
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-slate-400 shrink-0"></span><span>Created: {{ $statusDistribution['CREATED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-sky-400 shrink-0"></span><span>Booked: {{ $statusDistribution['BOOKED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-amber-400 shrink-0"></span><span>Picked Up: {{ $statusDistribution['PICKED_UP'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-indigo-500 shrink-0"></span><span>In Transit: {{ $statusDistribution['IN_TRANSIT'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-emerald-500 shrink-0"></span><span>Delivered: {{ $statusDistribution['DELIVERED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-rose-500 shrink-0"></span><span>Cancelled: {{ $statusDistribution['CANCELLED'] }}</span></div>
+            <div class="grid grid-cols-3 gap-2 pt-4 border-t border-[#DFE1D8]/60 text-[11px] text-[#6F756C] mt-3">
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#9EABA2] shrink-0"></span><span>Created: {{ $statusDistribution['CREATED'] }}</span></div>
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#8FA896] shrink-0"></span><span>Booked: {{ $statusDistribution['BOOKED'] }}</span></div>
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#D4AF77] shrink-0"></span><span>Picked Up: {{ $statusDistribution['PICKED_UP'] }}</span></div>
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#556E5C] shrink-0"></span><span>In Transit: {{ $statusDistribution['IN_TRANSIT'] }}</span></div>
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#2F6846] shrink-0"></span><span>Delivered: {{ $statusDistribution['DELIVERED'] }}</span></div>
+                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#D96B6B] shrink-0"></span><span>Cancelled: {{ $statusDistribution['CANCELLED'] }}</span></div>
             </div>
         </div>
 
         <!-- Grafik 2: Distribusi Carrier (Bar Chart) - Col 7/12 -->
-        <div class="lg:col-span-7 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="chart-reveal-card lg:col-span-7 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between">
+            <div class="flex items-center justify-between pb-3 border-b border-[#DFE1D8]/60 mb-4">
                 <div>
-                    <h2 class="text-base font-bold text-slate-900 tracking-tight">Distribusi Shipment Berdasarkan Carrier</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Alokasi muatan logistik pada masing-masing maskapai & pelayaran</p>
+                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">Distribusi Shipment Berdasarkan Carrier</h2>
+                    <p class="text-xs text-[#6F756C] mt-0.5">Alokasi muatan logistik pada masing-masing maskapai & pelayaran</p>
                 </div>
-                <span class="p-1.5 rounded-xl bg-slate-100 text-slate-600">
+                <span class="p-2 rounded-xl bg-[#F5F6F1] text-[#556E5C]">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
@@ -220,12 +158,12 @@
             </div>
 
             @if(empty($carrierDistribution))
-                <div class="h-64 flex flex-col items-center justify-center text-slate-400 text-center p-6">
-                    <svg class="h-12 w-12 text-slate-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="h-64 flex flex-col items-center justify-center text-[#6F756C] text-center p-6">
+                    <svg class="h-10 w-10 text-[#C9CCC0] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    <p class="text-sm font-semibold text-slate-600">Belum Ada Pengiriman Terdata</p>
-                    <p class="text-xs text-slate-400 mt-1">Distribusi carrier akan muncul setelah shipment memiliki alokasi carrier.</p>
+                    <p class="text-sm font-semibold text-[#1C1E1B]">Belum Ada Pengiriman Terdata</p>
+                    <p class="text-xs text-[#6F756C] mt-1">Distribusi carrier akan muncul setelah shipment memiliki alokasi carrier.</p>
                 </div>
             @else
                 <div class="relative h-64">
@@ -233,9 +171,9 @@
                 </div>
             @endif
 
-            <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 mt-3">
-                <span>Total Carrier Terlibat: <strong class="text-slate-800">{{ count($carrierDistribution) }} Carrier</strong></span>
-                <a href="{{ route('shipments.index') }}" class="font-medium text-slate-700 hover:text-blue-600 transition flex items-center space-x-1">
+            <div class="pt-4 border-t border-[#DFE1D8]/60 flex items-center justify-between text-xs text-[#6F756C] mt-3">
+                <span>Total Carrier Terlibat: <strong class="text-[#1C1E1B]">{{ count($carrierDistribution) }} Carrier</strong></span>
+                <a href="{{ route('shipments.index') }}" class="font-medium text-[#556E5C] hover:text-[#425848] transition flex items-center space-x-1">
                     <span>Lihat di daftar pengiriman</span>
                     <span>&rarr;</span>
                 </a>
@@ -244,42 +182,42 @@
 
     </div>
 
-    <!-- Kartu Peta Sebaran Pengiriman Global / Pengiriman Saya -->
-    <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm mb-8 relative">
+    <!-- Kartu Peta Sebaran Pengiriman Global (Leaflet.js) -->
+    <div id="dashboard-map-card" class="bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] relative">
         <!-- Header Kartu -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-100 gap-4 mb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-[#DFE1D8]/60 gap-4 mb-4">
             <div>
                 <div class="flex items-center space-x-2.5">
-                    <h2 class="text-base font-bold text-slate-900 tracking-tight">
+                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">
                         {{ $user->isCustomer() ? 'Peta Sebaran Pengiriman Saya' : 'Peta Sebaran Pengiriman Global' }}
                     </h2>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F5F6F1] text-[#556E5C] border border-[#DFE1D8]">
                         <span id="map-shipment-count">{{ count($mapShipments) }}</span>&nbsp;Pengiriman Tampil
                     </span>
                 </div>
-                <p class="text-xs text-slate-500 mt-1">
-                    Seluruh posisi dan rute ditarik langsung dari data operasional aktual sistem Trackivo.
+                <p class="text-xs text-[#6F756C] mt-1">
+                    Seluruh posisi dan rute ditarik langsung dari data operasional aktual sistem <span class="notranslate">Trackivo</span>.
                 </p>
             </div>
 
             <!-- Toolbar Filter Sisi Klien & Tombol Reset -->
             <div class="flex flex-wrap items-center gap-1.5">
-                <button type="button" data-filter="all" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#0f172a] text-white shadow-sm transition">
+                <button type="button" data-filter="all" class="map-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#1C1E1B] text-white shadow-xs transition">
                     Semua
                 </button>
-                <button type="button" data-filter="OCEAN" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                <button type="button" data-filter="OCEAN" class="map-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F5F6F1] text-[#6F756C] hover:bg-[#DFE1D8] hover:text-[#1C1E1B] transition">
                     Ocean
                 </button>
-                <button type="button" data-filter="AIR" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                <button type="button" data-filter="AIR" class="map-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F5F6F1] text-[#6F756C] hover:bg-[#DFE1D8] hover:text-[#1C1E1B] transition">
                     Air
                 </button>
-                <button type="button" data-filter="LAND" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                <button type="button" data-filter="LAND" class="map-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F5F6F1] text-[#6F756C] hover:bg-[#DFE1D8] hover:text-[#1C1E1B] transition">
                     Land
                 </button>
-                <button type="button" data-filter="delayed" class="map-filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                <button type="button" data-filter="delayed" class="map-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F5F6F1] text-[#6F756C] hover:bg-[#DFE1D8] hover:text-[#1C1E1B] transition">
                     Delayed
                 </button>
-                <button type="button" id="map-reset-btn" title="Reset Tampilan Peta" class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition ml-1">
+                <button type="button" id="map-reset-btn" title="Reset Tampilan Peta" class="inline-flex items-center space-x-1 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#F5F6F1] hover:bg-[#DFE1D8] text-[#1C1E1B] transition ml-1">
                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
@@ -289,64 +227,64 @@
         </div>
 
         <!-- Wadah Peta Leaflet.js -->
-        <div class="relative rounded-2xl overflow-hidden border border-slate-200/80">
+        <div class="relative rounded-[20px] overflow-hidden border border-[#DFE1D8]/80">
             <div id="dashboard-global-map" style="height: 440px; width: 100%;" class="z-10"></div>
 
             <!-- Empty notice overlay jika tidak ada pengiriman yang tampil -->
-            <div id="map-empty-overlay" style="display: none;" class="absolute inset-0 bg-slate-900/10 backdrop-blur-xs z-20 flex items-center justify-center pointer-events-none">
-                <div class="bg-white/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-slate-200 text-center">
-                    <p class="text-xs font-bold text-slate-800">Belum ada pengiriman aktif untuk ditampilkan</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Semua data rute kargo akan muncul secara otomatis saat shipment terdata.</p>
+            <div id="map-empty-overlay" style="display: none;" class="absolute inset-0 bg-[#E9EAE4]/60 backdrop-blur-xs z-20 flex items-center justify-center pointer-events-none">
+                <div class="bg-white/95 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg border border-[#DFE1D8] text-center">
+                    <p class="text-xs font-bold text-[#1C1E1B]">Belum ada pengiriman aktif untuk ditampilkan</p>
+                    <p class="text-[11px] text-[#6F756C] mt-0.5">Semua data rute kargo akan muncul secara otomatis saat shipment terdata.</p>
                 </div>
             </div>
         </div>
 
         <!-- Legenda Ringkas Peta -->
-        <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-3">
+        <div class="mt-4 pt-3.5 border-t border-[#DFE1D8]/60 flex flex-wrap items-center justify-between text-xs text-[#6F756C] gap-3">
             <div class="flex flex-wrap items-center gap-4">
                 <div class="flex items-center space-x-1.5">
-                    <span class="w-3 h-3 rounded-full bg-[#0284c7] inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#556E5C] inline-block"></span>
                     <span class="font-medium text-[11px]">Kapal = Ocean</span>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    <span class="w-3 h-3 rounded-full bg-[#4f46e5] inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#35473A] inline-block"></span>
                     <span class="font-medium text-[11px]">Pesawat = Air</span>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    <span class="w-3 h-3 rounded-full bg-[#059669] inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#78927E] inline-block"></span>
                     <span class="font-medium text-[11px]">Truk = Land</span>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    <span class="w-3.5 h-3.5 rounded-full border-2 border-rose-500 bg-white inline-block"></span>
-                    <span class="font-medium text-[11px]">Ring Merah/Oranye = Terlambat</span>
+                    <span class="w-3.5 h-3.5 rounded-full border-2 border-[#D96B6B] bg-white inline-block"></span>
+                    <span class="font-medium text-[11px]">Ring Merah = Terlambat</span>
                 </div>
             </div>
-            <div class="text-[11px] text-slate-400">
+            <div class="text-[11px] text-[#6F756C]">
                 Garis solid: Origin &rarr; Posisi Terkini &bull; Garis putus-putus: Posisi Terkini &rarr; Tujuan
             </div>
         </div>
     </div>
 
-    <!-- Bagian Bawah Dashboard: Recent Shipments & Side Panel (Active Exceptions / Notifications) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Bagian Bawah Dashboard: Recent Shipments & Side Panel -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         <!-- Tabel Ringkas Pengiriman Terbaru (Col 8/12) -->
-        <div class="lg:col-span-8 bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="lg:col-span-8 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)]">
+            <div class="flex items-center justify-between pb-4 border-b border-[#DFE1D8]/60">
                 <div>
-                    <h2 class="text-base font-bold text-slate-900 tracking-tight">
+                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">
                         {{ $user->isCustomer() ? 'Pengiriman Kargo Terbaru Saya' : 'Daftar Pengiriman Terbaru' }}
                     </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Visibilitas 6 data pengiriman kargo terbaru</p>
+                    <p class="text-xs text-[#6F756C] mt-0.5">Visibilitas 6 data pengiriman kargo terbaru</p>
                 </div>
-                <a href="{{ route('shipments.index') }}" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                <a href="{{ route('shipments.index') }}" class="text-xs font-semibold px-4 py-2 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] transition">
                     Lihat Semua &rarr;
                 </a>
             </div>
 
             @if ($recentShipments->isEmpty())
-                <div class="py-12 text-center text-slate-400">
-                    <svg class="h-10 w-10 mx-auto text-slate-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="py-12 text-center text-[#6F756C]">
+                    <svg class="h-10 w-10 mx-auto text-[#C9CCC0] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                     </svg>
                     <p class="text-sm font-medium">Belum ada data shipment yang tersedia.</p>
@@ -355,7 +293,7 @@
                 <div class="overflow-x-auto mt-4 custom-scrollbar">
                     <table class="w-full text-left text-xs">
                         <thead>
-                            <tr class="text-slate-400 uppercase font-semibold border-b border-slate-100 text-[11px]">
+                            <tr class="text-[#6F756C] uppercase font-semibold border-b border-[#DFE1D8]/60 text-[11px]">
                                 <th class="pb-3">Nomor Resi</th>
                                 <th class="pb-3">Moda & Carrier</th>
                                 <th class="pb-3">Rute</th>
@@ -364,69 +302,69 @@
                                 <th class="pb-3 text-right">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tbody class="divide-y divide-[#DFE1D8]/40 text-[#1C1E1B]">
                             @foreach ($recentShipments as $shipment)
-                                <tr class="hover:bg-slate-50/80 transition">
-                                    <td class="py-3.5 font-bold text-slate-900">
-                                        <a href="{{ route('shipments.show', $shipment) }}" class="font-mono text-xs hover:text-blue-600 transition flex items-center space-x-1">
+                                <tr class="hover:bg-[#F5F6F1] transition">
+                                    <td class="py-3.5 font-bold text-[#1C1E1B]">
+                                        <a href="{{ route('shipments.show', $shipment) }}" class="font-mono text-xs hover:text-[#556E5C] transition flex items-center space-x-1 notranslate">
                                             <span>{{ $shipment->tracking_number }}</span>
                                         </a>
-                                        <div class="text-[10px] text-slate-400 font-normal mt-0.5">
+                                        <div class="text-[10px] text-[#6F756C] font-normal mt-0.5">
                                             {{ $shipment->cargo_type }} &bull; {{ number_format($shipment->weight_kg, 0) }} kg
                                         </div>
                                     </td>
                                     <td class="py-3.5">
-                                        <div class="inline-flex items-center space-x-1 px-2 py-0.5 rounded font-medium text-[10px]
-                                            {{ $shipment->transport_mode === 'OCEAN' ? 'bg-cyan-50 text-cyan-700 border border-cyan-200' : 
-                                              ($shipment->transport_mode === 'AIR' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 
-                                              'bg-emerald-50 text-emerald-700 border border-emerald-200') }}">
+                                        <div class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full font-semibold text-[10px]
+                                            {{ $shipment->transport_mode === 'OCEAN' ? 'bg-[#E6F0E9] text-[#2F6846]' : 
+                                              ($shipment->transport_mode === 'AIR' ? 'bg-[#F4EFE6] text-[#9A6721]' : 
+                                              'bg-[#EDF1EC] text-[#556E5C]') }}">
                                             <span>{{ $shipment->transport_mode }}</span>
                                         </div>
-                                        <div class="text-[11px] text-slate-600 font-medium mt-0.5">
+                                        <div class="text-[11px] text-[#6F756C] font-medium mt-0.5">
                                             {{ $shipment->carrier->name ?? '-' }}
                                         </div>
                                     </td>
                                     <td class="py-3.5">
-                                        <div class="font-medium text-slate-800">
-                                            {{ $shipment->originLocation->code ?? 'Origin' }}
-                                            <span class="text-slate-400 mx-1">&rarr;</span>
-                                            {{ $shipment->destinationLocation->code ?? 'Destination' }}
+                                        <div class="font-medium text-[#1C1E1B]">
+                                            <span class="notranslate">{{ $shipment->originLocation->code ?? 'Origin' }}</span>
+                                            <span class="text-[#6F756C] mx-1">&rarr;</span>
+                                            <span class="notranslate">{{ $shipment->destinationLocation->code ?? 'Destination' }}</span>
                                         </div>
-                                        <div class="text-[10px] text-slate-400 mt-0.5">
+                                        <div class="text-[10px] text-[#6F756C] mt-0.5">
                                             ETA: {{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d M Y H:i') : '-' }}
                                         </div>
                                     </td>
                                     <td class="py-3.5">
                                         @php
                                             $stMap = [
-                                                'CREATED'    => 'bg-slate-100 text-slate-700 border-slate-200',
-                                                'BOOKED'     => 'bg-blue-50 text-blue-700 border-blue-200',
-                                                'PICKED_UP'  => 'bg-amber-50 text-amber-700 border-amber-200',
-                                                'IN_TRANSIT' => 'bg-indigo-50 text-indigo-700 border-indigo-200',
-                                                'DELIVERED'  => 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                                                'CANCELLED'  => 'bg-rose-50 text-rose-700 border-rose-200',
+                                                'CREATED'    => 'bg-[#F1F2EC] text-[#6F756C]',
+                                                'BOOKED'     => 'bg-[#EDF1EC] text-[#556E5C]',
+                                                'PICKED_UP'  => 'bg-[#F7EFE1] text-[#9A6721]',
+                                                'IN_TRANSIT' => 'bg-[#F7EFE1] text-[#9A6721]',
+                                                'DELIVERED'  => 'bg-[#E6F0E9] text-[#2F6846]',
+                                                'CANCELLED'  => 'bg-[#F9E6E6] text-[#B84242]',
                                             ];
                                         @endphp
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border {{ $stMap[$shipment->status] ?? 'bg-slate-100 text-slate-700' }}">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold {{ $stMap[$shipment->status] ?? 'bg-[#F1F2EC] text-[#6F756C]' }}">
                                             {{ $shipment->status }}
                                         </span>
                                     </td>
                                     <td class="py-3.5 font-medium">
                                         @if ($shipment->delay_hours > 0)
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold
-                                                {{ $shipment->delay_severity === 'HIGH' ? 'bg-rose-100 text-rose-700 border border-rose-200' : 
-                                                  ($shipment->delay_severity === 'MEDIUM' ? 'bg-orange-100 text-orange-700 border border-orange-200' : 
-                                                  'bg-amber-100 text-amber-700 border border-amber-200') }}">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold
+                                                {{ $shipment->delay_severity === 'HIGH' ? 'bg-[#F9E6E6] text-[#B84242]' : 
+                                                  ($shipment->delay_severity === 'MEDIUM' ? 'bg-[#F7EFE1] text-[#9A6721]' : 
+                                                  'bg-[#F7EFE1] text-[#9A6721]') }}">
                                                 +{{ $shipment->delay_hours }}h Delay
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center text-emerald-600 text-[11px] font-semibold">
+                                            <span class="inline-flex items-center text-[#2F6846] text-[11px] font-semibold">
                                                 On-time
                                             </span>
                                         @endif
                                     </td>
                                     <td class="py-3.5 text-right">
-                                        <a href="{{ route('shipments.show', $shipment) }}" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+                                        <a href="{{ route('shipments.show', $shipment) }}" class="px-3 py-1 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] text-xs font-semibold transition">
                                             Detail
                                         </a>
                                     </td>
@@ -442,46 +380,46 @@
         <div class="lg:col-span-4 space-y-6">
             
             @if ($user->isAdmin() || $user->isOperator())
-                <!-- Panel Khusus Admin & Operator: Exception Aktif (OPEN / INVESTIGATING) -->
-                <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm">
-                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                <!-- Panel Khusus Admin & Operator: Exception Aktif -->
+                <div class="bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)]">
+                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#DFE1D8]/60">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Exception Aktif</h3>
-                            <p class="text-[11px] text-slate-400">Kendala OPEN / INVESTIGATING</p>
+                            <h3 class="text-sm font-bold text-[#1C1E1B] uppercase tracking-wider">Exception Aktif</h3>
+                            <p class="text-[11px] text-[#6F756C]">Kendala OPEN / INVESTIGATING</p>
                         </div>
-                        <a href="{{ route('exceptions.index') }}" class="text-xs font-semibold text-rose-600 hover:text-rose-700 transition">
+                        <a href="{{ route('exceptions.index') }}" class="text-xs font-semibold text-[#B84242] hover:underline transition">
                             Ke Halaman Exceptions &rarr;
                         </a>
                     </div>
 
                     @if ($activeExceptions->isEmpty())
-                        <div class="py-6 text-center text-slate-400">
-                            <svg class="h-8 w-8 text-emerald-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="py-6 text-center text-[#6F756C]">
+                            <svg class="h-8 w-8 text-[#2F6846] mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <p class="text-xs font-semibold text-slate-700">Tidak Ada Exception Aktif</p>
-                            <p class="text-[11px] text-slate-400 mt-0.5">Operasional pengiriman berjalan lancar tanpa anomali terbuka.</p>
+                            <p class="text-xs font-semibold text-[#1C1E1B]">Tidak Ada Exception Aktif</p>
+                            <p class="text-[11px] text-[#6F756C] mt-0.5">Operasional pengiriman berjalan lancar tanpa anomali terbuka.</p>
                         </div>
                     @else
                         <div class="space-y-3">
                             @foreach ($activeExceptions as $exc)
-                                <div class="p-3 rounded-2xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50 transition">
+                                <div class="p-3.5 rounded-[18px] border border-[#F0C9C9] bg-[#F9E6E6]/40 hover:bg-[#F9E6E6]/70 transition">
                                     <div class="flex items-center justify-between mb-1">
-                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase
-                                            {{ $exc->severity === 'HIGH' ? 'bg-rose-200 text-rose-800' : ($exc->severity === 'MEDIUM' ? 'bg-amber-200 text-amber-800' : 'bg-slate-200 text-slate-700') }}">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
+                                            {{ $exc->severity === 'HIGH' ? 'bg-[#F9E6E6] text-[#B84242]' : ($exc->severity === 'MEDIUM' ? 'bg-[#F7EFE1] text-[#9A6721]' : 'bg-[#F1F2EC] text-[#6F756C]') }}">
                                             {{ $exc->severity }} &bull; {{ $exc->status }}
                                         </span>
-                                        <span class="text-[10px] text-slate-400">{{ $exc->detected_at ? $exc->detected_at->diffForHumans() : '-' }}</span>
+                                        <span class="text-[10px] text-[#6F756C]">{{ $exc->detected_at ? $exc->detected_at->diffForHumans() : '-' }}</span>
                                     </div>
-                                    <div class="text-xs font-bold text-slate-900 mt-1">
+                                    <div class="text-xs font-bold text-[#1C1E1B] mt-1">
                                         {{ str_replace('_', ' ', $exc->type) }}
                                     </div>
-                                    <p class="text-xs text-slate-600 mt-0.5 line-clamp-2 leading-relaxed">{{ $exc->description }}</p>
-                                    <div class="mt-2 pt-2 border-t border-rose-200/60 flex items-center justify-between text-[11px]">
-                                        <a href="{{ route('shipments.show', $exc->shipment) }}" class="font-mono text-blue-600 hover:underline">
+                                    <p class="text-xs text-[#6F756C] mt-0.5 line-clamp-2 leading-relaxed">{{ $exc->description }}</p>
+                                    <div class="mt-2 pt-2 border-t border-[#F0C9C9]/60 flex items-center justify-between text-[11px]">
+                                        <a href="{{ route('shipments.show', $exc->shipment) }}" class="font-mono text-[#556E5C] hover:underline font-semibold notranslate">
                                             {{ $exc->shipment->tracking_number ?? 'Shipment' }}
                                         </a>
-                                        <span class="text-rose-700 font-bold">+{{ $exc->delay_impact_hours }}h Impact</span>
+                                        <span class="text-[#B84242] font-bold">+{{ $exc->delay_impact_hours }}h Impact</span>
                                     </div>
                                 </div>
                             @endforeach
@@ -490,30 +428,30 @@
                 </div>
             @endif
 
-            <!-- Notifikasi & Pintasan Cepat -->
-            <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm">
-                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Pembaruan Notifikasi</h3>
-                    <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+            <!-- Notifikasi & Pembaruan -->
+            <div class="bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)]">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#DFE1D8]/60">
+                    <h3 class="text-sm font-bold text-[#1C1E1B] uppercase tracking-wider">Pembaruan Notifikasi</h3>
+                    <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-[#556E5C] hover:text-[#425848] transition">
                         Semua Notifikasi &rarr;
                     </a>
                 </div>
 
                 @if ($recentNotifications->isEmpty())
-                    <p class="text-xs text-slate-400 text-center py-4">Belum ada notifikasi.</p>
+                    <p class="text-xs text-[#6F756C] text-center py-4">Belum ada notifikasi.</p>
                 @else
                     <div class="space-y-3">
                         @foreach ($recentNotifications as $notif)
-                            <div class="p-3 rounded-2xl border {{ $notif->is_read ? 'bg-slate-50 border-slate-100 text-slate-600' : 'bg-amber-50/60 border-amber-200 text-slate-900' }} transition">
+                            <div class="p-3.5 rounded-[18px] border {{ $notif->is_read ? 'bg-[#F5F6F1] border-[#DFE1D8] text-[#6F756C]' : 'bg-[#FAF9F5] border-[#D4AF77]/60 text-[#1C1E1B]' }} transition">
                                 <div class="flex items-center justify-between mb-1">
                                     <span class="font-bold text-xs">{{ $notif->title }}</span>
-                                    <span class="text-[10px] text-slate-400">{{ $notif->created_at->diffForHumans() }}</span>
+                                    <span class="text-[10px] text-[#6F756C]">{{ $notif->created_at->diffForHumans() }}</span>
                                 </div>
-                                <p class="text-xs text-slate-600 leading-relaxed">{{ $notif->message }}</p>
+                                <p class="text-xs text-[#6F756C] leading-relaxed">{{ $notif->message }}</p>
                                 @if($notif->shipment)
                                     <div class="mt-2 pt-1 text-[11px]">
-                                        <a href="{{ route('shipments.show', $notif->shipment) }}" class="text-blue-600 font-semibold hover:underline">
-                                            Lihat Resi {{ $notif->shipment->tracking_number }} &rarr;
+                                        <a href="{{ route('shipments.show', $notif->shipment) }}" class="text-[#556E5C] font-semibold hover:underline">
+                                            Lihat Resi <span class="notranslate">{{ $notif->shipment->tracking_number }}</span> &rarr;
                                         </a>
                                     </div>
                                 @endif
@@ -535,9 +473,11 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <style>
     .leaflet-popup-content-wrapper {
-        border-radius: 1rem;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        border-radius: 1.25rem;
+        box-shadow: 0 10px 25px -5px rgba(28, 30, 27, 0.1), 0 8px 10px -6px rgba(28, 30, 27, 0.08);
         padding: 4px;
+        background: #FFFFFF;
+        border: 1px solid #DFE1D8;
     }
     .leaflet-popup-content {
         margin: 12px 14px;
@@ -571,7 +511,8 @@
             statusData['DELIVERED'] || 0,
             statusData['CANCELLED'] || 0,
         ];
-        const statusColors = ['#94a3b8', '#38bdf8', '#fbbf24', '#6366f1', '#10b981', '#f43f5e'];
+        // Palet Sage & Sand Harmonik
+        const statusColors = ['#9EABA2', '#8FA896', '#D4AF77', '#556E5C', '#2F6846', '#D96B6B'];
 
         // 1. Inisialisasi Doughnut Chart: Distribusi Status
         const statusCtx = document.getElementById('statusChart');
@@ -591,17 +532,17 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '70%',
+                    cutout: '72%',
                     plugins: {
                         legend: {
                             display: false
                         },
                         tooltip: {
-                            backgroundColor: '#0f172a',
+                            backgroundColor: '#1C1E1B',
                             titleFont: { size: 12, weight: 'bold' },
                             bodyFont: { size: 12 },
                             padding: 10,
-                            cornerRadius: 8,
+                            cornerRadius: 12,
                             callbacks: {
                                 label: function(context) {
                                     const total = {{ $kpis['total_shipments'] }};
@@ -630,11 +571,11 @@
                     datasets: [{
                         label: 'Jumlah Pengiriman',
                         data: carrierValues,
-                        backgroundColor: '#0f172a',
-                        hoverBackgroundColor: '#d4f93a',
-                        borderRadius: 8,
+                        backgroundColor: '#556E5C',
+                        hoverBackgroundColor: '#425848',
+                        borderRadius: 12,
                         borderSkipped: false,
-                        maxBarThickness: 42
+                        maxBarThickness: 38
                     }]
                 },
                 options: {
@@ -645,9 +586,9 @@
                             display: false
                         },
                         tooltip: {
-                            backgroundColor: '#0f172a',
+                            backgroundColor: '#1C1E1B',
                             padding: 10,
-                            cornerRadius: 8,
+                            cornerRadius: 12,
                             callbacks: {
                                 label: function(context) {
                                     return ` ${context.raw} pengiriman aktif/tercatat`;
@@ -660,7 +601,7 @@
                             grid: { display: false },
                             ticks: {
                                 font: { size: 11, weight: '600' },
-                                color: '#475569'
+                                color: '#6F756C'
                             }
                         },
                         y: {
@@ -669,10 +610,10 @@
                                 stepSize: 1,
                                 precision: 0,
                                 font: { size: 11 },
-                                color: '#64748b'
+                                color: '#6F756C'
                             },
                             grid: {
-                                color: '#f1f5f9'
+                                color: '#E9EAE4'
                             }
                         }
                     }
@@ -680,7 +621,7 @@
             });
         }
 
-        // 3. Inisialisasi Peta Sebaran Pengiriman Global / Pengiriman Saya (Leaflet.js)
+        // 3. Inisialisasi Peta Sebaran Pengiriman Global (Leaflet.js)
         const mapElement = document.getElementById('dashboard-global-map');
         if (!mapElement) return;
 
@@ -711,44 +652,44 @@
 
         function createPopupContent(s) {
             const delayBadge = s.delay_hours > 0
-                ? `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;">+${s.delay_hours}h (${escapeHtml(s.delay_severity)})</span>`
-                : `<span style="display:inline-flex;align-items:center;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#d1fae5;color:#047857;border:1px solid #a7f3d0;">On-Time</span>`;
+                ? `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:9999px;font-size:10px;font-weight:700;background:#F9E6E6;color:#B84242;border:1px solid #F0C9C9;">+${s.delay_hours}h (${escapeHtml(s.delay_severity)})</span>`
+                : `<span style="display:inline-flex;align-items:center;padding:2px 8px;border-radius:9999px;font-size:10px;font-weight:700;background:#E6F0E9;color:#2F6846;border:1px solid #C8DACD;">On-Time</span>`;
 
             const statusBadgeColors = {
-                'CREATED': 'background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;',
-                'BOOKED': 'background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;',
-                'PICKED_UP': 'background:#fffbeb;color:#b45309;border:1px solid #fde68a;',
-                'IN_TRANSIT': 'background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;',
-                'DELIVERED': 'background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;',
-                'CANCELLED': 'background:#fff1f2;color:#be123c;border:1px solid #fecdd3;',
+                'CREATED': 'background:#F1F2EC;color:#6F756C;border:1px solid #DFE1D8;',
+                'BOOKED': 'background:#EDF1EC;color:#556E5C;border:1px solid #DFE1D8;',
+                'PICKED_UP': 'background:#F7EFE1;color:#9A6721;border:1px solid #E6D8BF;',
+                'IN_TRANSIT': 'background:#F7EFE1;color:#9A6721;border:1px solid #E6D8BF;',
+                'DELIVERED': 'background:#E6F0E9;color:#2F6846;border:1px solid #C8DACD;',
+                'CANCELLED': 'background:#F9E6E6;color:#B84242;border:1px solid #F0C9C9;',
             };
-            const stStyle = statusBadgeColors[s.status] || 'background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;';
+            const stStyle = statusBadgeColors[s.status] || 'background:#F1F2EC;color:#6F756C;border:1px solid #DFE1D8;';
 
             return `
                 <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 230px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                        <span style="font-family: monospace; font-size: 11px; font-weight: 800; color: #0f172a;">${escapeHtml(s.tracking_number)}</span>
-                        <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; ${stStyle}">${escapeHtml(s.status)}</span>
+                        <span style="font-family: monospace; font-size: 11px; font-weight: 800; color: #1C1E1B;">${escapeHtml(s.tracking_number)}</span>
+                        <span style="font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 9999px; ${stStyle}">${escapeHtml(s.status)}</span>
                     </div>
-                    <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">
-                        <span style="font-weight: 700; color: #0f172a;">${escapeHtml(s.transport_mode)}</span> &bull; ${escapeHtml(s.carrier_name)}
+                    <div style="font-size: 11px; color: #6F756C; margin-bottom: 6px;">
+                        <span style="font-weight: 700; color: #1C1E1B;">${escapeHtml(s.transport_mode)}</span> &bull; ${escapeHtml(s.carrier_name)}
                     </div>
-                    <div style="background: #f8fafc; border-radius: 8px; padding: 6px 8px; margin-bottom: 8px; border: 1px solid #e2e8f0;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: #1e293b; font-size: 11px;">
+                    <div style="background: #F5F6F1; border-radius: 12px; padding: 6px 10px; margin-bottom: 8px; border: 1px solid #DFE1D8;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: #1C1E1B; font-size: 11px;">
                             <span>${escapeHtml(s.origin.code)}</span>
-                            <span style="color: #94a3b8; font-weight: normal;">&rarr;</span>
+                            <span style="color: #6F756C; font-weight: normal;">&rarr;</span>
                             <span>${escapeHtml(s.destination.code)}</span>
                         </div>
-                        <div style="display: flex; align-items: center; justify-content: space-between; color: #64748b; font-size: 10px; margin-top: 2px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; color: #6F756C; font-size: 10px; margin-top: 2px;">
                             <span class="truncate" style="max-width: 100px;">${escapeHtml(s.origin.name)}</span>
                             <span class="truncate" style="max-width: 100px; text-align: right;">${escapeHtml(s.destination.name)}</span>
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="font-size: 11px; color: #64748b;">Status Keterlambatan:</span>
+                        <span style="font-size: 11px; color: #6F756C;">Status Delay:</span>
                         ${delayBadge}
                     </div>
-                    <a href="${escapeHtml(s.detail_url)}" style="display: block; width: 100%; text-align: center; padding: 6px 12px; background: #0f172a; color: #ffffff; border-radius: 8px; font-weight: 700; font-size: 11px; text-decoration: none; transition: background 0.2s;">
+                    <a href="${escapeHtml(s.detail_url)}" style="display: block; width: 100%; text-align: center; padding: 7px 12px; background: #556E5C; color: #ffffff; border-radius: 9999px; font-weight: 700; font-size: 11px; text-decoration: none; transition: background 0.2s;">
                         Lihat Detail Pengiriman &rarr;
                     </a>
                 </div>
@@ -794,7 +735,7 @@
 
                 boundsPoints.push(originLatLng, destLatLng, currentLatLng);
 
-                const modeColor = s.transport_mode === 'OCEAN' ? '#0284c7' : (s.transport_mode === 'AIR' ? '#4f46e5' : '#059669');
+                const modeColor = s.transport_mode === 'OCEAN' ? '#556E5C' : (s.transport_mode === 'AIR' ? '#35473A' : '#78927E');
 
                 // Garis solid halus Origin -> Current
                 const traveledLine = L.polyline([originLatLng, currentLatLng], {
@@ -816,7 +757,7 @@
                 // Titik kecil Origin
                 const originPoint = L.circleMarker(originLatLng, {
                     radius: 4.5,
-                    fillColor: '#0f172a',
+                    fillColor: '#1C1E1B',
                     color: '#ffffff',
                     weight: 2,
                     fillOpacity: 0.9,
@@ -826,7 +767,7 @@
                 // Titik kecil Destination
                 const destPoint = L.circleMarker(destLatLng, {
                     radius: 4.5,
-                    fillColor: '#64748b',
+                    fillColor: '#6F756C',
                     color: '#ffffff',
                     weight: 2,
                     fillOpacity: 0.9,
@@ -835,10 +776,10 @@
 
                 // Custom DivIcon Marker Current Location
                 const isDelayed = s.delay_severity === 'HIGH' || s.delay_severity === 'MEDIUM';
-                const ringBorder = s.delay_severity === 'HIGH' ? '#f43f5e' : (s.delay_severity === 'MEDIUM' ? '#f97316' : '#ffffff');
+                const ringBorder = s.delay_severity === 'HIGH' ? '#D96B6B' : (s.delay_severity === 'MEDIUM' ? '#D4AF77' : '#ffffff');
                 const ringShadow = isDelayed
-                    ? `0 0 0 4px ${s.delay_severity === 'HIGH' ? 'rgba(244,63,94,0.45)' : 'rgba(249,115,22,0.45)'}, 0 4px 12px rgba(0,0,0,0.3)`
-                    : '0 4px 10px rgba(0,0,0,0.25)';
+                    ? `0 0 0 4px ${s.delay_severity === 'HIGH' ? 'rgba(217,107,107,0.35)' : 'rgba(212,175,119,0.35)'}, 0 4px 12px rgba(28,30,27,0.2)`
+                    : '0 4px 10px rgba(28,30,27,0.15)';
 
                 let iconSvg = '';
                 if (s.transport_mode === 'OCEAN') {
@@ -880,11 +821,11 @@
             btn.addEventListener('click', function() {
                 const filter = this.getAttribute('data-filter');
                 filterButtons.forEach(b => {
-                    b.classList.remove('bg-[#0f172a]', 'text-white', 'shadow-sm');
-                    b.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
+                    b.classList.remove('bg-[#1C1E1B]', 'text-white', 'shadow-xs');
+                    b.classList.add('bg-[#F5F6F1]', 'text-[#6F756C]', 'hover:bg-[#DFE1D8]', 'hover:text-[#1C1E1B]');
                 });
-                this.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200');
-                this.classList.add('bg-[#0f172a]', 'text-white', 'shadow-sm');
+                this.classList.remove('bg-[#F5F6F1]', 'text-[#6F756C]', 'hover:bg-[#DFE1D8]', 'hover:text-[#1C1E1B]');
+                this.classList.add('bg-[#1C1E1B]', 'text-white', 'shadow-xs');
                 renderMapShipments(filter);
             });
         });

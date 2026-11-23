@@ -16,11 +16,11 @@
     </div>
 
     <!-- Form Card -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="p-6 sm:p-8 bg-[#0e1117] text-white">
-            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#d4f93a]/20 text-[#d4f93a] text-xs font-semibold uppercase tracking-wider mb-2">Edit Master Data</span>
+    <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] overflow-hidden">
+        <div class="p-6 sm:p-8 bg-gradient-to-r from-[#7B9581] to-[#556E5C] text-white">
+            <span class="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold uppercase tracking-wider mb-2">Edit Master Data</span>
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Edit Lokasi: {{ $location->name }}</h1>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Perbarui kode, nama, tipe titik, atau koordinat geospasial.</p>
+            <p class="text-xs sm:text-sm text-white/90 mt-1">Perbarui kode, nama, tipe titik, atau koordinat geospasial.</p>
         </div>
 
         <form method="POST" action="{{ route('locations.update', $location) }}" class="p-6 sm:p-8 space-y-6">
@@ -32,7 +32,7 @@
                 <div>
                     <label for="code" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kode Lokasi <span class="text-rose-500">*</span></label>
                     <input type="text" name="code" id="code" value="{{ old('code', $location->code) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('code') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a] uppercase font-mono">
+                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('code') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C] uppercase font-mono">
                     @error('code')
                         <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
@@ -42,7 +42,7 @@
                 <div>
                     <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nama Lokasi <span class="text-rose-500">*</span></label>
                     <input type="text" name="name" id="name" value="{{ old('name', $location->name) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('name') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('name') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                     @error('name')
                         <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
@@ -52,7 +52,7 @@
                 <div>
                     <label for="country" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Negara <span class="text-rose-500">*</span></label>
                     <input type="text" name="country" id="country" value="{{ old('country', $location->country) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('country') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('country') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                     @error('country')
                         <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
@@ -62,7 +62,7 @@
                 <div>
                     <label for="type" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Tipe Lokasi <span class="text-rose-500">*</span></label>
                     <select name="type" id="type" required
-                            class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('type') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a]">
+                            class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('type') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                         <option value="PORT" {{ old('type', $location->type) == 'PORT' ? 'selected' : '' }}>PORT (Pelabuhan Laut)</option>
                         <option value="AIRPORT" {{ old('type', $location->type) == 'AIRPORT' ? 'selected' : '' }}>AIRPORT (Bandara Udara)</option>
                         <option value="WAREHOUSE" {{ old('type', $location->type) == 'WAREHOUSE' ? 'selected' : '' }}>WAREHOUSE (Gudang Transit)</option>
@@ -77,7 +77,7 @@
                 <div class="sm:col-span-2 p-4 rounded-2xl bg-slate-50 border border-slate-200">
                     <div class="flex items-center justify-between mb-1.5">
                         <div class="flex items-center space-x-2">
-                            <span class="h-2 w-2 rounded-full bg-[#d4f93a]"></span>
+                            <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
                             <label for="geo_search_input" class="text-xs font-bold text-slate-800 uppercase tracking-wider">
                                 Cari Koordinat Otomatis (OpenStreetMap Geocoding)
                             </label>
@@ -91,9 +91,9 @@
                     <div class="flex gap-2">
                         <div class="relative flex-1">
                             <input type="text" id="geo_search_input" placeholder="Ketik nama pelabuhan, bandara, atau kota..."
-                                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a] transition">
+                                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C] transition">
                         </div>
-                        <button type="button" id="btn_geocode_search" class="px-5 py-2.5 rounded-xl bg-[#0e1117] hover:bg-slate-800 text-[#d4f93a] text-xs font-bold shadow-sm transition inline-flex items-center space-x-1.5 shrink-0">
+                        <button type="button" id="btn_geocode_search" class="px-5 py-2.5 rounded-full bg-[#556E5C] hover:bg-[#425848] text-white text-xs font-bold shadow-xs transition inline-flex items-center space-x-1.5 shrink-0">
                             <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -130,7 +130,7 @@
                 <div>
                     <label for="latitude" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Latitude (-90 s.d. 90) <span class="text-rose-500">*</span></label>
                     <input type="number" step="any" name="latitude" id="latitude" value="{{ old('latitude', $location->latitude) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('latitude') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a] font-mono">
+                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('latitude') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C] font-mono">
                     @error('latitude')
                         <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
@@ -140,7 +140,7 @@
                 <div>
                     <label for="longitude" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Longitude (-180 s.d. 180) <span class="text-rose-500">*</span></label>
                     <input type="number" step="any" name="longitude" id="longitude" value="{{ old('longitude', $location->longitude) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('longitude') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#d4f93a] font-mono">
+                           class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('longitude') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C] font-mono">
                     @error('longitude')
                         <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
                     @enderror
@@ -148,11 +148,11 @@
             </div>
 
             <!-- Buttons -->
-            <div class="pt-6 border-t border-slate-100 flex items-center justify-end space-x-3">
-                <a href="{{ route('locations.index') }}" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition">
+            <div class="pt-6 border-t border-[#DFE1D8]/60 flex items-center justify-end space-x-3">
+                <a href="{{ route('locations.index') }}" class="px-5 py-2.5 rounded-full border border-[#DFE1D8] bg-[#F5F6F1] text-[#1C1E1B] text-sm font-semibold hover:bg-[#E2E4DC] transition">
                     Batal
                 </a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#0e1117] hover:bg-slate-800 text-[#d4f93a] text-sm font-bold shadow-sm transition">
+                <button type="submit" class="px-6 py-2.5 rounded-full bg-[#556E5C] hover:bg-[#425848] text-white text-sm font-bold shadow-xs transition">
                     Simpan Perubahan
                 </button>
             </div>
