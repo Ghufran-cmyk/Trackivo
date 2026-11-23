@@ -244,6 +244,14 @@
                     </a>
                 </div>
 
+                <!-- Tautan Akses Pelacakan Resi Publik -->
+                <div class="mt-3 text-center text-xs text-[#9FB0A2]">
+                    Ingin cek status pengiriman? 
+                    <a href="{{ route('tracking.public') }}" class="font-medium text-[#C8D3BE] hover:underline ml-1">
+                        Lacak Resi Tanpa Login
+                    </a>
+                </div>
+
             </div>
         </div>
 

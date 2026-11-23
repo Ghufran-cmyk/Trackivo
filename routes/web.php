@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExceptionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PublicTrackingController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 });
+
+// Pelacakan Resi Publik (Tanpa Autentikasi)
+Route::get('/track', [PublicTrackingController::class, 'index'])->name('tracking.public');
 
 // Authentication Routes (Guest)
 Route::middleware('guest')->group(function () {
