@@ -102,81 +102,113 @@
     </div>
 
     @if(!auth()->user()->isCustomer())
-    <!-- Chart.js Analytics Grid (2 Graphs: Status Distribution & Carrier Distribution) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Control Tower Analytics Grid (Interactive Thin Ring & Horizontal Ranked Allocation Panel) -->
+    <div id="control-tower-analytics" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <!-- Grafik 1: Distribusi Status (Doughnut Chart) - Col 5/12 -->
-        <div class="chart-reveal-card lg:col-span-5 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between">
-            <div class="flex items-center justify-between pb-3 border-b border-[#DFE1D8]/60 mb-4">
+        <!-- Kartu 1: Komposisi & Status Kargo (Interactive Thin Ring + Live Center KPI) - Col 6/12 -->
+        <div class="control-tower-card lg:col-span-6 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between h-full hover:shadow-md transition">
+            <!-- Header Kartu Kiri -->
+            <div class="flex items-center justify-between pb-3.5 border-b border-[#DFE1D8]/60 mb-4">
                 <div>
-                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">Distribusi Status Pengiriman</h2>
-                    <p class="text-xs text-[#6F756C] mt-0.5">Komposisi kargo berdasarkan status operasional saat ini</p>
+                    <div class="flex items-center space-x-2">
+                        <h2 class="text-base font-bold text-[#1C2820] tracking-tight">Komposisi Status Kargo</h2>
+                        <span class="sr-only">Distribusi Status Pengiriman</span>
+                    </div>
+                    <p class="text-xs text-[#6F756C] mt-0.5">Distribusi Status Pengiriman &amp; ketepatan waktu pengiriman</p>
                 </div>
-                <span class="p-2 rounded-xl bg-[#F5F6F1] text-[#556E5C]">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                    </svg>
-                </span>
+                <!-- Pill Switcher Status vs SLA Delay -->
+                <div class="bg-[#F1F3EC] p-1 rounded-full inline-flex text-xs font-medium border border-[#DFE1D8]/60">
+                    <button type="button" id="card1-tab-status" class="card1-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200">
+                        Status
+                    </button>
+                    <button type="button" id="card1-tab-sla" class="card1-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200">
+                        SLA Delay
+                    </button>
+                </div>
             </div>
 
-            @if($kpis['total_shipments'] === 0)
-                <div class="h-64 flex flex-col items-center justify-center text-[#6F756C] text-center p-6">
-                    <svg class="h-10 w-10 text-[#C9CCC0] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    <p class="text-sm font-semibold text-[#1C1E1B]">Belum Ada Data Pengiriman</p>
-                    <p class="text-xs text-[#6F756C] mt-1">Grafik status akan otomatis terbentuk saat shipment dibuat.</p>
-                </div>
-            @else
-                <div class="relative h-64 flex items-center justify-center">
-                    <canvas id="statusChart"></canvas>
-                </div>
-            @endif
+            <!-- Isi Kartu Kiri (2 Sisi: Ring SVG Kiri & List Detail Kanan) -->
+            <div class="my-auto py-2">
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                    
+                    <!-- Sisi Kiri (sm:col-span-5): Custom Interactive Thin SVG Ring -->
+                    <div class="sm:col-span-5 flex flex-col items-center justify-center relative">
+                        <div class="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center">
+                            <svg id="cargo-ring-svg" class="w-full h-full -rotate-90 transform" viewBox="0 0 200 200">
+                                <!-- Base background track ring -->
+                                <circle cx="100" cy="100" r="76" stroke="#ECEEE8" stroke-width="13" fill="none" />
+                                <!-- Dynamic Segments Container -->
+                                <g id="cargo-ring-segments"></g>
+                            </svg>
 
-            <div class="grid grid-cols-3 gap-2 pt-4 border-t border-[#DFE1D8]/60 text-[11px] text-[#6F756C] mt-3">
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#9EABA2] shrink-0"></span><span>Created: {{ $statusDistribution['CREATED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#8FA896] shrink-0"></span><span>Booked: {{ $statusDistribution['BOOKED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#D4AF77] shrink-0"></span><span>Picked Up: {{ $statusDistribution['PICKED_UP'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#556E5C] shrink-0"></span><span>In Transit: {{ $statusDistribution['IN_TRANSIT'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#2F6846] shrink-0"></span><span>Delivered: {{ $statusDistribution['DELIVERED'] }}</span></div>
-                <div class="flex items-center space-x-1.5"><span class="h-2 w-2 rounded-full bg-[#D96B6B] shrink-0"></span><span>Cancelled: {{ $statusDistribution['CANCELLED'] }}</span></div>
+                            <!-- Live Center KPI -->
+                            <div id="cargo-ring-center" class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-2 select-none">
+                                <span id="ring-center-value" class="text-3xl font-extrabold text-[#1C2820] tracking-tight leading-none transition-all duration-150">
+                                    {{ $kpis['total_shipments'] }}
+                                </span>
+                                <span id="ring-center-label" class="text-[11px] font-medium text-[#6F756C] mt-1.5 transition-all duration-150 truncate max-w-[130px]">
+                                    Total Kargo
+                                </span>
+                                <span id="ring-center-badge" class="mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F1F4EE] text-[#556E5C] border border-[#DFE1D8]/60 transition-all duration-150">
+                                    100%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sisi Kanan (sm:col-span-7): Daftar Rincian Interaktif -->
+                    <div class="sm:col-span-7 flex flex-col justify-center space-y-1 min-h-[190px]" id="cargo-detail-list">
+                        <!-- Populated by JavaScript with active rows and micro progress bars -->
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Kartu Kiri -->
+            <div class="pt-3.5 border-t border-[#DFE1D8]/60 flex items-center justify-between text-xs text-[#6F756C] mt-3">
+                <span id="cargo-ring-footer-text">Total Volume: <strong class="text-[#1C2820]">{{ $kpis['total_shipments'] }} Kargo</strong></span>
+                <span class="text-[11px] text-[#889E8B] flex items-center space-x-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#889E8B]"></span>
+                    <span>Interaktif &bull; Hover Segmen</span>
+                </span>
             </div>
         </div>
 
-        <!-- Grafik 2: Distribusi Carrier (Bar Chart) - Col 7/12 -->
-        <div class="chart-reveal-card lg:col-span-7 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between">
-            <div class="flex items-center justify-between pb-3 border-b border-[#DFE1D8]/60 mb-4">
+        <!-- Kartu 2: Alokasi Carrier & Moda (Horizontal Ranked Allocation Panel) - Col 6/12 -->
+        <div class="control-tower-card lg:col-span-6 bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex flex-col justify-between h-full hover:shadow-md transition">
+            <!-- Header Kartu Kanan -->
+            <div class="flex items-center justify-between pb-3.5 border-b border-[#DFE1D8]/60 mb-4">
                 <div>
-                    <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">Distribusi Shipment Berdasarkan Carrier</h2>
-                    <p class="text-xs text-[#6F756C] mt-0.5">Alokasi muatan logistik pada masing-masing maskapai & pelayaran</p>
+                    <div class="flex items-center space-x-2">
+                        <h2 class="text-base font-bold text-[#1C2820] tracking-tight">Alokasi Carrier &amp; Moda</h2>
+                        <span class="sr-only">Distribusi Shipment Berdasarkan Carrier</span>
+                    </div>
+                    <p class="text-xs text-[#6F756C] mt-0.5">Distribusi Shipment Berdasarkan Carrier &amp; jaringan moda</p>
                 </div>
-                <span class="p-2 rounded-xl bg-[#F5F6F1] text-[#556E5C]">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                </span>
+                <!-- Pill Switcher Carrier vs Moda -->
+                <div class="bg-[#F1F3EC] p-1 rounded-full inline-flex text-xs font-medium border border-[#DFE1D8]/60">
+                    <button type="button" id="card2-tab-carrier" class="card2-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200">
+                        Carrier
+                    </button>
+                    <button type="button" id="card2-tab-mode" class="card2-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200">
+                        Moda
+                    </button>
+                </div>
             </div>
 
-            @if(empty($carrierDistribution))
-                <div class="h-64 flex flex-col items-center justify-center text-[#6F756C] text-center p-6">
-                    <svg class="h-10 w-10 text-[#C9CCC0] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                    <p class="text-sm font-semibold text-[#1C1E1B]">Belum Ada Pengiriman Terdata</p>
-                    <p class="text-xs text-[#6F756C] mt-1">Distribusi carrier akan muncul setelah shipment memiliki alokasi carrier.</p>
+            <!-- Isi Kartu Kanan: Daftar Bar Horizontal Modern -->
+            <div class="my-auto py-2">
+                <div id="allocation-items-container" class="space-y-1.5 max-h-[225px] overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Populated by JavaScript with Horizontal Ranked Allocation Rows -->
                 </div>
-            @else
-                <div class="relative h-64">
-                    <canvas id="carrierChart"></canvas>
-                </div>
-            @endif
+            </div>
 
-            <div class="pt-4 border-t border-[#DFE1D8]/60 flex items-center justify-between text-xs text-[#6F756C] mt-3">
-                <span>Total Carrier Terlibat: <strong class="text-[#1C1E1B]">{{ count($carrierDistribution) }} Carrier</strong></span>
-                <a href="{{ route('shipments.index') }}" class="font-medium text-[#556E5C] hover:text-[#425848] transition flex items-center space-x-1">
+            <!-- Footer Kartu Kanan -->
+            <div class="pt-3.5 border-t border-[#DFE1D8]/60 flex items-center justify-between text-xs text-[#6F756C] mt-3">
+                <span id="allocation-footer-summary">Total Carrier Terlibat: <strong class="text-[#1C2820]">{{ count($carrierDistribution) }} Carrier</strong></span>
+                <a href="{{ route('shipments.index') }}" class="font-medium text-[#556E5C] hover:text-[#3E5245] transition flex items-center space-x-1 group">
                     <span>Lihat di daftar pengiriman</span>
-                    <span>&rarr;</span>
+                    <span class="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                 </a>
             </div>
         </div>
@@ -496,131 +528,482 @@
 @endpush
 
 @push('scripts')
-<!-- Chart.js Official CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Leaflet.js Official CDN -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Data Status dari Backend
-        const statusData = @json($statusDistribution);
-        const statusLabels = ['CREATED', 'BOOKED', 'PICKED UP', 'IN TRANSIT', 'DELIVERED', 'CANCELLED'];
-        const statusValues = [
-            statusData['CREATED'] || 0,
-            statusData['BOOKED'] || 0,
-            statusData['PICKED_UP'] || 0,
-            statusData['IN_TRANSIT'] || 0,
-            statusData['DELIVERED'] || 0,
-            statusData['CANCELLED'] || 0,
-        ];
-        // Palet Sage & Sand Harmonik
-        const statusColors = ['#9EABA2', '#8FA896', '#D4AF77', '#556E5C', '#2F6846', '#D96B6B'];
+        // =========================================================================
+        // TRACKIVO INTERACTIVE CONTROL TOWER ANALYTICS (NATURAL SAGE & SAND THEME)
+        // =========================================================================
+        const controlTower = document.getElementById('control-tower-analytics');
 
-        // 1. Inisialisasi Doughnut Chart: Distribusi Status
-        const statusCtx = document.getElementById('statusChart');
-        if (statusCtx && {{ $kpis['total_shipments'] }} > 0) {
-            new Chart(statusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: statusLabels,
-                    datasets: [{
-                        data: statusValues,
-                        backgroundColor: statusColors,
-                        borderWidth: 2,
-                        borderColor: '#ffffff',
-                        hoverOffset: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '72%',
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#1C1E1B',
-                            titleFont: { size: 12, weight: 'bold' },
-                            bodyFont: { size: 12 },
-                            padding: 10,
-                            cornerRadius: 12,
-                            callbacks: {
-                                label: function(context) {
-                                    const total = {{ $kpis['total_shipments'] }};
-                                    const val = context.raw || 0;
-                                    const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
-                                    return ` ${val} shipment (${pct}%)`;
-                                }
-                            }
-                        }
+        if (controlTower) {
+            // Palet Natural Sage & Sand Resmi Trackivo
+            const PALETTE = {
+                deepSage: '#243329',
+                darkSage: '#3E5245',
+                sage: '#556E5C',
+                softSage: '#889E8B',
+                lightSage: '#C8D3BE',
+                warmSand: '#C5A572',
+                sandLight: '#D4AF77',
+                terracotta: '#B96A55',
+                track: '#ECEEE8',
+                trackLight: '#EFEFE9',
+                textDark: '#1C2820',
+                textMuted: '#6F756C',
+                bgHighlight: '#F7F8F4',
+                bgPill: '#F1F4EE',
+                white: '#FFFFFF'
+            };
+
+            // Data Mentah dari Backend Controller
+            const rawStatus = @json($statusDistribution);
+            const rawCarrierDist = @json($carrierDistribution);
+            const rawCarrierStats = @json($carrierStats ?? []);
+            const rawModeDist = @json($modeDistribution ?? []);
+            const rawSlaDist = @json($slaDistribution ?? []);
+            const totalShipments = {{ (int) $kpis['total_shipments'] }};
+            const delayedCount = {{ (int) $kpis['delayed'] }};
+            const onTimeCount = Math.max(0, totalShipments - delayedCount);
+
+            // ---------------------------------------------------------------------
+            // KARTU 1: KOMPOSISI & STATUS KARGO (SVG THIN RING + LIVE CENTER KPI)
+            // ---------------------------------------------------------------------
+            let card1CurrentTab = 'status'; // 'status' | 'sla'
+
+            const statusItemsConfig = [
+                { key: 'CREATED', label: 'Created', color: PALETTE.softSage, value: Number(rawStatus['CREATED'] || 0) },
+                { key: 'BOOKED', label: 'Booked', color: PALETTE.sage, value: Number(rawStatus['BOOKED'] || 0) },
+                { key: 'PICKED_UP', label: 'Picked Up', color: PALETTE.warmSand, value: Number(rawStatus['PICKED_UP'] || 0) },
+                { key: 'IN_TRANSIT', label: 'In Transit', color: PALETTE.darkSage, value: Number(rawStatus['IN_TRANSIT'] || 0) },
+                { key: 'DELIVERED', label: 'Delivered', color: PALETTE.deepSage, value: Number(rawStatus['DELIVERED'] || 0) },
+                { key: 'CANCELLED', label: 'Cancelled', color: PALETTE.terracotta, value: Number(rawStatus['CANCELLED'] || 0) },
+            ];
+
+            const slaItemsConfig = [
+                { key: 'ON_TIME', label: 'On-Time', color: PALETTE.darkSage, value: onTimeCount },
+                { key: 'DELAYED', label: 'Delayed', color: PALETTE.terracotta, value: delayedCount },
+            ];
+
+            const ringSegmentsGroup = document.getElementById('cargo-ring-segments');
+            const centerValEl = document.getElementById('ring-center-value');
+            const centerLblEl = document.getElementById('ring-center-label');
+            const centerBdgEl = document.getElementById('ring-center-badge');
+            const detailListEl = document.getElementById('cargo-detail-list');
+            const ringFooterTextEl = document.getElementById('cargo-ring-footer-text');
+            const tabStatusBtn = document.getElementById('card1-tab-status');
+            const tabSlaBtn = document.getElementById('card1-tab-sla');
+
+            const RADIUS = 76;
+            const CIRCUMFERENCE = 2 * Math.PI * RADIUS; // ~477.52
+
+            function setCenterKpiDefault() {
+                if (card1CurrentTab === 'status') {
+                    centerValEl.textContent = totalShipments;
+                    centerLblEl.textContent = 'Total Kargo';
+                    centerBdgEl.textContent = '100%';
+                    centerBdgEl.className = 'mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F1F4EE] text-[#556E5C] border border-[#DFE1D8]/60 transition-all duration-150';
+                } else {
+                    const onTimeRate = totalShipments > 0 ? Math.round((onTimeCount / totalShipments) * 100) : 0;
+                    centerValEl.textContent = `${onTimeRate}%`;
+                    centerLblEl.textContent = 'On-Time Rate';
+                    centerBdgEl.textContent = `${onTimeCount}/${totalShipments} Kargo`;
+                    centerBdgEl.className = 'mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F1F4EE] text-[#3E5245] border border-[#DFE1D8]/60 transition-all duration-150';
+                }
+            }
+
+            function highlightItem(itemKey) {
+                const items = card1CurrentTab === 'status' ? statusItemsConfig : slaItemsConfig;
+                const activeItem = items.find(i => i.key === itemKey);
+                if (!activeItem) return;
+
+                const tabTotal = items.reduce((acc, curr) => acc + curr.value, 0);
+                const pct = tabTotal > 0 ? Math.round((activeItem.value / tabTotal) * 100) : 0;
+
+                // Update Live Center KPI
+                centerValEl.textContent = activeItem.value;
+                centerLblEl.textContent = activeItem.label;
+                centerBdgEl.textContent = `${pct}%`;
+                centerBdgEl.className = 'mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold text-white transition-all duration-150';
+                centerBdgEl.style.backgroundColor = activeItem.color;
+
+                // Slices opacity & thickness
+                const slices = ringSegmentsGroup.querySelectorAll('circle');
+                slices.forEach(s => {
+                    if (s.getAttribute('data-key') === itemKey) {
+                        s.setAttribute('stroke-width', '17');
+                        s.style.opacity = '1';
+                    } else {
+                        s.setAttribute('stroke-width', '13');
+                        s.style.opacity = '0.22';
+                    }
+                });
+
+                // List rows dimming
+                const rows = detailListEl.querySelectorAll('.cargo-detail-row');
+                rows.forEach(r => {
+                    if (r.getAttribute('data-key') === itemKey) {
+                        r.classList.add('bg-[#F7F8F4]', 'shadow-xs');
+                        r.style.opacity = '1';
+                    } else {
+                        r.classList.remove('bg-[#F7F8F4]', 'shadow-xs');
+                        r.style.opacity = '0.45';
+                    }
+                });
+            }
+
+            function resetHighlight() {
+                setCenterKpiDefault();
+                centerBdgEl.style.backgroundColor = '';
+
+                const slices = ringSegmentsGroup.querySelectorAll('circle');
+                slices.forEach(s => {
+                    s.setAttribute('stroke-width', '13');
+                    s.style.opacity = '1';
+                });
+
+                const rows = detailListEl.querySelectorAll('.cargo-detail-row');
+                rows.forEach(r => {
+                    r.classList.remove('bg-[#F7F8F4]', 'shadow-xs');
+                    r.style.opacity = '1';
+                });
+            }
+
+            function renderCard1() {
+                const items = card1CurrentTab === 'status' ? statusItemsConfig : slaItemsConfig;
+                const tabTotal = items.reduce((acc, curr) => acc + curr.value, 0);
+
+                // Update Center KPI & Footer
+                setCenterKpiDefault();
+                if (ringFooterTextEl) {
+                    if (card1CurrentTab === 'status') {
+                        ringFooterTextEl.innerHTML = `Total Volume: <strong class="text-[#1C2820]">${tabTotal} Kargo</strong>`;
+                    } else {
+                        const delayedRate = tabTotal > 0 ? ((delayedCount / tabTotal) * 100).toFixed(1) : 0;
+                        ringFooterTextEl.innerHTML = `SLA Ketepatan: <strong class="text-[#1C2820]">${onTimeCount} On-Time &bull; ${delayedRate}% Delay</strong>`;
                     }
                 }
-            });
-        }
 
-        // 2. Inisialisasi Bar Chart: Distribusi Carrier
-        const carrierData = @json($carrierDistribution);
-        const carrierLabels = Object.keys(carrierData);
-        const carrierValues = Object.values(carrierData);
-        const carrierCtx = document.getElementById('carrierChart');
+                // Render SVG Segments
+                ringSegmentsGroup.innerHTML = '';
+                if (tabTotal === 0) {
+                    // Empty state ring
+                    centerValEl.textContent = '0';
+                    centerLblEl.textContent = '0 Kargo';
+                    centerBdgEl.textContent = '0%';
+                } else {
+                    const activeItems = items.filter(i => i.value > 0);
+                    let accumulatedLength = 0;
+                    const hasMultiple = activeItems.length > 1;
+                    const gap = hasMultiple ? 3.5 : 0;
 
-        if (carrierCtx && carrierLabels.length > 0) {
-            new Chart(carrierCtx, {
-                type: 'bar',
-                data: {
-                    labels: carrierLabels,
-                    datasets: [{
-                        label: 'Jumlah Pengiriman',
-                        data: carrierValues,
-                        backgroundColor: '#556E5C',
-                        hoverBackgroundColor: '#425848',
-                        borderRadius: 12,
-                        borderSkipped: false,
-                        maxBarThickness: 38
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#1C1E1B',
-                            padding: 10,
-                            cornerRadius: 12,
-                            callbacks: {
-                                label: function(context) {
-                                    return ` ${context.raw} pengiriman aktif/tercatat`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: {
-                                font: { size: 11, weight: '600' },
-                                color: '#6F756C'
-                            }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                precision: 0,
-                                font: { size: 11 },
-                                color: '#6F756C'
-                            },
-                            grid: {
-                                color: '#E9EAE4'
-                            }
-                        }
-                    }
+                    activeItems.forEach(item => {
+                        const segRatio = item.value / tabTotal;
+                        const arcLength = segRatio * CIRCUMFERENCE;
+                        const dashLen = Math.max(0, arcLength - gap);
+                        const dashOffset = -accumulatedLength;
+                        accumulatedLength += arcLength;
+
+                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        circle.setAttribute('cx', '100');
+                        circle.setAttribute('cy', '100');
+                        circle.setAttribute('r', RADIUS);
+                        circle.setAttribute('fill', 'none');
+                        circle.setAttribute('stroke', item.color);
+                        circle.setAttribute('stroke-width', '13');
+                        circle.setAttribute('stroke-dasharray', `${dashLen} ${CIRCUMFERENCE}`);
+                        circle.setAttribute('stroke-dashoffset', `${CIRCUMFERENCE}`); // for entry animation
+                        circle.setAttribute('data-key', item.key);
+                        circle.style.cursor = 'pointer';
+                        circle.style.transition = 'stroke-dashoffset 0.75s cubic-bezier(0.16, 1, 0.3, 1), stroke-width 0.2s ease, opacity 0.2s ease';
+
+                        circle.addEventListener('mouseenter', () => highlightItem(item.key));
+                        circle.addEventListener('mouseleave', resetHighlight);
+
+                        ringSegmentsGroup.appendChild(circle);
+
+                        // Trigger animation
+                        setTimeout(() => {
+                            circle.setAttribute('stroke-dashoffset', `${dashOffset}`);
+                        }, 20);
+                    });
                 }
+
+                // Render List on Right Side
+                detailListEl.innerHTML = '';
+                if (tabTotal === 0) {
+                    detailListEl.innerHTML = `
+                        <div class="py-6 text-center text-[#6F756C]">
+                            <svg class="h-8 w-8 text-[#C8D3BE] mx-auto mb-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                            </svg>
+                            <p class="text-xs font-semibold text-[#1C2820]">Belum Ada Data Kargo</p>
+                            <p class="text-[11px] text-[#889E8B] mt-0.5">Analitik status akan otomatis terisi saat pengiriman dibuat.</p>
+                        </div>
+                    `;
+                } else {
+                    items.forEach(item => {
+                        const pct = tabTotal > 0 ? Math.round((item.value / tabTotal) * 100) : 0;
+                        const row = document.createElement('div');
+                        row.className = 'cargo-detail-row group cursor-pointer px-2.5 py-1.5 rounded-xl transition-all duration-200 border border-transparent hover:border-[#DFE1D8]/60';
+                        row.setAttribute('data-key', item.key);
+
+                        row.innerHTML = `
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${item.color};"></span>
+                                    <span class="text-xs font-semibold text-[#1C2820] group-hover:text-[#243329] transition-colors">${item.label}</span>
+                                </div>
+                                <div class="flex items-center space-x-1.5 text-xs">
+                                    <span class="font-bold text-[#1C2820] notranslate">${item.value}</span>
+                                    <span class="text-[#C8D3BE]">&bull;</span>
+                                    <span class="text-[11px] font-semibold text-[#6F756C] bg-[#F1F4EE] px-1.5 py-0.2 rounded-md notranslate">${pct}%</span>
+                                </div>
+                            </div>
+                            <div class="h-1.5 w-full rounded-full bg-[#EFEFE9] overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-700 ease-out" style="width: ${pct}%; background-color: ${item.color};"></div>
+                            </div>
+                        `;
+
+                        row.addEventListener('mouseenter', () => highlightItem(item.key));
+                        row.addEventListener('mouseleave', resetHighlight);
+
+                        detailListEl.appendChild(row);
+                    });
+                }
+            }
+
+            // Card 1 Switcher Events
+            tabStatusBtn.addEventListener('click', function () {
+                if (card1CurrentTab === 'status') return;
+                card1CurrentTab = 'status';
+                tabStatusBtn.className = 'card1-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200';
+                tabSlaBtn.className = 'card1-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200';
+                renderCard1();
             });
+
+            tabSlaBtn.addEventListener('click', function () {
+                if (card1CurrentTab === 'sla') return;
+                card1CurrentTab = 'sla';
+                tabSlaBtn.className = 'card1-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200';
+                tabStatusBtn.className = 'card1-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200';
+                renderCard1();
+            });
+
+            renderCard1();
+
+
+            // ---------------------------------------------------------------------
+            // KARTU 2: ALOKASI CARRIER & MODA (HORIZONTAL RANKED ALLOCATION PANEL)
+            // ---------------------------------------------------------------------
+            let card2CurrentTab = 'carrier'; // 'carrier' | 'mode'
+
+            // Normalisasi data carrier
+            let carrierItems = [];
+            if (rawCarrierStats && rawCarrierStats.length > 0) {
+                carrierItems = rawCarrierStats.map(c => ({
+                    code: c.code || 'CARR',
+                    name: c.name,
+                    total: Number(c.total || 0),
+                }));
+            } else if (rawCarrierDist && Object.keys(rawCarrierDist).length > 0) {
+                carrierItems = Object.entries(rawCarrierDist).map(([name, total]) => ({
+                    code: name.replace(/[^A-Za-z]/g, '').slice(0, 4).toUpperCase() || 'CARR',
+                    name: name,
+                    total: Number(total || 0),
+                }));
+            }
+            carrierItems.sort((a, b) => b.total - a.total);
+
+            // Data Moda Transportasi Aktual
+            const modeIcons = {
+                OCEAN: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 21c-1.39 0-2.78-.47-4-1.32-2.44 1.71-5.56 1.71-8 0C6.78 20.53 5.39 21 4 21H2v2h2c1.38 0 2.74-.35 4-.99 2.52 1.29 5.48 1.29 8 0 1.26.65 2.62.99 4 .99h2v-2h-2zM3.95 19H4c1.6 0 3.02-.88 4-2 .98 1.12 2.4 2 4 2s3.02-.88 4-2c.98 1.12 2.4 2 4 2h.05l1.89-6.68c.08-.26.06-.54-.06-.78s-.33-.41-.6-.46L19 13.01V5c0-.55-.45-1-1-1h-5V1h-2v3H6c-.55 0-1 .45-1 1v8.01l-2.28-.07c-.27.05-.48.22-.6.46s-.14.52-.06.78L3.95 19zM8 6h8v5.5l-4-1-4 1V6z"/></svg>`,
+                AIR: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>`,
+                LAND: `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-2 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`,
+            };
+
+            const modeItems = [
+                {
+                    code: 'OCEAN',
+                    name: 'Ocean Freight',
+                    total: Number(rawModeDist['OCEAN'] || 0),
+                    icon: modeIcons.OCEAN,
+                    gradient: 'from-[#243329] to-[#3E5245]'
+                },
+                {
+                    code: 'AIR',
+                    name: 'Air Freight',
+                    total: Number(rawModeDist['AIR'] || 0),
+                    icon: modeIcons.AIR,
+                    gradient: 'from-[#3E5245] to-[#556E5C]'
+                },
+                {
+                    code: 'LAND',
+                    name: 'Land Transport',
+                    total: Number(rawModeDist['LAND'] || 0),
+                    icon: modeIcons.LAND,
+                    gradient: 'from-[#C5A572] to-[#D4AF77]'
+                },
+            ];
+
+            const allocationContainer = document.getElementById('allocation-items-container');
+            const allocationSummaryEl = document.getElementById('allocation-footer-summary');
+            const tabCarrierBtn = document.getElementById('card2-tab-carrier');
+            const tabModeBtn = document.getElementById('card2-tab-mode');
+
+            // Palet Gradasi Sage & Sand Bertingkat
+            const rankGradients = [
+                'from-[#243329] to-[#3E5245]',
+                'from-[#3E5245] to-[#556E5C]',
+                'from-[#556E5C] to-[#889E8B]',
+                'from-[#C5A572] to-[#D4AF77]',
+                'from-[#889E8B] to-[#C8D3BE]',
+                'from-[#A4B3A8] to-[#DFE1D8]'
+            ];
+
+            function renderCard2() {
+                allocationContainer.innerHTML = '';
+
+                if (card2CurrentTab === 'carrier') {
+                    if (allocationSummaryEl) {
+                        allocationSummaryEl.innerHTML = `Total Carrier Terlibat: <strong class="text-[#1C2820]">${carrierItems.length} Carrier</strong>`;
+                    }
+
+                    if (carrierItems.length === 0) {
+                        allocationContainer.innerHTML = `
+                            <div class="py-6 text-center text-[#6F756C]">
+                                <svg class="h-8 w-8 text-[#C8D3BE] mx-auto mb-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                                <p class="text-xs font-semibold text-[#1C2820]">Belum Ada Carrier Terdata</p>
+                                <p class="text-[11px] text-[#889E8B] mt-0.5">Alokasi carrier akan muncul setelah shipment memiliki penetapan carrier.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    const maxCarrierTotal = Math.max(...carrierItems.map(c => c.total), 1);
+                    const sumCarrierTotal = carrierItems.reduce((acc, curr) => acc + curr.total, 0) || totalShipments || 1;
+
+                    carrierItems.forEach((c, idx) => {
+                        const barWidth = Math.max(6, Math.round((c.total / maxCarrierTotal) * 100));
+                        const sharePct = Math.round((c.total / sumCarrierTotal) * 100);
+                        const grad = rankGradients[idx % rankGradients.length];
+
+                        const row = document.createElement('div');
+                        row.className = 'allocation-row group cursor-pointer p-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
+
+                        row.innerHTML = `
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="flex items-center space-x-2 min-w-0 pr-2">
+                                    <span class="bg-[#F1F4EE] text-[#243329] font-bold text-[10px] px-2 py-0.5 rounded-md border border-[#DFE1D8]/70 shrink-0 notranslate">${c.code}</span>
+                                    <span class="text-xs font-semibold text-[#1C2820] truncate group-hover:text-[#243329] transition-colors">${c.name}</span>
+                                </div>
+                                <div class="flex items-center space-x-2 shrink-0">
+                                    <span class="text-xs font-bold text-[#1C2820] notranslate">${c.total} <span class="text-[10px] font-normal text-[#6F756C]">kargo</span></span>
+                                    <span class="bg-[#F1F4EE] text-[#556E5C] text-[11px] font-semibold px-2 py-0.5 rounded-full notranslate border border-[#DFE1D8]/50">${sharePct}%</span>
+                                </div>
+                            </div>
+                            <div class="h-2.5 w-full rounded-full bg-[#EFEFE9] overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r ${grad} transition-all duration-700 ease-out" style="width: 0%;" data-target-width="${barWidth}%"></div>
+                            </div>
+                        `;
+
+                        // Hover focus interaktif: baris lain meredup
+                        row.addEventListener('mouseenter', () => {
+                            const allRows = allocationContainer.querySelectorAll('.allocation-row');
+                            allRows.forEach(r => {
+                                if (r !== row) r.style.opacity = '0.45';
+                            });
+                        });
+                        row.addEventListener('mouseleave', () => {
+                            const allRows = allocationContainer.querySelectorAll('.allocation-row');
+                            allRows.forEach(r => r.style.opacity = '1');
+                        });
+
+                        allocationContainer.appendChild(row);
+
+                        // Trigger smooth progress bar growth
+                        setTimeout(() => {
+                            const bar = row.querySelector('[data-target-width]');
+                            if (bar) bar.style.width = bar.getAttribute('data-target-width');
+                        }, 40 + idx * 25);
+                    });
+                } else {
+                    // TAB MODA TRANSPORTASI
+                    const activeModaCount = modeItems.filter(m => m.total > 0).length;
+                    if (allocationSummaryEl) {
+                        allocationSummaryEl.innerHTML = `Total Moda Aktif: <strong class="text-[#1C2820]">${activeModaCount} dari 3 Moda</strong>`;
+                    }
+
+                    const sumModeTotal = modeItems.reduce((acc, curr) => acc + curr.total, 0) || totalShipments || 1;
+                    const maxModeTotal = Math.max(...modeItems.map(m => m.total), 1);
+
+                    modeItems.forEach((m, idx) => {
+                        const barWidth = Math.max(6, Math.round((m.total / maxModeTotal) * 100));
+                        const sharePct = Math.round((m.total / sumModeTotal) * 100);
+
+                        const row = document.createElement('div');
+                        row.className = 'allocation-row group cursor-pointer p-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
+
+                        row.innerHTML = `
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="flex items-center space-x-2 min-w-0 pr-2">
+                                    <span class="w-6 h-6 rounded-lg bg-[#F1F4EE] text-[#243329] border border-[#DFE1D8]/70 flex items-center justify-center shrink-0">
+                                        ${m.icon}
+                                    </span>
+                                    <span class="text-xs font-semibold text-[#1C2820] truncate group-hover:text-[#243329] transition-colors">${m.name}</span>
+                                </div>
+                                <div class="flex items-center space-x-2 shrink-0">
+                                    <span class="text-xs font-bold text-[#1C2820] notranslate">${m.total} <span class="text-[10px] font-normal text-[#6F756C]">kargo</span></span>
+                                    <span class="bg-[#F1F4EE] text-[#556E5C] text-[11px] font-semibold px-2 py-0.5 rounded-full notranslate border border-[#DFE1D8]/50">${sharePct}%</span>
+                                </div>
+                            </div>
+                            <div class="h-2.5 w-full rounded-full bg-[#EFEFE9] overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r ${m.gradient} transition-all duration-700 ease-out" style="width: 0%;" data-target-width="${barWidth}%"></div>
+                            </div>
+                        `;
+
+                        row.addEventListener('mouseenter', () => {
+                            const allRows = allocationContainer.querySelectorAll('.allocation-row');
+                            allRows.forEach(r => {
+                                if (r !== row) r.style.opacity = '0.45';
+                            });
+                        });
+                        row.addEventListener('mouseleave', () => {
+                            const allRows = allocationContainer.querySelectorAll('.allocation-row');
+                            allRows.forEach(r => r.style.opacity = '1');
+                        });
+
+                        allocationContainer.appendChild(row);
+
+                        setTimeout(() => {
+                            const bar = row.querySelector('[data-target-width]');
+                            if (bar) bar.style.width = bar.getAttribute('data-target-width');
+                        }, 40 + idx * 40);
+                    });
+                }
+            }
+
+            // Card 2 Switcher Events
+            tabCarrierBtn.addEventListener('click', function () {
+                if (card2CurrentTab === 'carrier') return;
+                card2CurrentTab = 'carrier';
+                tabCarrierBtn.className = 'card2-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200';
+                tabModeBtn.className = 'card2-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200';
+                renderCard2();
+            });
+
+            tabModeBtn.addEventListener('click', function () {
+                if (card2CurrentTab === 'mode') return;
+                card2CurrentTab = 'mode';
+                tabModeBtn.className = 'card2-tab-btn px-3 py-1 rounded-full font-semibold bg-[#243329] text-white shadow-xs transition-all duration-200';
+                tabCarrierBtn.className = 'card2-tab-btn px-3 py-1 rounded-full font-medium text-[#6F756C] hover:text-[#1C2820] transition-all duration-200';
+                renderCard2();
+            });
+
+            renderCard2();
         }
 
         // 3. Inisialisasi Peta Sebaran Pengiriman Global (Leaflet.js)

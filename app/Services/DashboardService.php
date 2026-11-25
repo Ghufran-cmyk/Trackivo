@@ -89,6 +89,40 @@ class DashboardService
             ->pluck('total', 'carrier_name')
             ->toArray();
 
+        // 5b. Data Detail Carrier & Moda Distribusi untuk Interactive Control Tower Panel
+        $carrierStats = (clone $shipmentQuery)
+            ->join('carriers', 'shipments.carrier_id', '=', 'carriers.id')
+            ->selectRaw('carriers.id, carriers.name, carriers.code, count(shipments.id) as total')
+            ->groupBy('carriers.id', 'carriers.name', 'carriers.code')
+            ->orderByDesc('total')
+            ->get()
+            ->map(function ($c) {
+                return [
+                    'name' => $c->name,
+                    'code' => $c->code ?: strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $c->name), 0, 4)),
+                    'total' => (int) $c->total,
+                ];
+            })
+            ->toArray();
+
+        $rawModeCounts = (clone $shipmentQuery)
+            ->selectRaw('transport_mode, count(*) as count')
+            ->groupBy('transport_mode')
+            ->pluck('count', 'transport_mode')
+            ->toArray();
+
+        $modeDistribution = [
+            'OCEAN' => (int) ($rawModeCounts['OCEAN'] ?? 0),
+            'AIR' => (int) ($rawModeCounts['AIR'] ?? 0),
+            'LAND' => (int) ($rawModeCounts['LAND'] ?? 0),
+        ];
+
+        $onTimeShipments = max(0, $totalShipments - $delayedShipments);
+        $slaDistribution = [
+            'ON_TIME' => $onTimeShipments,
+            'DELAYED' => $delayedShipments,
+        ];
+
         // 6. Data Tabel Ringkas Pengiriman Terbaru (5-6 data terbaru)
         $recentShipments = (clone $shipmentQuery)
             ->with(['customer', 'carrier', 'originLocation', 'destinationLocation'])
@@ -185,6 +219,9 @@ class DashboardService
             'kpis' => $kpis,
             'statusDistribution' => $statusDistribution,
             'carrierDistribution' => $carrierDistribution,
+            'carrierStats' => $carrierStats,
+            'modeDistribution' => $modeDistribution,
+            'slaDistribution' => $slaDistribution,
             'recentShipments' => $recentShipments,
             'activeExceptions' => $activeExceptions,
             'recentNotifications' => $recentNotifications,
