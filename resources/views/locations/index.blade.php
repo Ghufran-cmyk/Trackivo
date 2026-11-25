@@ -8,10 +8,6 @@
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2 border border-[#C8DACD]">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
-                <span>Master Data Khusus Administrator</span>
-            </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">Manajemen Lokasi & Hub Kargo</h1>
             <p class="text-xs sm:text-sm text-[#6F756C] mt-1">Kelola pelabuhan (Port), bandara (Airport), gudang transit (Warehouse), dan checkpoint geospasial Trackivo.</p>
         </div>

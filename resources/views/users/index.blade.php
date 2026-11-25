@@ -8,10 +8,6 @@
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2 border border-[#C8DACD]">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
-                <span>Master Data Khusus Administrator</span>
-            </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">Manajemen Pengguna (Users)</h1>
             <p class="text-xs sm:text-sm text-[#6F756C] mt-1">Kelola akun dan hak akses Administrator, Operator Operasional, dan Pelanggan (Customer).</p>
         </div>
@@ -38,7 +34,7 @@
                     <tr class="bg-[#FAF9F5] text-[#6F756C] uppercase text-[10.5px] font-bold tracking-wider border-b border-[#DFE1D8]/60">
                         <th class="py-3.5 px-5">Nama & Avatar</th>
                         <th class="py-3.5 px-5">Email</th>
-                        <th class="py-3.5 px-5">Peran (Role)</th>
+                        <th class="py-3.5 px-5 text-center">Peran (Role)</th>
                         <th class="py-3.5 px-5">Perusahaan</th>
                         <th class="py-3.5 px-5">No. Telepon</th>
                         <th class="py-3.5 px-5 text-center">Shipments</th>
@@ -64,17 +60,17 @@
                             <td class="py-3.5 px-5 text-[#6F756C] font-mono text-xs">
                                 {{ $user->email }}
                             </td>
-                            <td class="py-3.5 px-5">
+                            <td class="py-3.5 px-5 text-center">
                                 @if($user->role === 'admin')
-                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#1C1E1B] text-white">
+                                    <span class="inline-flex items-center justify-center min-w-[92px] px-3 py-0.5 rounded-full text-xs font-bold bg-[#D6E0D2] text-[#1E2D23] border border-[#B8C7B2]">
                                         ADMIN
                                     </span>
                                 @elseif($user->role === 'operator')
-                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#F7EFE1] text-[#9A6721] border border-[#E6D8BF]">
+                                    <span class="inline-flex items-center justify-center min-w-[92px] px-3 py-0.5 rounded-full text-xs font-bold bg-[#F7EFE1] text-[#9A6721] border border-[#E6D8BF]">
                                         OPERATOR
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#E6F0E9] text-[#2F6846] border border-[#C8DACD]">
+                                    <span class="inline-flex items-center justify-center min-w-[92px] px-3 py-0.5 rounded-full text-xs font-bold bg-[#E6F0E9] text-[#2F6846] border border-[#C8DACD]">
                                         CUSTOMER
                                     </span>
                                 @endif

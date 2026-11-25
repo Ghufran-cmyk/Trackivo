@@ -8,13 +8,9 @@
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
-                <span>Konfigurasi Operasional Global (Administrator)</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">Pengaturan Batas Keterlambatan (Delay Thresholds)</h1>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">Pengaturan Batas Keterlambatan</h1>
             <p class="text-sm text-[#6F756C] mt-1">
-                Atur ambang batas durasi delay secara deterministik. Nilai konfigurasi ini berlaku global untuk mengklasifikasikan tingkat keparahan risiko keterlambatan kargo.
+                Atur ambang batas durasi delay secara deterministik.
             </p>
         </div>
     </div>
@@ -212,18 +208,15 @@
             </div>
 
             <!-- Dokumentasi Rumus Deterministik -->
-            <div class="bg-[#1C1E1B] text-white rounded-[24px] p-6 shadow-sm border border-[#1C1E1B]">
-                <div class="flex items-center space-x-2.5 mb-3">
-                    <div class="h-2 w-2 rounded-full bg-[#8FA896]"></div>
-                    <h3 class="text-sm font-bold text-[#8FA896] uppercase tracking-wider">Rumus Deterministik EtaService</h3>
-                </div>
-                <div class="space-y-3 text-xs text-white/80 leading-relaxed font-mono">
-                    <p class="bg-white/10 p-3 rounded-2xl border border-white/10">
-                        diff_minutes = expected_arrival.diffInMinutes(estimated_arrival)<br>
-                        delay_hours  = max(1, ceil(diff_minutes / 60))
-                    </p>
-                    <p class="text-white/60 font-sans text-xs">
-                        Algoritma ini sepenuhnya transparan dan deterministik tanpa ketergantungan pada model probabilistik eksternal, memudahkan verifikasi dan audit kepatuhan SLA logistik antar-negara.
+            <div class="bg-[#556E5C] rounded-[24px] p-6 shadow-sm">
+                <h3 class="text-sm font-semibold text-white mb-3">Cara Perhitungan Keterlambatan</h3>
+                <div class="space-y-3">
+                    <div class="bg-black/15 border border-white/15 rounded-xl p-3 text-xs font-mono text-white/95 leading-relaxed">
+                        Selisih Menit = Estimasi Tiba − Jadwal Awal<br>
+                        Durasi Delay  = Pembulatan ke atas (Selisih Menit ÷ 60), minimal 1 jam
+                    </div>
+                    <p class="text-xs text-white/85 font-sans leading-relaxed">
+                        Jika estimasi tiba melewati jadwal awal, sistem otomatis membulatkan selisih keterlambatan ke atas dalam satuan jam. Perhitungan berbasis aturan tetap ini memastikan status delay selalu konsisten dan mudah diverifikasi.
                     </p>
                 </div>
             </div>
