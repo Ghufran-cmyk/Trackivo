@@ -7,6 +7,8 @@ use App\Models\Shipment;
 use App\Models\ShipmentItem;
 use App\Models\TrackingEvent;
 use App\Models\User;
+use App\Services\ShippingRateService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -56,6 +58,39 @@ class ShipmentService
                 } while (Shipment::where('tracking_number', $trackingNumber)->exists());
 
                 $data['tracking_number'] = $trackingNumber;
+            }
+
+            // Auto-generate invoice number unik jika belum disediakan
+            if (empty($data['invoice_number'])) {
+                do {
+                    $invoiceNumber = 'INV-' . date('Y') . '-' . strtoupper(Str::random(6));
+                } while (Shipment::where('invoice_number', $invoiceNumber)->exists());
+
+                $data['invoice_number'] = $invoiceNumber;
+            }
+
+            // Hitung biaya pengiriman jika belum ada atau default
+            $mode = $data['transport_mode'] ?? 'LAND';
+            $weight = (float) ($data['weight_kg'] ?? 0);
+            $volume = (float) ($data['volume_cbm'] ?? 0);
+            $insurance = (int) ($data['insurance_cost'] ?? 0);
+
+            $calculatedCosts = ShippingRateService::calculate($mode, $weight, $volume, $insurance);
+
+            $data['base_cost'] = $data['base_cost'] ?? $calculatedCosts['base_cost'];
+            $data['weight_volume_cost'] = $data['weight_volume_cost'] ?? $calculatedCosts['weight_volume_cost'];
+            $data['insurance_cost'] = $insurance;
+            $data['total_amount'] = $data['total_amount'] ?? $calculatedCosts['total_amount'];
+
+            $data['payment_method'] = $data['payment_method'] ?? 'BANK_TRANSFER';
+            $data['payment_status'] = $data['payment_status'] ?? 'UNPAID';
+
+            if ($data['payment_status'] === 'PAID') {
+                $data['paid_at'] = $data['paid_at'] ?? Carbon::now();
+                $data['payment_confirmed_by'] = $data['payment_confirmed_by'] ?? $actor->id;
+            } else {
+                $data['paid_at'] = null;
+                $data['payment_confirmed_by'] = null;
             }
 
             // Status awal selalu CREATED

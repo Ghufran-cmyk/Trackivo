@@ -1142,7 +1142,7 @@
                 // Titik kecil Origin
                 const originPoint = L.circleMarker(originLatLng, {
                     radius: 4.5,
-                    fillColor: '#1C1E1B',
+                    fillColor: '#243329',
                     color: '#ffffff',
                     weight: 2,
                     fillOpacity: 0.9,

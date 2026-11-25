@@ -182,6 +182,7 @@ class DatabaseSeeder extends Seeder
         // Shipment 1: IN_TRANSIT (Tepat Waktu / On-Time)
         $shipment1 = Shipment::create([
             'tracking_number' => 'TRK-2026-JKT-RTM-001',
+            'invoice_number' => 'INV-2026-000001',
             'customer_id' => $customer1->id,
             'carrier_id' => $carrierMaersk->id,
             'origin_location_id' => $locJakarta->id,
@@ -190,6 +191,14 @@ class DatabaseSeeder extends Seeder
             'cargo_type' => 'Tekstil & Pakaian Jadi (Garments)',
             'weight_kg' => 18500.00,
             'volume_cbm' => 48.50,
+            'base_cost' => 750000,
+            'weight_volume_cost' => 39875000, // (18500 * 1500) + (48.5 * 250000) = 27750000 + 12125000
+            'insurance_cost' => 250000,
+            'total_amount' => 40875000,
+            'payment_method' => 'CORPORATE_INVOICE',
+            'payment_status' => 'PAID',
+            'paid_at' => (clone $now)->subDays(5)->setHour(10),
+            'payment_confirmed_by' => $admin->id,
             'status' => 'IN_TRANSIT',
             'expected_departure' => (clone $now)->subDays(5),
             'expected_arrival' => (clone $now)->addDays(12),
@@ -256,6 +265,7 @@ class DatabaseSeeder extends Seeder
         // Shipment 2: IN_TRANSIT (Delayed, High Severity + Exception)
         $shipment2 = Shipment::create([
             'tracking_number' => 'TRK-2026-SIN-FRA-002',
+            'invoice_number' => 'INV-2026-000002',
             'customer_id' => $customer2->id,
             'carrier_id' => $carrierSia->id,
             'origin_location_id' => $locSingapore->id,
@@ -264,6 +274,14 @@ class DatabaseSeeder extends Seeder
             'cargo_type' => 'Komponen Semikonduktor & Mikroelektronika',
             'weight_kg' => 4200.00,
             'volume_cbm' => 14.80,
+            'base_cost' => 1500000,
+            'weight_volume_cost' => 44580000, // (4200 * 8500) + (14.8 * 600000) = 35700000 + 8880000
+            'insurance_cost' => 500000,
+            'total_amount' => 46580000,
+            'payment_method' => 'BANK_TRANSFER',
+            'payment_status' => 'PAID',
+            'paid_at' => (clone $now)->subDays(3)->setHour(11),
+            'payment_confirmed_by' => $operator->id,
             'status' => 'IN_TRANSIT',
             'expected_departure' => (clone $now)->subDays(3),
             'expected_arrival' => (clone $now)->subDay(),
@@ -343,6 +361,7 @@ class DatabaseSeeder extends Seeder
         // Shipment 3: BOOKED (Status BOOKED)
         $shipment3 = Shipment::create([
             'tracking_number' => 'TRK-2026-JKT-LAX-003',
+            'invoice_number' => 'INV-2026-000003',
             'customer_id' => $customer1->id,
             'carrier_id' => $carrierMsc->id,
             'origin_location_id' => $locJakarta->id,
@@ -351,6 +370,14 @@ class DatabaseSeeder extends Seeder
             'cargo_type' => 'Mebel Kayu Jati & Kerajinan Ramah Lingkungan',
             'weight_kg' => 14200.00,
             'volume_cbm' => 52.00,
+            'base_cost' => 750000,
+            'weight_volume_cost' => 34300000, // (14200 * 1500) + (52.0 * 250000) = 21300000 + 13000000
+            'insurance_cost' => 0,
+            'total_amount' => 35050000,
+            'payment_method' => 'BANK_TRANSFER',
+            'payment_status' => 'UNPAID', // Dibiarkan UNPAID agar tombol konfirmasi bisa didemokan
+            'paid_at' => null,
+            'payment_confirmed_by' => null,
             'status' => 'BOOKED',
             'expected_departure' => (clone $now)->addDays(3),
             'expected_arrival' => (clone $now)->addDays(25),
@@ -393,6 +420,7 @@ class DatabaseSeeder extends Seeder
         // Shipment 4: DELIVERED (Delivered + Resolved Exception)
         $shipment4 = Shipment::create([
             'tracking_number' => 'TRK-2026-FRA-SYD-004',
+            'invoice_number' => 'INV-2026-000004',
             'customer_id' => $customer2->id,
             'carrier_id' => $carrierLufthansa->id,
             'origin_location_id' => $locFrankfurt->id,
@@ -401,6 +429,14 @@ class DatabaseSeeder extends Seeder
             'cargo_type' => 'Peralatan Diagnostik Medis Presisi Tinggi',
             'weight_kg' => 2800.00,
             'volume_cbm' => 9.60,
+            'base_cost' => 1500000,
+            'weight_volume_cost' => 29560000, // (2800 * 8500) + (9.6 * 600000) = 23800000 + 5760000
+            'insurance_cost' => 750000,
+            'total_amount' => 31810000,
+            'payment_method' => 'QRIS',
+            'payment_status' => 'PAID',
+            'paid_at' => (clone $now)->subDays(10)->setHour(12),
+            'payment_confirmed_by' => $operator->id,
             'status' => 'DELIVERED',
             'expected_departure' => (clone $now)->subDays(10),
             'expected_arrival' => (clone $now)->subDays(4),

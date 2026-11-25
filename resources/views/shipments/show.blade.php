@@ -138,8 +138,8 @@
 
             <!-- Legend Pelacakan Geospasial -->
             <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#1C1E1B] text-white">
-                    <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
+                <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#E5ECE2] text-[#243329] border border-[#C8D3BE]">
+                    <span class="h-2 w-2 rounded-full bg-[#243329]"></span>
                     <span>Origin Hub</span>
                 </span>
                 <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846]">
@@ -293,7 +293,7 @@
                         </div>
                     </div>
                     @if($weatherData['available'])
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200 uppercase font-mono">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E9EAE4] text-[#243329] border border-[#DFE1D8] uppercase font-mono">
                             OPEN-METEO
                         </span>
                     @else
@@ -313,7 +313,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-bold border border-blue-100">
+                                <span class="px-2.5 py-1 rounded-full bg-[#E9EAE4] text-[#243329] text-xs font-bold border border-[#DFE1D8]">
                                     {{ $weatherData['condition'] }}
                                 </span>
                             </div>
@@ -510,8 +510,8 @@
                                         {{ $exc->severity }}
                                     </span>
                                     <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
-                                        {{ $exc->status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-800' : 
-                                          ($exc->status === 'INVESTIGATING' ? 'bg-sky-100 text-sky-800' : 'bg-rose-100 text-rose-800') }}">
+                                        {{ $exc->status === 'RESOLVED' ? 'bg-[#E9EAE4] text-[#243329] border border-[#C8D3BE]' : 
+                                          ($exc->status === 'INVESTIGATING' ? 'bg-[#DFE1D8] text-[#3E5245] border border-[#C8D3BE]' : 'bg-[#B96A55]/15 text-[#B96A55] border border-[#B96A55]/30') }}">
                                         {{ $exc->status }}
                                     </span>
                                 </div>
@@ -645,6 +645,133 @@
 
         <!-- Right 1 Col: Action Forms & Meta Info -->
         <div class="space-y-6">
+
+            <!-- Card Informasi Pembayaran & Struk -->
+            <div class="bg-white rounded-[24px] border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] p-6">
+                <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+                    <div class="flex items-center space-x-2">
+                        <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
+                        <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Informasi Pembayaran & Struk</h3>
+                    </div>
+                    @if($shipment->payment_status === 'PAID')
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase bg-[#E9EAE4] text-[#243329] border border-[#C8D3BE]">
+                            LUNAS
+                        </span>
+                    @else
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono uppercase bg-[#D8CFC0]/40 text-[#B96A55] border border-[#D8CFC0]">
+                            BELUM LUNAS
+                        </span>
+                    @endif
+                </div>
+
+                <div class="space-y-3.5 text-xs">
+                    <!-- Invoice No -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-medium">Nomor Faktur (Invoice):</span>
+                        <span class="font-mono font-bold text-[#243329]">{{ $shipment->invoice_number ?? '-' }}</span>
+                    </div>
+
+                    <!-- Total Amount -->
+                    <div class="p-3 rounded-xl bg-[#F6F7F3] border border-[#DFE1D8]">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Total Tagihan (IDR)</span>
+                        <div class="text-lg font-extrabold font-mono text-[#243329]">
+                            {{ \App\Services\ShippingRateService::formatRupiah($shipment->total_amount) }}
+                        </div>
+                    </div>
+
+                    <!-- Rincian Biaya -->
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-[11px] text-slate-600">
+                        <div class="flex justify-between">
+                            <span>Biaya Kirim Dasar:</span>
+                            <span class="font-mono font-medium text-slate-800">{{ \App\Services\ShippingRateService::formatRupiah($shipment->base_cost) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Biaya Berat & Volume:</span>
+                            <span class="font-mono font-medium text-slate-800">{{ \App\Services\ShippingRateService::formatRupiah($shipment->weight_volume_cost) }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Biaya Layanan & Asuransi:</span>
+                            <span class="font-mono font-medium text-slate-800">{{ \App\Services\ShippingRateService::formatRupiah($shipment->insurance_cost) }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Metode Pembayaran -->
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-slate-400 font-medium">Metode Pembayaran:</span>
+                        <span class="font-semibold text-slate-800">
+                            {{ \App\Services\ShippingRateService::getPaymentMethodLabel($shipment->payment_method) }}
+                        </span>
+                    </div>
+
+                    <!-- Status Pelunasan -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400 font-medium">Status Pembayaran:</span>
+                        <span class="font-bold {{ $shipment->payment_status === 'PAID' ? 'text-[#3E5245]' : 'text-[#B96A55]' }}">
+                            {{ $shipment->payment_status === 'PAID' ? 'LUNAS (TERVERIFIKASI)' : 'MENUNGGU PEMBAYARAN' }}
+                        </span>
+                    </div>
+
+                    @if($shipment->payment_status === 'PAID')
+                        <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500 space-y-1">
+                            <div class="flex justify-between">
+                                <span>Waktu Pelunasan:</span>
+                                <span class="font-medium text-slate-700 font-mono">
+                                    {{ $shipment->paid_at ? $shipment->paid_at->format('d/m/Y H:i') . ' WIB' : '-' }}
+                                </span>
+                            </div>
+                            @if($shipment->paymentConfirmedBy)
+                                <div class="flex justify-between">
+                                    <span>Petugas Pemverifikasi:</span>
+                                    <span class="font-medium text-slate-700">{{ $shipment->paymentConfirmedBy->name }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Tombol Lihat & Cetak Struk -->
+                    <div class="pt-3">
+                        <a href="{{ route('shipments.receipt', $shipment) }}" target="_blank"
+                           class="w-full inline-flex items-center justify-center space-x-2 py-2.5 px-4 rounded-full bg-[#E9EAE4] hover:bg-[#DFE1D8] text-[#243329] text-xs font-bold transition border border-[#C8D3BE] shadow-xs">
+                            <svg class="w-4 h-4 text-[#3E5245]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                            <span>Lihat & Cetak Struk Resmi</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Form Konfirmasi Lunas Khusus Admin & Operator jika UNPAID -->
+                @if((auth()->user()->isAdmin() || auth()->user()->isOperator()) && $shipment->payment_status !== 'PAID')
+                    <div class="mt-4 pt-4 border-t border-[#DFE1D8]">
+                        <span class="text-[11px] font-bold text-[#243329] uppercase tracking-wider block mb-2">
+                            Konfirmasi Pembayaran (Kasir / Loket)
+                        </span>
+                        <form method="POST" action="{{ route('shipments.payment.confirm', $shipment) }}" class="space-y-2.5">
+                            @csrf
+                            <div>
+                                <label for="confirm_payment_method" class="block text-[10px] font-bold text-slate-500 uppercase mb-1">
+                                    Metode Diterima
+                                </label>
+                                <select name="payment_method" id="confirm_payment_method"
+                                        class="w-full px-3 py-1.5 rounded-xl border border-[#DFE1D8] text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#556E5C]/20 focus:border-[#556E5C]">
+                                    <option value="BANK_TRANSFER" {{ $shipment->payment_method === 'BANK_TRANSFER' ? 'selected' : '' }}>Transfer Bank</option>
+                                    <option value="CASH" {{ $shipment->payment_method === 'CASH' ? 'selected' : '' }}>Tunai (Loket)</option>
+                                    <option value="QRIS" {{ $shipment->payment_method === 'QRIS' ? 'selected' : '' }}>QRIS</option>
+                                    <option value="CORPORATE_INVOICE" {{ $shipment->payment_method === 'CORPORATE_INVOICE' ? 'selected' : '' }}>Tagihan Invoice B2B</option>
+                                </select>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full py-2.5 px-4 rounded-full bg-[#243329] hover:bg-[#3E5245] text-white text-xs font-bold transition shadow-xs flex items-center justify-center space-x-1.5">
+                                <svg class="w-4 h-4 text-[#C8D3BE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span>Konfirmasi Pembayaran Lunas</span>
+                            </button>
+                        </form>
+                    </div>
+                @endif
+            </div>
 
             @if((auth()->user()->isAdmin() || auth()->user()->isOperator()) && !in_array($shipment->status, ['DELIVERED', 'CANCELLED']))
                 
@@ -944,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', function () {
         boundsPoints.push(originLatLng);
         traveledPoints.push(originLatLng);
 
-        const originIcon = createDivIcon('#1C1E1B', '#ffffff', `
+        const originIcon = createDivIcon('#243329', '#ffffff', `
             <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
             </svg>
@@ -953,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const originPopup = `
             <div style="font-family: inherit; font-size: 12px; line-height: 1.4; min-width: 200px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                    <span style="font-size: 10px; font-weight: 800; background: #1C1E1B; color: #ffffff; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">ORIGIN</span>
+                    <span style="font-size: 10px; font-weight: 800; background: #243329; color: #ffffff; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase;">ORIGIN</span>
                     <span style="font-size: 11px; font-weight: bold; font-family: monospace; color: #6F756C;">[${escapeHtml(mapData.origin.code)}]</span>
                 </div>
                 <div style="font-weight: 800; color: #1C1E1B; font-size: 13px;">${escapeHtml(mapData.origin.name)}</div>

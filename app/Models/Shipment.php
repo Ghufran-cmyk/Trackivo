@@ -13,6 +13,7 @@ class Shipment extends Model
 
     protected $fillable = [
         'tracking_number',
+        'invoice_number',
         'customer_id',
         'carrier_id',
         'origin_location_id',
@@ -21,6 +22,14 @@ class Shipment extends Model
         'cargo_type',
         'weight_kg',
         'volume_cbm',
+        'base_cost',
+        'weight_volume_cost',
+        'insurance_cost',
+        'total_amount',
+        'payment_method',
+        'payment_status',
+        'paid_at',
+        'payment_confirmed_by',
         'status',
         'expected_departure',
         'expected_arrival',
@@ -36,6 +45,11 @@ class Shipment extends Model
         return [
             'weight_kg' => 'decimal:2',
             'volume_cbm' => 'decimal:2',
+            'base_cost' => 'integer',
+            'weight_volume_cost' => 'integer',
+            'insurance_cost' => 'integer',
+            'total_amount' => 'integer',
+            'paid_at' => 'datetime',
             'expected_departure' => 'datetime',
             'expected_arrival' => 'datetime',
             'estimated_arrival' => 'datetime',
@@ -71,6 +85,11 @@ class Shipment extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function paymentConfirmedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'payment_confirmed_by');
     }
 
     public function items(): HasMany

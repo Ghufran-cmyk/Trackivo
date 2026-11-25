@@ -102,12 +102,18 @@ Route::middleware('auth')->group(function () {
         // Checkpoint Tracking & Pelaporan Exception
         Route::post('/shipments/{shipment}/tracking', [ShipmentController::class, 'storeTracking'])->name('shipments.tracking.store');
         Route::post('/shipments/{shipment}/exceptions', [ShipmentController::class, 'storeException'])->name('shipments.exceptions.store');
+
+        // Konfirmasi Pembayaran (Khusus Admin & Operator)
+        Route::post('/shipments/{shipment}/payment/confirm', [ShipmentController::class, 'confirmPayment'])->name('shipments.payment.confirm');
     });
 
     // Hapus Shipment: Khusus Admin (dengan validasi status CREATED/CANCELLED)
     Route::delete('/shipments/{shipment}', [ShipmentController::class, 'destroy'])
         ->middleware('role:admin')
         ->name('shipments.destroy');
+
+    // Struk Pembayaran & Resi Resmi (Admin, Operator, Customer pemilik shipment)
+    Route::get('/shipments/{shipment}/receipt', [ShipmentController::class, 'receipt'])->name('shipments.receipt');
 
     // Detail Pengiriman: Semua peran terautentikasi (Otorisasi Customer dicek di controller)
     Route::get('/shipments/{shipment}', [ShipmentController::class, 'show'])->name('shipments.show');

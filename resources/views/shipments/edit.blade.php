@@ -54,7 +54,7 @@
                             Pemilik Kargo (Customer) <span class="text-rose-500">*</span>
                         </label>
                         <select name="customer_id" id="customer_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('customer_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('customer_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             @foreach($customers as $cust)
                                 <option value="{{ $cust->id }}" {{ old('customer_id', $shipment->customer_id) == $cust->id ? 'selected' : '' }}>
                                     {{ $cust->name }} {{ $cust->company_name ? "({$cust->company_name})" : '' }}
@@ -72,7 +72,7 @@
                             Carrier Pengangkut <span class="text-rose-500">*</span>
                         </label>
                         <select name="carrier_id" id="carrier_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('carrier_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('carrier_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             @foreach($carriers as $carrier)
                                 <option value="{{ $carrier->id }}" {{ old('carrier_id', $shipment->carrier_id) == $carrier->id ? 'selected' : '' }}>
                                     {{ $carrier->name }} ({{ $carrier->code }})
@@ -90,7 +90,7 @@
                             Moda Transportasi <span class="text-rose-500">*</span>
                         </label>
                         <select name="transport_mode" id="transport_mode" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('transport_mode') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('transport_mode') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="OCEAN" {{ old('transport_mode', $shipment->transport_mode) == 'OCEAN' ? 'selected' : '' }}>OCEAN (Samudera)</option>
                             <option value="AIR" {{ old('transport_mode', $shipment->transport_mode) == 'AIR' ? 'selected' : '' }}>AIR (Udara)</option>
                             <option value="LAND" {{ old('transport_mode', $shipment->transport_mode) == 'LAND' ? 'selected' : '' }}>LAND (Darat)</option>
@@ -152,7 +152,7 @@
                             Titik Asal (Origin) <span class="text-rose-500">*</span>
                         </label>
                         <select name="origin_location_id" id="origin_location_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('origin_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('origin_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}" {{ old('origin_location_id', $shipment->origin_location_id) == $loc->id ? 'selected' : '' }}>
                                     [{{ $loc->code }}] {{ $loc->name }} - {{ $loc->country }} ({{ $loc->type }})
@@ -170,7 +170,7 @@
                             Titik Tujuan (Destination) <span class="text-rose-500">*</span>
                         </label>
                         <select name="destination_location_id" id="destination_location_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('destination_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('destination_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}" {{ old('destination_location_id', $shipment->destination_location_id) == $loc->id ? 'selected' : '' }}>
                                     [{{ $loc->code }}] {{ $loc->name }} - {{ $loc->country }} ({{ $loc->type }})
@@ -221,7 +221,7 @@
                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>+ Tambah Baris Item</span>
+                        <span>Tambah Baris Item</span>
                     </button>
                 </div>
 

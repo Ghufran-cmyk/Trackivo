@@ -59,7 +59,7 @@
                             Pemilik Kargo (Customer) <span class="text-rose-500">*</span>
                         </label>
                         <select name="customer_id" id="customer_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('customer_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('customer_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="">-- Pilih Customer --</option>
                             @foreach($customers as $cust)
                                 <option value="{{ $cust->id }}" {{ old('customer_id') == $cust->id ? 'selected' : '' }}>
@@ -78,7 +78,7 @@
                             Carrier Pengangkut <span class="text-rose-500">*</span>
                         </label>
                         <select name="carrier_id" id="carrier_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('carrier_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('carrier_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="">-- Pilih Carrier --</option>
                             @foreach($carriers as $carrier)
                                 <option value="{{ $carrier->id }}" {{ old('carrier_id') == $carrier->id ? 'selected' : '' }}>
@@ -97,7 +97,7 @@
                             Moda Transportasi <span class="text-rose-500">*</span>
                         </label>
                         <select name="transport_mode" id="transport_mode" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('transport_mode') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('transport_mode') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="">-- Pilih Moda Transportasi --</option>
                             <option value="OCEAN" {{ old('transport_mode') == 'OCEAN' ? 'selected' : '' }}>OCEAN (Kapal Laut / Kontainer Samudera)</option>
                             <option value="AIR" {{ old('transport_mode') == 'AIR' ? 'selected' : '' }}>AIR (Pesawat Udara / Air Freight)</option>
@@ -161,7 +161,7 @@
                             Titik Asal (Origin) <span class="text-rose-500">*</span>
                         </label>
                         <select name="origin_location_id" id="origin_location_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('origin_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('origin_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="">-- Pilih Titik Asal --</option>
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}" {{ old('origin_location_id') == $loc->id ? 'selected' : '' }}>
@@ -180,7 +180,7 @@
                             Titik Tujuan (Destination) <span class="text-rose-500">*</span>
                         </label>
                         <select name="destination_location_id" id="destination_location_id" required
-                                class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('destination_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('destination_location_id') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
                             <option value="">-- Pilih Titik Tujuan --</option>
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}" {{ old('destination_location_id') == $loc->id ? 'selected' : '' }}>
@@ -231,7 +231,7 @@
                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>+ Tambah Baris Item</span>
+                        <span>Tambah Baris Item</span>
                     </button>
                 </div>
 
@@ -294,7 +294,110 @@
                 </div>
             </div>
 
-            <!-- Section 4: Catatan Tambahan (Opsional) -->
+            <!-- Section 4: Rincian Biaya & Pembayaran (IDR) -->
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 flex items-center space-x-2">
+                    <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
+                    <span>4. Rincian Biaya & Pembayaran (IDR)</span>
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <!-- Form Input Pembayaran -->
+                    <div class="lg:col-span-2 space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <!-- Biaya Layanan & Asuransi (Rp) -->
+                            <div>
+                                <label for="insurance_cost" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Biaya Layanan & Asuransi (Rp)
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-xs font-semibold text-slate-500">Rp</span>
+                                    <input type="number" name="insurance_cost" id="insurance_cost" min="0" step="1000"
+                                           value="{{ old('insurance_cost', 0) }}"
+                                           placeholder="0"
+                                           class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border {{ $errors->has('insurance_cost') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                </div>
+                                <p class="mt-1 text-[11px] text-slate-400">Proteksi tambahan kargo opsional (Rp).</p>
+                                @error('insurance_cost')
+                                    <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Metode Pembayaran -->
+                            <div>
+                                <label for="payment_method" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                    Metode Pembayaran <span class="text-rose-500">*</span>
+                                </label>
+                                <select name="payment_method" id="payment_method" required
+                                        class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('payment_method') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                    <option value="BANK_TRANSFER" {{ old('payment_method', 'BANK_TRANSFER') == 'BANK_TRANSFER' ? 'selected' : '' }}>Transfer Bank</option>
+                                    <option value="CASH" {{ old('payment_method') == 'CASH' ? 'selected' : '' }}>Tunai (Loket)</option>
+                                    <option value="QRIS" {{ old('payment_method') == 'QRIS' ? 'selected' : '' }}>QRIS</option>
+                                    <option value="CORPORATE_INVOICE" {{ old('payment_method') == 'CORPORATE_INVOICE' ? 'selected' : '' }}>Tagihan Invoice B2B</option>
+                                </select>
+                                @error('payment_method')
+                                    <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Status Pembayaran Awal -->
+                        <div>
+                            <label for="payment_status" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                Status Pembayaran Awal <span class="text-rose-500">*</span>
+                            </label>
+                            <select name="payment_status" id="payment_status" required
+                                    class="w-full appearance-none px-3.5 py-2.5 rounded-xl border {{ $errors->has('payment_status') ? 'border-rose-400 bg-rose-50/30' : 'border-slate-300 bg-white' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-[#556E5C] focus:border-[#556E5C]">
+                                <option value="UNPAID" {{ old('payment_status', 'UNPAID') == 'UNPAID' ? 'selected' : '' }}>Belum Lunas (UNPAID)</option>
+                                <option value="PAID" {{ old('payment_status') == 'PAID' ? 'selected' : '' }}>Lunas di Loket (PAID)</option>
+                            </select>
+                            <p class="mt-1 text-[11px] text-slate-400">Pilih "Lunas di Loket" jika pembayaran tunai/transfer langsung diselesaikan saat pembuatan resi.</p>
+                            @error('payment_status')
+                                <p class="mt-1 text-xs text-rose-500 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Kartu Kalkulator Estimasi Live -->
+                    <div class="bg-[#F6F7F3] border border-[#DFE1D8] rounded-2xl p-5 shadow-xs">
+                        <div class="flex items-center justify-between pb-3 border-b border-[#DFE1D8]">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-[#556E5C]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs font-bold uppercase tracking-wider text-[#243329]">Ringkasan Tarif (Live)</span>
+                            </div>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#E9EAE4] text-[#3E5245] border border-[#DFE1D8]">IDR</span>
+                        </div>
+
+                        <div class="mt-4 space-y-3 text-xs text-slate-600">
+                            <div class="flex justify-between items-center">
+                                <span>Biaya Kirim Dasar:</span>
+                                <span id="displayBaseCost" class="font-mono font-semibold text-[#243329]">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Biaya Berat & Volume:</span>
+                                <span id="displayWeightVolumeCost" class="font-mono font-semibold text-[#243329]">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Biaya Asuransi:</span>
+                                <span id="displayInsuranceCost" class="font-mono font-semibold text-[#243329]">Rp 0</span>
+                            </div>
+
+                            <div class="pt-3 border-t border-[#DFE1D8]">
+                                <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Total Pembayaran:</div>
+                                <div id="displayTotalAmount" class="text-xl font-bold text-[#243329] font-mono tracking-tight">Rp 0</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-2.5 rounded-xl bg-white border border-[#DFE1D8]/80 text-[11px] text-slate-500">
+                            Kalkulasi otomatis real-time berdasarkan tarif deterministik moda, berat, volume, dan proteksi asuransi.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Catatan Tambahan (Opsional) -->
             <div>
                 <label for="notes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Catatan Khusus / Instruksi Pengiriman
@@ -407,6 +510,54 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
     });
+
+    // Real-time Shipping Rate Live Calculator
+    const transportModeSelect = document.getElementById('transport_mode');
+    const weightInput = document.getElementById('weight_kg');
+    const volumeInput = document.getElementById('volume_cbm');
+    const insuranceInput = document.getElementById('insurance_cost');
+
+    const displayBase = document.getElementById('displayBaseCost');
+    const displayWeightVolume = document.getElementById('displayWeightVolumeCost');
+    const displayInsurance = document.getElementById('displayInsuranceCost');
+    const displayTotal = document.getElementById('displayTotalAmount');
+
+    const rateTable = {
+        'OCEAN': { base: 750000, rateKg: 1500, rateCbm: 250000 },
+        'AIR':   { base: 1500000, rateKg: 8500, rateCbm: 600000 },
+        'LAND':  { base: 350000, rateKg: 2000, rateCbm: 150000 }
+    };
+
+    function formatRupiah(number) {
+        return 'Rp ' + Math.round(number).toLocaleString('id-ID');
+    }
+
+    function calculateShippingCost() {
+        const mode = transportModeSelect ? (transportModeSelect.value || 'LAND') : 'LAND';
+        const rate = rateTable[mode] || rateTable['LAND'];
+
+        const weight = weightInput ? parseFloat(weightInput.value) || 0 : 0;
+        const volume = volumeInput ? parseFloat(volumeInput.value) || 0 : 0;
+        const insurance = insuranceInput ? parseInt(insuranceInput.value) || 0 : 0;
+
+        const baseCost = rate.base;
+        const weightVolumeCost = Math.round((weight * rate.rateKg) + (volume * rate.rateCbm));
+        const insuranceCost = Math.max(0, insurance);
+        const totalAmount = baseCost + weightVolumeCost + insuranceCost;
+
+        if (displayBase) displayBase.textContent = formatRupiah(baseCost);
+        if (displayWeightVolume) displayWeightVolumeCost.textContent = formatRupiah(weightVolumeCost);
+        if (displayInsurance) displayInsurance.textContent = formatRupiah(insuranceCost);
+        if (displayTotal) displayTotal.textContent = formatRupiah(totalAmount);
+    }
+
+    if (transportModeSelect) transportModeSelect.addEventListener('change', calculateShippingCost);
+    if (weightInput) weightInput.addEventListener('input', calculateShippingCost);
+    if (volumeInput) volumeInput.addEventListener('input', calculateShippingCost);
+    if (insuranceInput) insuranceInput.addEventListener('input', calculateShippingCost);
+
+    // Initial calculation
+    calculateShippingCost();
 });
 </script>
 @endsection

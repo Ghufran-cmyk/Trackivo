@@ -394,4 +394,80 @@ class ShipmentController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    /**
+     * Konfirmasi pembayaran lunas untuk shipment (Admin & Operator).
+     */
+    public function confirmPayment(Request $request, Shipment $shipment): RedirectResponse
+    {
+        $user = auth()->user();
+
+        if ($user->isCustomer()) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengonfirmasi pembayaran.');
+        }
+
+        $validated = $request->validate([
+            'payment_method' => ['nullable', 'string', 'in:CASH,BANK_TRANSFER,QRIS,CORPORATE_INVOICE'],
+        ]);
+
+        $oldValues = [
+            'payment_status' => $shipment->payment_status,
+            'payment_method' => $shipment->payment_method,
+            'paid_at' => $shipment->paid_at?->toIso8601String(),
+            'payment_confirmed_by' => $shipment->payment_confirmed_by,
+        ];
+
+        $paymentMethod = $validated['payment_method'] ?? $shipment->payment_method ?? 'BANK_TRANSFER';
+        $paidAt = Carbon::now();
+
+        $shipment->update([
+            'payment_method' => $paymentMethod,
+            'payment_status' => 'PAID',
+            'paid_at' => $paidAt,
+            'payment_confirmed_by' => $user->id,
+        ]);
+
+        // Catat AuditLog
+        AuditLog::create([
+            'user_id' => $user->id,
+            'action' => 'CONFIRM_PAYMENT',
+            'target_type' => Shipment::class,
+            'target_id' => $shipment->id,
+            'old_values' => $oldValues,
+            'new_values' => [
+                'payment_status' => 'PAID',
+                'payment_method' => $paymentMethod,
+                'paid_at' => $paidAt->toIso8601String(),
+                'payment_confirmed_by' => $user->id,
+            ],
+            'ip_address' => $request->ip(),
+        ]);
+
+        return redirect()->route('shipments.show', $shipment)
+            ->with('success', "Pembayaran untuk faktur {$shipment->invoice_number} berhasil dikonfirmasi LUNAS.");
+    }
+
+    /**
+     * Tampilkan struk pembayaran & resi resmi siap cetak.
+     */
+    public function receipt(Shipment $shipment): View
+    {
+        $user = auth()->user();
+
+        // Customer hanya boleh melihat miliknya sendiri
+        if ($user->isCustomer() && $shipment->customer_id !== $user->id) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengakses struk pengiriman ini.');
+        }
+
+        $shipment->load([
+            'customer',
+            'carrier',
+            'originLocation',
+            'destinationLocation',
+            'items',
+            'paymentConfirmedBy',
+        ]);
+
+        return view('shipments.receipt', compact('shipment'));
+    }
 }

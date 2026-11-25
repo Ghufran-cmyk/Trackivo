@@ -54,6 +54,27 @@
             top: 0 !important;
             position: static !important;
         }
+        /* Trackivo Natural Sage & Sand Global Form Focus & Accents (Zero Browser Blue) */
+        input, textarea, select {
+            accent-color: #556E5C !important;
+        }
+        input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: none !important;
+            border-color: #556E5C !important;
+            box-shadow: 0 0 0 2px rgba(85, 110, 92, 0.2) !important;
+        }
+        input[type="checkbox"], input[type="radio"] {
+            accent-color: #556E5C !important;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(42%) sepia(12%) saturate(700%) hue-rotate(85deg) brightness(90%) contrast(90%);
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -366,7 +387,7 @@
                                placeholder="Search tracking number..." 
                                class="bg-transparent text-xs sm:text-sm text-[#1C1E1B] placeholder-[#9EABA2] focus:outline-none w-64 xl:w-72">
                         <button type="submit" 
-                                class="w-8 h-8 rounded-full bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-black transition-colors shrink-0" 
+                                class="w-8 h-8 rounded-full bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-[#243329] transition-colors shrink-0" 
                                 title="Search">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -817,6 +838,283 @@
                 }
             }
         });
+    </script>
+
+    <!-- Trackivo Natural Sage Global Custom Dropdown Enhancer -->
+    <script>
+    (function () {
+        function initCustomSelect(select) {
+            if (!select || select.dataset.customSelectInit === 'true' || select.hasAttribute('data-native-select') || select.closest('[data-native-select]')) {
+                return;
+            }
+            select.dataset.customSelectInit = 'true';
+
+            // Wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'relative w-full custom-select-wrapper';
+            
+            // Masukkan wrapper sebelum select, lalu pindahkan select ke dalam wrapper
+            select.parentNode.insertBefore(wrapper, select);
+            wrapper.appendChild(select);
+
+            // Sembunyikan select asli secara visual (sr-only), tetap di form DOM
+            select.classList.add('sr-only');
+            select.setAttribute('aria-hidden', 'true');
+            select.tabIndex = -1;
+
+            // Trigger Button Trackivo Natural Sage
+            const trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'w-full rounded-xl border border-[#DFE1D8] bg-white px-3.5 py-2.5 text-sm text-[#1C2820] text-left flex items-center justify-between gap-2 transition hover:border-[#B8C4B4] focus:outline-none focus:border-[#556E5C] focus:ring-2 focus:ring-[#556E5C]/20';
+            
+            if (select.disabled) {
+                trigger.disabled = true;
+                trigger.classList.add('opacity-60', 'cursor-not-allowed');
+            }
+
+            // Sync visual error border jika select asli memiliki class error
+            if (select.classList.contains('border-rose-400') || select.classList.contains('border-rose-500') || select.classList.contains('border-red-500')) {
+                trigger.classList.remove('border-[#DFE1D8]');
+                trigger.classList.add('border-rose-400', 'bg-rose-50/20');
+            }
+
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'truncate select-none';
+
+            // SATU Ikon chevron SVG tipis di kanan yang berputar halus (rotate-180) saat terbuka
+            const chevronWrapper = document.createElement('span');
+            chevronWrapper.className = 'shrink-0 text-[#6F756C] transition-transform duration-200 flex items-center justify-center';
+            chevronWrapper.innerHTML = `
+                <svg class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            `;
+
+            trigger.appendChild(labelSpan);
+            trigger.appendChild(chevronWrapper);
+            wrapper.appendChild(trigger);
+
+            // Menu Panel Dropdown
+            const menu = document.createElement('div');
+            menu.className = 'hidden absolute left-0 right-0 top-full mt-1.5 rounded-xl border border-[#DFE1D8] bg-white shadow-lg py-1.5 max-h-60 overflow-y-auto z-50 custom-scrollbar';
+            wrapper.appendChild(menu);
+
+            let highlightedIndex = -1;
+
+            function updateTriggerLabel() {
+                const selectedOpt = select.options[select.selectedIndex];
+                labelSpan.textContent = selectedOpt ? selectedOpt.text : '-- Pilih --';
+            }
+
+            function renderOptions() {
+                menu.innerHTML = '';
+                updateTriggerLabel();
+
+                const options = Array.from(select.options);
+                options.forEach(function (opt, idx) {
+                    const item = document.createElement('div');
+                    const isSelected = opt.selected;
+
+                    item.setAttribute('role', 'option');
+                    item.setAttribute('data-index', idx);
+                    item.className = 'px-3.5 py-2 text-sm text-[#1C2820] cursor-pointer flex items-center justify-between gap-2 transition-colors select-none ' +
+                        (isSelected ? 'bg-[#E5ECE2] text-[#243329] font-medium' : 'hover:bg-[#F2F5EF] hover:text-[#243329]');
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'truncate';
+                    textSpan.textContent = opt.text;
+                    item.appendChild(textSpan);
+
+                    if (isSelected) {
+                        const checkIcon = document.createElement('span');
+                        checkIcon.className = 'text-[#3E5245] shrink-0';
+                        checkIcon.innerHTML = `
+                            <svg class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                            </svg>
+                        `;
+                        item.appendChild(checkIcon);
+                    }
+
+                    item.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        selectOption(idx);
+                    });
+
+                    menu.appendChild(item);
+                });
+            }
+
+            function selectOption(index) {
+                if (index < 0 || index >= select.options.length) return;
+                select.selectedIndex = index;
+                select.value = select.options[index].value;
+                closeMenu();
+                renderOptions();
+
+                // Trigger native change & input events agar kalkulator ongkir live & script lainnya bereaksi instan
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+                select.dispatchEvent(new Event('input', { bubbles: true }));
+
+                trigger.focus();
+            }
+
+            function openMenu() {
+                if (select.disabled) return;
+
+                // Tutup dropdown lain yang sedang terbuka
+                document.querySelectorAll('.custom-select-wrapper .custom-select-menu-open').forEach(function (openM) {
+                    if (openM !== menu) {
+                        openM.classList.add('hidden');
+                        openM.classList.remove('custom-select-menu-open');
+                        const otherChevron = openM.previousElementSibling?.querySelector('.shrink-0');
+                        if (otherChevron) otherChevron.classList.remove('rotate-180');
+                    }
+                });
+
+                menu.classList.remove('hidden');
+                menu.classList.add('custom-select-menu-open');
+                chevronWrapper.classList.add('rotate-180');
+                highlightedIndex = select.selectedIndex;
+                highlightOption(highlightedIndex);
+            }
+
+            function closeMenu() {
+                menu.classList.add('hidden');
+                menu.classList.remove('custom-select-menu-open');
+                chevronWrapper.classList.remove('rotate-180');
+                highlightedIndex = -1;
+            }
+
+            function highlightOption(index) {
+                const items = menu.querySelectorAll('[role="option"]');
+                items.forEach(function (it, i) {
+                    if (i === index) {
+                        it.classList.add('bg-[#F2F5EF]', 'text-[#243329]');
+                        it.scrollIntoView({ block: 'nearest' });
+                    } else if (i !== select.selectedIndex) {
+                        it.classList.remove('bg-[#F2F5EF]', 'text-[#243329]');
+                    }
+                });
+            }
+
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (menu.classList.contains('hidden')) {
+                    openMenu();
+                } else {
+                    closeMenu();
+                }
+            });
+
+            trigger.addEventListener('keydown', function (e) {
+                const itemsCount = select.options.length;
+                if (itemsCount === 0) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (menu.classList.contains('hidden')) {
+                        openMenu();
+                    } else {
+                        highlightedIndex = (highlightedIndex + 1) % itemsCount;
+                        highlightOption(highlightedIndex);
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (menu.classList.contains('hidden')) {
+                        openMenu();
+                    } else {
+                        highlightedIndex = (highlightedIndex - 1 + itemsCount) % itemsCount;
+                        highlightOption(highlightedIndex);
+                    }
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (menu.classList.contains('hidden')) {
+                        openMenu();
+                    } else if (highlightedIndex >= 0) {
+                        selectOption(highlightedIndex);
+                    }
+                } else if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+
+            // Respon jika select diperbarui secara terprogram
+            select.addEventListener('change', function () {
+                renderOptions();
+            });
+
+            // Observer jika status disabled atau options berubah
+            const selectObserver = new MutationObserver(function () {
+                if (select.disabled) {
+                    trigger.disabled = true;
+                    trigger.classList.add('opacity-60', 'cursor-not-allowed');
+                    closeMenu();
+                } else {
+                    trigger.disabled = false;
+                    trigger.classList.remove('opacity-60', 'cursor-not-allowed');
+                }
+                renderOptions();
+            });
+            selectObserver.observe(select, { attributes: true, childList: true });
+
+            renderOptions();
+        }
+
+        window.initTrackivoCustomSelects = function (root = document) {
+            root.querySelectorAll('select:not([data-native-select])').forEach(function (sel) {
+                initCustomSelect(sel);
+            });
+        };
+
+        // Tutup menu otomatis saat klik di luar dropdown atau tekan tombol Escape
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.custom-select-wrapper')) {
+                document.querySelectorAll('.custom-select-wrapper .custom-select-menu-open').forEach(function (openM) {
+                    openM.classList.add('hidden');
+                    openM.classList.remove('custom-select-menu-open');
+                    const chevron = openM.previousElementSibling?.querySelector('.shrink-0');
+                    if (chevron) chevron.classList.remove('rotate-180');
+                });
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.custom-select-wrapper .custom-select-menu-open').forEach(function (openM) {
+                    openM.classList.add('hidden');
+                    openM.classList.remove('custom-select-menu-open');
+                    const chevron = openM.previousElementSibling?.querySelector('.shrink-0');
+                    if (chevron) chevron.classList.remove('rotate-180');
+                });
+            }
+        });
+
+        // Inisialisasi awal saat DOM siap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                window.initTrackivoCustomSelects();
+            });
+        } else {
+            window.initTrackivoCustomSelects();
+        }
+
+        // Observer untuk elemen select yang ditambahkan secara dinamis
+        const domObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (node) {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.tagName === 'SELECT') {
+                            initCustomSelect(node);
+                        } else if (node.querySelectorAll) {
+                            node.querySelectorAll('select:not([data-native-select])').forEach(initCustomSelect);
+                        }
+                    }
+                });
+            });
+        });
+        domObserver.observe(document.documentElement, { childList: true, subtree: true });
+    })();
     </script>
 
     @stack('scripts')
