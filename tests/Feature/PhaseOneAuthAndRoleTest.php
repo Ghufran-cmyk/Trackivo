@@ -104,6 +104,8 @@ class PhaseOneAuthAndRoleTest extends TestCase
         $response->assertSee('Audit Logs');
         $response->assertSee('Settings');
         $response->assertSee('Locations');
+        $response->assertSee('Distribusi Status Pengiriman');
+        $response->assertSee('Distribusi Shipment Berdasarkan Carrier');
     }
 
     public function test_dashboard_renders_for_operator_with_operator_menus(): void
@@ -114,6 +116,8 @@ class PhaseOneAuthAndRoleTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Portal Operator');
         $response->assertSee('Exceptions');
+        $response->assertSee('Distribusi Status Pengiriman');
+        $response->assertSee('Distribusi Shipment Berdasarkan Carrier');
     }
 
     public function test_dashboard_renders_for_customer_with_customer_menus(): void
@@ -125,6 +129,8 @@ class PhaseOneAuthAndRoleTest extends TestCase
         $response->assertSee('Portal Customer');
         $response->assertSee('My Shipments');
         $response->assertSee('Notifications');
+        $response->assertDontSee('Distribusi Status Pengiriman');
+        $response->assertDontSee('Distribusi Shipment Berdasarkan Carrier');
     }
 
     public function test_role_middleware_blocks_unauthorized_access(): void

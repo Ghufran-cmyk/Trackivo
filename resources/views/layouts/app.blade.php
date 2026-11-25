@@ -281,12 +281,18 @@
 
                     <!-- User Avatar -->
                     <div class="relative group flex items-center justify-center">
-                        <div class="w-10 h-10 rounded-full bg-[#556E5C] text-white text-sm font-semibold flex items-center justify-center ring-2 ring-[#E9EAE4] cursor-default shadow-xs">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                        </div>
+                        <a href="{{ route('profile.edit') }}" 
+                           class="w-10 h-10 rounded-full bg-[#556E5C] text-white text-sm font-semibold flex items-center justify-center overflow-hidden transition-all hover:ring-2 hover:ring-[#556E5C] {{ request()->routeIs('profile.*') ? 'ring-2 ring-[#556E5C] shadow-sm' : 'ring-2 ring-[#E9EAE4]' }}"
+                           title="{{ auth()->user()->name }} - Pengaturan Akun">
+                            @if (auth()->user()->avatarUrl())
+                                <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                            @else
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            @endif
+                        </a>
                         <div class="absolute left-full ml-3 px-3 py-2 bg-[#1C1E1B] text-white text-xs rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
                             <div class="font-bold">{{ auth()->user()->name }}</div>
-                            <div class="text-[11px] text-[#A2A9A0] capitalize">Portal {{ ucfirst($role) }}</div>
+                            <div class="text-[11px] text-[#A2A9A0]">Pengaturan Akun &bull; Portal {{ ucfirst($role) }}</div>
                         </div>
                     </div>
 

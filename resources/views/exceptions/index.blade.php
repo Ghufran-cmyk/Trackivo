@@ -8,11 +8,7 @@
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#F9E6E6] text-[#B84242] text-xs font-semibold mb-2 border border-[#F0C9C9]">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#B84242]"></span>
-                <span>Control Tower Operasional</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">Manajemen Kendala Kargo (Shipment Exceptions)</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">Manajemen Kendala Kargo</h1>
             <p class="text-xs sm:text-sm text-[#6F756C] mt-1">
                 Pantau, investigasi, dan selesaikan insiden gangguan operasional kargo di seluruh jaringan logistik global Trackivo.
             </p>

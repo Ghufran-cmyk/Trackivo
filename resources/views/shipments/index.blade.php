@@ -8,12 +8,8 @@
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2 border border-[#C8DACD]">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
-                <span>{{ auth()->user()->isCustomer() ? 'Portal Pelanggan Kargo' : 'Manajemen Operasional Pengiriman' }}</span>
-            </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">
-                {{ auth()->user()->isCustomer() ? 'Pengiriman Saya (My Shipments)' : 'Daftar Pengiriman Global' }}
+                {{ auth()->user()->isCustomer() ? 'Pengiriman Saya' : 'Daftar Pengiriman Global' }}
             </h1>
             <p class="text-xs sm:text-sm text-[#6F756C] mt-1">
                 {{ auth()->user()->isCustomer() ? 'Pantau status, estimasi waktu tiba, anomali delay, dan riwayat perjalanan muatan kargo Anda.' : 'Pantau pergerakan seluruh kargo lintas samudera, udara, dan darat dalam sistem Trackivo.' }}

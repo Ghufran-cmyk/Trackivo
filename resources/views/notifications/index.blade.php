@@ -8,11 +8,7 @@
     <!-- Page Header & Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E6F0E9] text-[#2F6846] text-xs font-semibold mb-2">
-                <span class="h-1.5 w-1.5 rounded-full bg-[#2F6846]"></span>
-                <span>Pusat Notifikasi Logistik</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+            <h1 class="text-2xl sm:text-3xl font-bold text-[#1C1E1B] tracking-tight">
                 Notifikasi Pengiriman
             </h1>
             <p class="text-sm text-[#6F756C] mt-1">

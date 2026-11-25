@@ -163,7 +163,7 @@
               "host": ["{{base_url}}"],
               "path": ["login"]
             },
-            "description": "Authenticate as Customer Budi Santoso."
+            "description": "Authenticate as Customer Ghufran."
           },
           "event": [
             {

@@ -101,6 +101,7 @@
 
     </div>
 
+    @if(!auth()->user()->isCustomer())
     <!-- Chart.js Analytics Grid (2 Graphs: Status Distribution & Carrier Distribution) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
@@ -181,6 +182,7 @@
         </div>
 
     </div>
+    @endif
 
     <!-- Kartu Peta Sebaran Pengiriman Global (Leaflet.js) -->
     <div id="dashboard-map-card" class="bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] relative">

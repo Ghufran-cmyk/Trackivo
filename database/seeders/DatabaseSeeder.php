@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $customer1 = User::create([
-            'name' => 'Budi Santoso',
+            'name' => 'Ghufran',
             'email' => 'customer1@trackivo.com',
             'password' => Hash::make('password'),
             'role' => 'customer',
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $customer2 = User::create([
-            'name' => 'Elena Vance',
+            'name' => 'Fadlur',
             'email' => 'customer2@trackivo.com',
             'password' => Hash::make('password'),
             'role' => 'customer',

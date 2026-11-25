@@ -294,8 +294,8 @@ The database seeder provisions four pre-configured accounts representing each sy
 | :--- | :--- | :--- | :--- | :--- |
 | **Administrator** | System Administrator | `admin@trackivo.com` | `password` | Full system access: manage carriers, locations, user accounts, delay threshold settings, audit logs, and shipment purge. |
 | **Logistics Operator** | Operations Specialist | `operator@trackivo.com` | `password` | Operational access: create shipments, advance state machine, log tracking events, report and resolve exceptions. |
-| **Customer** | Budi Santoso | `customer1@trackivo.com` | `password` | Consignee portal: view only personal consignments (`PT Nusantara Logistik`), cargo items, and transit timeline. |
-| **Customer** | Elena Vance | `customer2@trackivo.com` | `password` | International consignee portal: view personal consignments (`Pacific Trade Co.`). |
+| **Customer** | Ghufran | `customer1@trackivo.com` | `password` | Consignee portal: view only personal consignments (`PT Nusantara Logistik`), cargo items, and transit timeline. |
+| **Customer** | Fadlur | `customer2@trackivo.com` | `password` | International consignee portal: view personal consignments (`Pacific Trade Co.`). |
 
 ---
 

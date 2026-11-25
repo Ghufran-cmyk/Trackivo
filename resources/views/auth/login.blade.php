@@ -218,12 +218,15 @@
                         </div>
                     </div>
 
-                    <!-- Remember Me Checkbox -->
+                    <!-- Remember Me Checkbox & Forgot Password Link -->
                     <div class="flex items-center justify-between text-xs py-1">
                         <label class="flex items-center space-x-2 text-[#B5C4B7] hover:text-white cursor-pointer select-none">
                             <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded border border-[#4A6050] bg-[#1B271F] accent-[#C8D3BE] text-[#243329] focus:ring-0 cursor-pointer">
                             <span>Ingat saya di perangkat ini</span>
                         </label>
+                        <a href="{{ route('password.request') }}" class="text-[#C8D3BE] hover:text-white text-xs transition">
+                            Lupa kata sandi?
+                        </a>
                     </div>
 
                     <!-- Submit Button -->
