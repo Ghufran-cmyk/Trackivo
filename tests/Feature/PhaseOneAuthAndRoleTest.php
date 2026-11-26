@@ -15,7 +15,8 @@ class PhaseOneAuthAndRoleTest extends TestCase
     public function test_guest_is_redirected_to_login_from_root(): void
     {
         $response = $this->get('/');
-        $response->assertRedirect(route('login'));
+        $response->assertStatus(200);
+        $response->assertSee('Trackivo');
     }
 
     public function test_login_screen_can_be_rendered(): void

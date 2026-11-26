@@ -79,8 +79,8 @@
     <header class="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-2">
         <nav class="flex items-center justify-between">
             <!-- Brand Logo in Dark-Sage Badge -->
-            <a href="{{ route('tracking.public') }}" class="group inline-flex items-center space-x-3 transition">
-                <div class="bg-[#243329] px-4 py-2 rounded-full border border-white/10 flex items-center shadow-sm group-hover:bg-[#1B271F] transition">
+            <a href="{{ url('/') }}" class="group inline-flex items-center space-x-3 transition">
+                <div class="bg-[#243329] hover:bg-[#1E3126] group-hover:bg-[#1E3126] px-4 py-2 rounded-full border border-white/10 flex items-center shadow-sm transition">
                     <img src="{{ asset('images/logonama.png') }}" alt="Trackivo Logo" class="h-6 sm:h-7 w-auto object-contain">
                 </div>
                 <span class="hidden md:inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[#556E5C] bg-[#DFE1D8]/60 px-3 py-1 rounded-full border border-[#DFE1D8]">
@@ -88,8 +88,16 @@
                 </span>
             </a>
 
-            <!-- Right Action: Login / Dashboard -->
-            <div>
+            <!-- Right Action: Navigation Links -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <a href="{{ url('/') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-transparent hover:bg-[#16231B]/[0.06] border border-[#16231B]/15 text-[#16231B] text-xs sm:text-sm font-medium transition">
+                    <svg class="w-4 h-4 text-[#4E6E58] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="hidden sm:inline">Kembali ke Beranda</span>
+                    <span class="sm:hidden">Beranda</span>
+                </a>
+
                 @auth
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#243329] hover:bg-[#1B271F] text-white text-xs font-semibold shadow-sm transition">
                         <span>Kembali ke Dashboard</span>

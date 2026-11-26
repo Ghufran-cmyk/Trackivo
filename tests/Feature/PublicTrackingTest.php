@@ -24,6 +24,10 @@ class PublicTrackingTest extends TestCase
         $response->assertSee('Lacak Pengiriman Kargo Anda');
         $response->assertSee('Lacak Resi');
         $response->assertSee('Pelacakan Geospasial Interaktif');
+        $response->assertSee(url('/'));
+        $response->assertSee('Kembali ke Beranda');
+        $response->assertSee('Beranda');
+        $response->assertSee('Masuk ke Portal');
     }
 
     /**
