@@ -47,6 +47,10 @@
     </script>
 
     <style>
+        html, body {
+            overflow-x: clip;
+            max-width: 100%;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #E9EAE4;
@@ -114,14 +118,14 @@
         @endphp
 
         <!-- Desktop Top Left Logo (Sejajar horizontal dengan sidebar left-5 w-[68px] dan sejajar vertikal dengan Hello, Trackivo!) -->
-        <div class="hidden md:flex fixed left-5 top-6 w-[68px] items-center justify-center z-40">
+        <div class="hidden lg:flex fixed left-5 top-6 w-[68px] items-center justify-center z-40">
             <a href="{{ route('dashboard') }}" class="h-14 w-14 flex items-center justify-center hover:scale-105 transition-transform shrink-0" title="Trackivo Dashboard">
                 <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-14 w-14 object-contain">
             </a>
         </div>
 
         <!-- Fixed Rail Wrapper for Left Sidebar (Desktop: Diam Terpaku di Sisi Kiri Layar) -->
-        <aside class="hidden md:flex fixed left-5 top-[104px] bottom-5 w-[68px] items-center justify-center z-40 pointer-events-none">
+        <aside class="hidden lg:flex fixed left-5 top-[104px] bottom-5 w-[68px] items-center justify-center z-40 pointer-events-none">
             <nav class="pointer-events-auto overflow-visible w-[68px] h-full max-h-[660px] min-h-[500px] bg-white rounded-full py-5 px-2 shadow-[0_8px_28px_rgba(28,30,27,0.07)] border border-[#E2E4DC]/80 flex flex-col items-center justify-between">
                 
                 <!-- Menu Bagian Atas -->
@@ -323,103 +327,44 @@
         </aside>
 
         <!-- Main Content Container (Identik batas lebar dan horizontal padding antara Header dan Konten) -->
-        <div class="min-h-screen flex flex-col w-full md:pl-[112px] md:pr-8 px-4 pt-6 pb-8">
+        <div class="min-h-screen flex flex-col w-full lg:pl-[112px] lg:pr-8 px-4 pt-4 lg:pt-6 pb-24 lg:pb-8 max-w-full overflow-x-clip">
             
-            <!-- Mobile Header Top Bar (< md) -->
-            <div class="md:hidden flex items-center justify-between bg-white rounded-2xl p-3.5 shadow-sm border border-[#E2E4DC]/80 mb-4">
-                <a href="{{ route('dashboard') }}" class="flex items-center space-x-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-8 w-8 object-contain">
-                    <span class="font-bold text-base tracking-tight text-[#1C1E1B] notranslate">Trackivo</span>
-                </a>
-
+            <!-- Mobile Top App Bar (< 1024px / lg:hidden) -->
+            <div class="lg:hidden flex items-center justify-between bg-white rounded-2xl px-3.5 py-2.5 shadow-sm border border-[#E2E4DC]/80 mb-4 relative z-30">
+                <!-- Kiri: Logo Trackivo + badge peran ringkas -->
                 <div class="flex items-center space-x-2">
-                    <a href="{{ route('notifications.index') }}" 
-                       class="w-9 h-9 rounded-full bg-[#F5F6F1] text-[#1C1E1B] flex items-center justify-center relative">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                        </svg>
-                        @if(($unreadNotificationsCount ?? 0) > 0)
-                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
-                        @endif
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 shrink-0" title="Trackivo">
+                        <img src="{{ asset('images/logo.png') }}" alt="Trackivo" class="h-8 w-8 object-contain">
+                        <span class="font-bold text-base tracking-tight text-[#1C1E1B] notranslate">Trackivo</span>
                     </a>
-
-                    <form method="POST" action="{{ route('logout') }}" class="m-0">
-                        @csrf
-                        <button type="submit" class="w-9 h-9 rounded-full bg-[#F5F6F1] text-[#7C8279] hover:text-[#B84242] flex items-center justify-center">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Desktop Top Header Bar (Rata Kanan Sejajar Konten) -->
-            <header class="w-full flex flex-wrap lg:flex-nowrap items-center justify-between gap-6 mb-6">
-                
-                <!-- Sisi Kiri: Blok Judul Hello, Trackivo! dan Subjudul Role Bahasa Indonesia -->
-                <div class="min-w-0">
-                    <h1 class="text-2xl md:text-3xl font-bold text-[#1C1E1B] tracking-tight">
-                        Hello, <span class="notranslate">Trackivo</span>!
-                    </h1>
-                    <p class="text-xs sm:text-sm text-[#6F756C] mt-0.5">
-                        @if ($role === 'admin')
-                            Pantau analitik, informasi, dan aktivitas operasional pengiriman global
-                        @elseif ($role === 'operator')
-                            Kelola rute kargo aktif, perbarui pelacakan, dan tangani kendala pengiriman
-                        @else
-                            Lacak pengiriman aktif Anda dan pantau progres pengiriman secara langsung
-                        @endif
-                    </p>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#F1F4EE] text-[#556E5C] border border-[#DFE1D8]">
+                        {{ strtoupper($role) }}
+                    </span>
                 </div>
 
-                <!-- Sisi Kanan: Kotak Pencarian Kapsul + Tombol Translate + Tombol Notifikasi + Pill Role -->
-                <div class="flex items-center gap-3 shrink-0 ml-auto">
-                    
-                    <!-- Search Box Kapsul -->
-                    <form method="GET" action="{{ route('shipments.index') }}" class="bg-white rounded-full pl-5 pr-1.5 py-1.5 shadow-sm border border-[#E2E4DC]/80 flex items-center">
-                        <input type="text" 
-                               name="search" 
-                               value="{{ request('search') }}"
-                               placeholder="Search tracking number..." 
-                               class="bg-transparent text-xs sm:text-sm text-[#1C1E1B] placeholder-[#9EABA2] focus:outline-none w-64 xl:w-72">
-                        <button type="submit" 
-                                class="w-8 h-8 rounded-full bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-[#243329] transition-colors shrink-0" 
-                                title="Search">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                        </button>
-                    </form>
-
-                    <!-- Multi-Country Translate Dropdown Button -->
-                    <div class="relative" id="translate-dropdown-container">
+                <!-- Kanan: Switcher Bahasa, 1 Ikon Notifikasi, Avatar Pengguna -->
+                <div class="flex items-center space-x-2">
+                    <!-- Switcher Bahasa Mobile Dropdown Trigger -->
+                    <div class="relative">
                         <button type="button" 
-                                id="translate-dropdown-btn" 
-                                class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F5F6F1] transition-all relative"
-                                title="Translate">
-                            <svg class="w-5 h-5 text-[#1C1E1B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                id="mobile-translate-btn" 
+                                class="h-9 px-2.5 rounded-full bg-[#F5F6F1] text-[#1C1E1B] border border-[#DFE1D8] flex items-center space-x-1 text-xs font-bold hover:bg-[#E9EAE4] transition"
+                                title="Pilih Bahasa">
+                            <svg class="w-3.5 h-3.5 text-[#556E5C]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="2" y1="12" x2="22" y2="12"></line>
                                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                             </svg>
-                            <!-- Indikator Kode Bahasa Kecil -->
-                            <span id="current-lang-code" class="absolute -bottom-1 -right-1 px-1 text-[9px] font-bold rounded-full bg-[#1C1E1B] text-white uppercase notranslate leading-tight">
-                                ID
-                            </span>
+                            <span id="mobile-current-lang-code" class="text-[10px] uppercase notranslate">ID</span>
                         </button>
 
-                        <!-- Floating Dropdown Menu (Natural Sage & Sand) -->
-                        <div id="translate-dropdown-menu" 
+                        <!-- Floating Mobile Dropdown Menu -->
+                        <div id="mobile-translate-menu" 
                              class="hidden absolute right-0 top-full mt-2 rounded-2xl bg-white shadow-lg border border-[#E2E4DC] p-2 w-48 z-50 notranslate">
                             <div class="px-3 py-1.5 text-[11px] font-semibold text-[#6F756C] uppercase tracking-wider border-b border-[#E2E4DC]/60 mb-1">
                                 Pilih Bahasa
                             </div>
-                            <div class="space-y-0.5 max-h-72 overflow-y-auto custom-scrollbar">
+                            <div class="space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
                                 <button type="button" data-lang="id" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
                                     <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ID</span><span>Indonesia</span></span>
                                     <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
@@ -464,35 +409,189 @@
                         </div>
                     </div>
 
-                    <!-- Notifications Round Button -->
-                    <div class="relative group">
-                        <a href="{{ route('notifications.index') }}" 
-                           class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F1F2EC] transition-colors relative"
-                           title="Notifications">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                            </svg>
-                            @if(($unreadNotificationsCount ?? 0) > 0)
-                                <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                    <!-- Notifications Round Button (HANYA 1 IKON DENGAN RED DOT) -->
+                    <a href="{{ route('notifications.index') }}" 
+                       class="w-9 h-9 rounded-full bg-[#F5F6F1] text-[#1C1E1B] border border-[#DFE1D8] flex items-center justify-center relative hover:bg-[#E9EAE4] transition"
+                       title="Notifikasi">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        @if(($unreadNotificationsCount ?? 0) > 0)
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                        @endif
+                    </a>
+
+                    <!-- User Avatar -->
+                    <a href="{{ route('profile.edit') }}" 
+                       class="w-9 h-9 rounded-full bg-[#556E5C] text-white text-xs font-bold flex items-center justify-center overflow-hidden ring-2 ring-[#DFE1D8] hover:ring-[#556E5C] transition shrink-0"
+                       title="{{ auth()->user()->name }} - Profil">
+                        @if (auth()->user()->avatarUrl())
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @endif
+                    </a>
+                </div>
+            </div>
+
+            <!-- Header Bar -->
+            <header class="w-full mb-6">
+                
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <!-- Sisi Kiri: Blok Judul Hello, Trackivo! dan Subjudul Role Bahasa Indonesia -->
+                    <div class="min-w-0">
+                        <h1 class="text-2xl md:text-3xl font-bold text-[#1C1E1B] tracking-tight">
+                            Hello, <span class="notranslate">Trackivo</span>!
+                        </h1>
+                        <p class="text-xs sm:text-sm text-[#6F756C] mt-0.5">
+                            @if ($role === 'admin')
+                                Pantau analitik, informasi, dan aktivitas operasional pengiriman global
+                            @elseif ($role === 'operator')
+                                Kelola rute kargo aktif, perbarui pelacakan, dan tangani kendala pengiriman
+                            @else
+                                Lacak pengiriman aktif Anda dan pantau progres pengiriman secara langsung
                             @endif
-                        </a>
-                        <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
-                            Notifications ({{ $unreadNotificationsCount ?? 0 }})
-                        </div>
+                        </p>
                     </div>
 
-                    <!-- Active Role Pill -->
-                    <div class="relative group">
-                        <div class="h-11 px-4 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center space-x-2 text-xs font-bold text-[#1C1E1B] cursor-default">
-                            <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
-                            <span class="uppercase tracking-wider">PORTAL {{ strtoupper($role) }}</span>
-                        </div>
-                        <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
-                            {{ auth()->user()->company_name ?? auth()->user()->email }}
-                        </div>
-                    </div>
+                    <!-- Sisi Kanan: DESKTOP ONLY (hidden lg:flex): Kotak Pencarian Kapsul + Tombol Translate + Tombol Notifikasi + Pill Role -->
+                    <div class="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
+                        
+                        <!-- Search Box Kapsul -->
+                        <form method="GET" action="{{ route('shipments.index') }}" class="bg-white rounded-full pl-5 pr-1.5 py-1.5 shadow-sm border border-[#E2E4DC]/80 flex items-center">
+                            <input type="text" 
+                                   name="search" 
+                                   value="{{ request('search') }}"
+                                   placeholder="Search tracking number..." 
+                                   class="bg-transparent text-xs sm:text-sm text-[#1C1E1B] placeholder-[#9EABA2] focus:outline-none w-64 xl:w-72">
+                            <button type="submit" 
+                                    class="w-8 h-8 rounded-full bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-[#243329] transition-colors shrink-0" 
+                                    title="Search">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </form>
 
+                        <!-- Multi-Country Translate Dropdown Button -->
+                        <div class="relative" id="translate-dropdown-container">
+                            <button type="button" 
+                                    id="translate-dropdown-btn" 
+                                    class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F5F6F1] transition-all relative"
+                                    title="Translate">
+                                <svg class="w-5 h-5 text-[#1C1E1B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                <!-- Indikator Kode Bahasa Kecil -->
+                                <span id="current-lang-code" class="absolute -bottom-1 -right-1 px-1 text-[9px] font-bold rounded-full bg-[#1C1E1B] text-white uppercase notranslate leading-tight">
+                                    ID
+                                </span>
+                            </button>
+
+                            <!-- Floating Dropdown Menu (Natural Sage & Sand) -->
+                            <div id="translate-dropdown-menu" 
+                                 class="hidden absolute right-0 top-full mt-2 rounded-2xl bg-white shadow-lg border border-[#E2E4DC] p-2 w-48 z-50 notranslate">
+                                <div class="px-3 py-1.5 text-[11px] font-semibold text-[#6F756C] uppercase tracking-wider border-b border-[#E2E4DC]/60 mb-1">
+                                    Pilih Bahasa
+                                </div>
+                                <div class="space-y-0.5 max-h-72 overflow-y-auto custom-scrollbar">
+                                    <button type="button" data-lang="id" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ID</span><span>Indonesia</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="en" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">EN</span><span>English</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="zh-CN" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ZH</span><span>中文</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="ja" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">JA</span><span>日本語</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="ko" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">KO</span><span>한국어</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="de" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">DE</span><span>Deutsch</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="fr" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">FR</span><span>Français</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="es" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">ES</span><span>Español</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="nl" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">NL</span><span>Nederlands</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                    <button type="button" data-lang="ar" class="lang-select-btn w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium flex items-center justify-between hover:bg-[#F5F6F1] text-[#1C1E1B] transition-colors">
+                                        <span class="flex items-center space-x-2"><span class="w-6 text-[10px] font-bold text-[#556E5C]">AR</span><span>العربية</span></span>
+                                        <span class="lang-check text-[#556E5C] text-xs font-bold hidden">&check;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Round Button -->
+                        <div class="relative group">
+                            <a href="{{ route('notifications.index') }}" 
+                               class="w-11 h-11 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center justify-center text-[#1C1E1B] hover:bg-[#F1F2EC] transition-colors relative"
+                               title="Notifications">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                                </svg>
+                                @if(($unreadNotificationsCount ?? 0) > 0)
+                                    <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                                @endif
+                            </a>
+                            <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                Notifications ({{ $unreadNotificationsCount ?? 0 }})
+                            </div>
+                        </div>
+
+                        <!-- Active Role Pill -->
+                        <div class="relative group">
+                            <div class="h-11 px-4 rounded-full bg-white shadow-sm border border-[#E2E4DC]/80 flex items-center space-x-2 text-xs font-bold text-[#1C1E1B] cursor-default">
+                                <span class="h-2 w-2 rounded-full bg-[#556E5C]"></span>
+                                <span class="uppercase tracking-wider">PORTAL {{ strtoupper($role) }}</span>
+                            </div>
+                            <div class="absolute right-0 top-full mt-2 px-3 py-1.5 bg-[#1C1E1B] text-white text-xs font-medium rounded-xl shadow-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 z-50">
+                                {{ auth()->user()->company_name ?? auth()->user()->email }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Kolom Search tracking number... Mobile (< 1024px / lg:hidden): Tampil Penuh w-full Tepat di Bawah Hello, Trackivo! -->
+                <div class="mt-3.5 lg:hidden w-full">
+                    <form method="GET" action="{{ route('shipments.index') }}" class="w-full bg-white rounded-2xl pl-4 pr-1.5 py-1.5 shadow-sm border border-[#E2E4DC]/80 flex items-center justify-between">
+                        <input type="text" 
+                               name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Search tracking number..." 
+                               class="bg-transparent text-xs sm:text-sm text-[#1C1E1B] placeholder-[#9EABA2] focus:outline-none w-full mr-2">
+                        <button type="submit" 
+                                class="w-9 h-9 rounded-xl bg-[#1C1E1B] text-white flex items-center justify-center hover:bg-[#243329] transition-colors shrink-0" 
+                                title="Search">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
 
             </header>
@@ -555,53 +654,372 @@
 
         </div>
 
-        <!-- Mobile Bottom Floating Navigation (< md) -->
-        <nav class="md:hidden fixed bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-full shadow-[0_8px_30px_rgba(28,30,27,0.12)] border border-[#E2E4DC] py-2 px-4 flex items-center justify-around z-50">
-            <a href="{{ route('dashboard') }}" class="p-2 rounded-full {{ request()->routeIs('dashboard') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                </svg>
-            </a>
+        <!-- Fixed Bottom Navigation Bar (< 1024px / lg:hidden) -->
+        <nav class="lg:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-[#DFE1D8] shadow-[0_-4px_24px_rgba(28,30,27,0.08)] px-2 py-1.5 flex items-center justify-around z-40">
+            @if ($role === 'customer')
+                <!-- Tab 1: Beranda -->
+                <a href="{{ route('dashboard') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-2 rounded-xl transition min-w-[58px] {{ request()->routeIs('dashboard') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Beranda</span>
+                </a>
 
-            <a href="{{ route('shipments.index') }}" class="p-2 rounded-full {{ request()->routeIs('shipments.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                </svg>
-            </a>
+                <!-- Tab 2: Pengiriman -->
+                <a href="{{ route('shipments.index') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-2 rounded-xl transition min-w-[58px] {{ request()->routeIs('shipments.*') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Pengiriman</span>
+                </a>
 
-            @if ($role === 'admin' || $role === 'operator')
-                <a href="{{ route('exceptions.index') }}" class="p-2 rounded-full {{ request()->routeIs('exceptions.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Tab 3: Notifikasi -->
+                <a href="{{ route('notifications.index') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-2 rounded-xl transition min-w-[58px] relative {{ request()->routeIs('notifications.*') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <div class="relative">
+                        <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        @if(($unreadNotificationsCount ?? 0) > 0)
+                            <span class="absolute -top-1 -right-1 px-1 min-w-[14px] h-[14px] rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center ring-1 ring-white">
+                                {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
+                            </span>
+                        @endif
+                    </div>
+                    <span class="text-[10px] font-bold tracking-tight">Notifikasi</span>
+                </a>
+
+                <!-- Tab 4: Menu (Drawer) -->
+                <button type="button" 
+                        onclick="openMobileDrawer()" 
+                        class="flex flex-col items-center justify-center py-1 px-2 rounded-xl text-[#7C8279] hover:text-[#1C1E1B] transition min-w-[58px]">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Menu</span>
+                </button>
+
+            @else
+                <!-- Admin & Operator (5 tabs) -->
+                <!-- Tab 1: Beranda -->
+                <a href="{{ route('dashboard') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-1.5 rounded-xl transition min-w-[52px] {{ request()->routeIs('dashboard') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Beranda</span>
+                </a>
+
+                <!-- Tab 2: Kargo -->
+                <a href="{{ route('shipments.index') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-1.5 rounded-xl transition min-w-[52px] {{ request()->routeIs('shipments.*') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Kargo</span>
+                </a>
+
+                <!-- Tab 3: Kendala -->
+                <a href="{{ route('exceptions.index') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-1.5 rounded-xl transition min-w-[52px] {{ request()->routeIs('exceptions.*') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
                         <line x1="12" y1="9" x2="12" y2="13"></line>
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
+                    <span class="text-[10px] font-bold tracking-tight">Kendala</span>
                 </a>
-            @endif
 
-            @if ($role === 'admin')
-                <a href="{{ route('settings.index') }}" class="p-2 rounded-full {{ request()->routeIs('settings.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <!-- Tab 4: Notifikasi -->
+                <a href="{{ route('notifications.index') }}" 
+                   class="flex flex-col items-center justify-center py-1 px-1.5 rounded-xl transition min-w-[52px] relative {{ request()->routeIs('notifications.*') ? 'text-[#556E5C]' : 'text-[#7C8279] hover:text-[#1C1E1B]' }}">
+                    <div class="relative">
+                        <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        @if(($unreadNotificationsCount ?? 0) > 0)
+                            <span class="absolute -top-1 -right-1 px-1 min-w-[14px] h-[14px] rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center ring-1 ring-white">
+                                {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
+                            </span>
+                        @endif
+                    </div>
+                    <span class="text-[10px] font-bold tracking-tight">Notifikasi</span>
+                </a>
+
+                <!-- Tab 5: Menu (Drawer) -->
+                <button type="button" 
+                        onclick="openMobileDrawer()" 
+                        class="flex flex-col items-center justify-center py-1 px-1.5 rounded-xl text-[#7C8279] hover:text-[#1C1E1B] transition min-w-[52px]">
+                    <svg class="w-5 h-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
-                </a>
+                    <span class="text-[10px] font-bold tracking-tight">Menu</span>
+                </button>
             @endif
-
-            <a href="{{ route('notifications.index') }}" class="p-2 rounded-full relative {{ request()->routeIs('notifications.*') ? 'bg-[#1C1E1B] text-white' : 'text-[#7C8279]' }}">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
-                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                </svg>
-                @if(($unreadNotificationsCount ?? 0) > 0)
-                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500"></span>
-                @endif
-            </a>
         </nav>
+
+        <!-- Mobile Menu Drawer / Bottom Sheet (< 1024px / lg:hidden) -->
+        <div id="mobile-menu-drawer-backdrop" 
+             onclick="closeMobileDrawer()" 
+             class="hidden lg:hidden fixed inset-0 bg-[#1C1E1B]/50 backdrop-blur-xs z-50 transition-opacity duration-300">
+        </div>
+
+        <div id="mobile-menu-drawer" 
+             class="hidden lg:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-white rounded-t-[28px] shadow-[0_-12px_40px_rgba(28,30,27,0.2)] flex flex-col transform transition-transform duration-300 ease-out translate-y-full">
+            
+            <!-- Drag Handle -->
+            <div class="pt-3 pb-1 flex justify-center">
+                <div class="w-12 h-1.5 bg-[#DFE1D8] rounded-full"></div>
+            </div>
+
+            <!-- Drawer Header -->
+            <div class="px-5 py-3 border-b border-[#DFE1D8]/70 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-[#556E5C] text-white font-bold flex items-center justify-center text-sm ring-2 ring-[#DFE1D8]">
+                        @if (auth()->user()->avatarUrl())
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover rounded-full">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @endif
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm text-[#1C1E1B] leading-tight">{{ auth()->user()->name }}</div>
+                        <div class="text-[11px] text-[#6F756C] flex items-center space-x-1.5 mt-0.5">
+                            <span class="px-1.5 py-0.2 rounded-full bg-[#F1F4EE] text-[#556E5C] font-extrabold uppercase text-[9px] border border-[#DFE1D8]">
+                                PORTAL {{ strtoupper($role) }}
+                            </span>
+                            <span>&bull;</span>
+                            <span class="truncate max-w-[130px]">{{ auth()->user()->company_name ?? auth()->user()->email }}</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" 
+                        onclick="closeMobileDrawer()" 
+                        class="w-8 h-8 rounded-full bg-[#F5F6F1] text-[#6F756C] hover:text-[#1C1E1B] flex items-center justify-center transition"
+                        title="Tutup Menu">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Drawer Scrollable Links Content -->
+            <div class="overflow-y-auto custom-scrollbar p-4 space-y-1">
+                <div class="text-[10px] font-bold text-[#6F756C] uppercase tracking-wider px-3 py-1">
+                    Navigasi Utama
+                </div>
+
+                <!-- Dashboard -->
+                <a href="{{ route('dashboard') }}" 
+                   class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    </svg>
+                    <span>Dashboard Analitik</span>
+                </a>
+
+                <!-- Shipments -->
+                <a href="{{ route('shipments.index') }}" 
+                   class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('shipments.index') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    </svg>
+                    <span>{{ $role === 'customer' ? 'Daftar Pengiriman Saya' : 'Manajemen Pengiriman Global' }}</span>
+                </a>
+
+                @if ($role === 'admin' || $role === 'operator')
+                    <!-- Buat Pengiriman -->
+                    <a href="{{ route('shipments.create') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('shipments.create') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span>Buat Pengiriman Baru</span>
+                    </a>
+
+                    <!-- Exceptions -->
+                    <a href="{{ route('exceptions.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('exceptions.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span>Manajemen Kendala (Exceptions)</span>
+                    </a>
+                @endif
+
+                @if ($role === 'admin')
+                    <div class="text-[10px] font-bold text-[#6F756C] uppercase tracking-wider px-3 pt-3 pb-1 border-t border-[#DFE1D8]/60 mt-2">
+                        Konfigurasi Master Data
+                    </div>
+
+                    <!-- Carriers -->
+                    <a href="{{ route('carriers.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('carriers.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 17h4V5H2v12h3"></path>
+                            <path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1"></path>
+                            <circle cx="7.5" cy="17.5" r="2.5"></circle>
+                            <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                        </svg>
+                        <span>Manajemen Carriers</span>
+                    </a>
+
+                    <!-- Locations -->
+                    <a href="{{ route('locations.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('locations.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>Lokasi &amp; Hub Kargo</span>
+                    </a>
+
+                    <!-- Users -->
+                    <a href="{{ route('users.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('users.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Manajemen Pengguna</span>
+                    </a>
+
+                    <!-- Audit Logs -->
+                    <a href="{{ route('audit-logs.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('audit-logs.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span>Audit Logs Sistem</span>
+                    </a>
+
+                    <!-- Settings -->
+                    <a href="{{ route('settings.index') }}" 
+                       class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('settings.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span>Pengaturan Sistem</span>
+                    </a>
+                @endif
+
+                <div class="text-[10px] font-bold text-[#6F756C] uppercase tracking-wider px-3 pt-3 pb-1 border-t border-[#DFE1D8]/60 mt-2">
+                    Layanan &amp; Akun
+                </div>
+
+                <!-- Lacak Resi Publik -->
+                <a href="{{ route('tracking.public') }}" 
+                   class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition text-[#1C1E1B] hover:bg-[#F5F6F1]">
+                    <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <span>Lacak Resi Publik</span>
+                </a>
+
+                <!-- Notifikasi Lengkap -->
+                <a href="{{ route('notifications.index') }}" 
+                   class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('notifications.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        <span>Notifikasi</span>
+                    </div>
+                    @if(($unreadNotificationsCount ?? 0) > 0)
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
+                            {{ $unreadNotificationsCount }} baru
+                        </span>
+                    @endif
+                </a>
+
+                <!-- Profil Pengguna -->
+                <a href="{{ route('profile.edit') }}" 
+                   class="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition {{ request()->routeIs('profile.*') ? 'bg-[#556E5C] text-white' : 'text-[#1C1E1B] hover:bg-[#F5F6F1]' }}">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Pengaturan Profil</span>
+                </a>
+
+                <!-- Logout Button -->
+                <div class="pt-2 border-t border-[#DFE1D8]/60 mt-2">
+                    <form method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" 
+                                class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-[#B84242] hover:bg-[#F9E6E6] transition">
+                            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Keluar (Logout)</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openMobileDrawer() {
+                const backdrop = document.getElementById('mobile-menu-drawer-backdrop');
+                const drawer = document.getElementById('mobile-menu-drawer');
+                if (!backdrop || !drawer) return;
+                backdrop.classList.remove('hidden');
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    drawer.classList.remove('translate-y-full');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileDrawer() {
+                const backdrop = document.getElementById('mobile-menu-drawer-backdrop');
+                const drawer = document.getElementById('mobile-menu-drawer');
+                if (!backdrop || !drawer) return;
+                drawer.classList.add('translate-y-full');
+                setTimeout(() => {
+                    backdrop.classList.add('hidden');
+                    drawer.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeMobileDrawer();
+                }
+            });
+        </script>
 
     @else
         <div class="min-h-screen flex flex-col justify-center items-center p-4">
@@ -632,6 +1050,9 @@
             const dropdownBtn = document.getElementById('translate-dropdown-btn');
             const dropdownMenu = document.getElementById('translate-dropdown-menu');
             const currentLangCode = document.getElementById('current-lang-code');
+            const mobileTranslateBtn = document.getElementById('mobile-translate-btn');
+            const mobileTranslateMenu = document.getElementById('mobile-translate-menu');
+            const mobileCurrentLangCode = document.getElementById('mobile-current-lang-code');
             const langButtons = document.querySelectorAll('.lang-select-btn');
 
             function getCookie(name) {
@@ -652,8 +1073,12 @@
 
             function syncDropdownUI(activeLang) {
                 if (!activeLang) activeLang = 'id';
+                const codeStr = activeLang.split('-')[0].toUpperCase();
                 if (currentLangCode) {
-                    currentLangCode.textContent = activeLang.split('-')[0].toUpperCase();
+                    currentLangCode.textContent = codeStr;
+                }
+                if (mobileCurrentLangCode) {
+                    mobileCurrentLangCode.textContent = codeStr;
                 }
                 langButtons.forEach(function (btn) {
                     const lang = btn.getAttribute('data-lang');
@@ -698,6 +1123,19 @@
                 document.addEventListener('click', function (e) {
                     if (!dropdownMenu.contains(e.target) && !dropdownBtn.contains(e.target)) {
                         dropdownMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            if (mobileTranslateBtn && mobileTranslateMenu) {
+                mobileTranslateBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    mobileTranslateMenu.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!mobileTranslateMenu.contains(e.target) && !mobileTranslateBtn.contains(e.target)) {
+                        mobileTranslateMenu.classList.add('hidden');
                     }
                 });
             }

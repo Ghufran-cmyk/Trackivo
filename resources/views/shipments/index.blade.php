@@ -159,7 +159,8 @@
             <span class="text-xs text-[#6F756C]">Menampilkan: <span class="font-bold text-[#1C1E1B]">{{ $shipments->count() }}</span> dari <span class="font-bold text-[#1C1E1B]">{{ $shipments->total() }}</span> total</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Desktop Table (md:block / hidden md:block) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
                     <tr class="bg-[#FAF9F5] text-[#6F756C] uppercase text-[10.5px] font-bold tracking-wider border-b border-[#DFE1D8]/60">
@@ -295,6 +296,102 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Shipment Cards (< 768px / md:hidden) -->
+        <div class="md:hidden p-4 space-y-3">
+            @php
+                $statusBadges = [
+                    'CREATED'    => 'bg-[#F1F2EC] text-[#6F756C]',
+                    'BOOKED'     => 'bg-[#EDF1EC] text-[#556E5C]',
+                    'PICKED_UP'  => 'bg-[#F7EFE1] text-[#9A6721]',
+                    'IN_TRANSIT' => 'bg-[#F7EFE1] text-[#9A6721]',
+                    'DELIVERED'  => 'bg-[#E6F0E9] text-[#2F6846]',
+                    'CANCELLED'  => 'bg-[#F9E6E6] text-[#B84242]',
+                ];
+            @endphp
+
+            @forelse($shipments as $shipment)
+                <div class="bg-[#FAF9F5] rounded-2xl p-4 border border-[#DFE1D8]/80 space-y-3 shadow-xs">
+                    <!-- Baris 1: Nomor Resi tebal di kiri + Badge Status di kanan -->
+                    <div class="flex items-center justify-between">
+                        <a href="{{ route('shipments.show', $shipment) }}" class="font-mono font-bold text-sm text-[#1C1E1B] hover:text-[#556E5C] inline-flex items-center space-x-1.5 notranslate">
+                            <span>{{ $shipment->tracking_number }}</span>
+                            <svg class="h-3.5 w-3.5 text-[#9EABA2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusBadges[$shipment->status] ?? 'bg-[#F1F2EC] text-[#6F756C]' }}">
+                            {{ $shipment->status }}
+                        </span>
+                    </div>
+
+                    <!-- Baris 2: Deskripsi kargo & berat + badge Moda (OCEAN/AIR/LAND) & nama Carrier -->
+                    <div class="flex items-center justify-between text-xs text-[#6F756C] pt-1 border-t border-[#DFE1D8]/50">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider
+                                {{ $shipment->transport_mode === 'OCEAN' ? 'bg-[#E6F0E9] text-[#2F6846]' :
+                                  ($shipment->transport_mode === 'AIR' ? 'bg-[#F7EFE1] text-[#9A6721]' : 'bg-[#EDF1EC] text-[#556E5C]') }}">
+                                {{ $shipment->transport_mode }}
+                            </span>
+                            <span class="font-medium text-[#1C1E1B] truncate max-w-[130px]">{{ $shipment->cargo_type }}</span>
+                            <span>&bull;</span>
+                            <span>{{ number_format($shipment->weight_kg, 1) }} kg</span>
+                        </div>
+                        <div class="font-medium text-[#1C1E1B] text-[11px] truncate max-w-[90px] text-right">
+                            {{ $shipment->carrier?->name ?? '-' }}
+                        </div>
+                    </div>
+
+                    <!-- Baris 3: Rute jelas ORIGIN -> DESTINATION dengan ETA dan status Delay -->
+                    <div class="bg-white rounded-xl p-3 border border-[#DFE1D8]/70 flex items-center justify-between text-xs">
+                        <div>
+                            <div class="flex items-center space-x-1.5 font-bold text-[#1C1E1B]">
+                                <span class="px-1.5 py-0.5 bg-[#F5F6F1] rounded text-[11px] font-mono notranslate">{{ $shipment->originLocation?->code ?? '-' }}</span>
+                                <span class="text-[#6F756C]">&rarr;</span>
+                                <span class="px-1.5 py-0.5 bg-[#F5F6F1] rounded text-[11px] font-mono notranslate">{{ $shipment->destinationLocation?->code ?? '-' }}</span>
+                            </div>
+                            <div class="text-[10px] text-[#6F756C] mt-1">
+                                ETA: {{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d M Y H:i') : '-' }}
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            @if ($shipment->delay_hours > 0)
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold
+                                    {{ $shipment->delay_severity === 'HIGH' ? 'bg-[#F9E6E6] text-[#B84242]' : 
+                                      ($shipment->delay_severity === 'MEDIUM' ? 'bg-[#F7EFE1] text-[#9A6721]' : 
+                                      'bg-[#F7EFE1] text-[#9A6721]') }}">
+                                    +{{ $shipment->delay_hours }}h Delay
+                                </span>
+                            @else
+                                <span class="inline-flex items-center space-x-1 text-[#2F6846] font-semibold text-[11px]">
+                                    <svg class="h-3.5 w-3.5 text-[#2F6846]" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>On-Time</span>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Baris 4: Tombol aksi lengkap dengan area sentuh nyaman (min-h-[36px]) -->
+                    <div class="flex items-center gap-2 pt-1">
+                        <a href="{{ route('shipments.show', $shipment) }}" class="flex-1 min-h-[36px] inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#556E5C] text-white hover:bg-[#425848] text-xs font-semibold shadow-xs transition">
+                            Lihat Detail
+                        </a>
+                        <a href="{{ route('shipments.receipt', $shipment) }}" target="_blank" class="min-h-[36px] inline-flex items-center justify-center px-3.5 py-2 rounded-xl bg-white border border-[#DFE1D8] text-[#1C1E1B] hover:bg-[#F5F6F1] text-xs font-semibold shadow-xs transition" title="Struk Resi">
+                            Struk
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="py-10 text-center text-[#6F756C]">
+                    <svg class="h-10 w-10 text-[#C9CCC0] mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                    <p class="text-sm font-semibold text-[#1C1E1B]">Tidak ada pengiriman yang sesuai kriteria.</p>
+                </div>
+            @endforelse
         </div>
 
         @if($shipments->hasPages())

@@ -159,7 +159,7 @@
 
         <!-- Wadah Peta Leaflet.js -->
         <div class="relative">
-            <div id="shipment-map" style="height: 400px; width: 100%;" class="z-10"></div>
+            <div id="shipment-map" class="z-10 w-full h-[300px] md:h-[400px]"></div>
             
             @php
                 $hasOriginCoord = $mapData['origin']['latitude'] !== null && $mapData['origin']['longitude'] !== null;
@@ -1042,7 +1042,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const defaultCenter = [-6.1751, 106.8650];
     const map = L.map('shipment-map', {
         scrollWheelZoom: false,
-        attributionControl: true
+        attributionControl: true,
+        minZoom: 1
     }).setView(defaultCenter, 4);
 
     // Tile Layer OpenStreetMap resmi WAJIB mencantumkan atribusi
@@ -1187,13 +1188,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 5. Fit Bounds ke seluruh koordinat
     if (boundsPoints.length > 1) {
+        const isMobile = window.innerWidth < 768;
         map.fitBounds(L.latLngBounds(boundsPoints), {
-            padding: [45, 45],
+            padding: isMobile ? [15, 15] : [45, 45],
             maxZoom: 13
         });
     } else if (boundsPoints.length === 1) {
         map.setView(boundsPoints[0], 9);
     }
+
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 250);
+    window.addEventListener('resize', () => {
+        map.invalidateSize();
+    });
 
     function escapeHtml(str) {
         if (!str) return '';

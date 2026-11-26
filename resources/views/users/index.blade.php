@@ -28,8 +28,8 @@
             <span class="text-xs text-[#6F756C]">Total: <span class="font-bold text-[#1C1E1B]">{{ $users->total() }}</span> pengguna</span>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm min-w-[680px]">
                 <thead>
                     <tr class="bg-[#FAF9F5] text-[#6F756C] uppercase text-[10.5px] font-bold tracking-wider border-b border-[#DFE1D8]/60">
                         <th class="py-3.5 px-5">Nama & Avatar</th>

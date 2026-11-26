@@ -83,21 +83,21 @@
     <div class="w-full max-w-[1140px] bg-[#243329] rounded-[28px] p-3.5 md:p-4 shadow-[0_24px_60px_rgba(24,35,28,0.22)] grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         
         <!-- Panel Kiri: 3D Cargo Container Showcase -->
-        <div class="lg:col-span-5 relative rounded-[20px] overflow-hidden min-h-[420px] lg:min-h-[660px] bg-gradient-to-b from-[#DFE4DA] via-[#BAC6B7] to-[#2B3D31] flex flex-col justify-between">
+        <div class="lg:col-span-5 relative rounded-[20px] overflow-hidden h-[220px] sm:h-[260px] lg:h-auto lg:min-h-[660px] bg-gradient-to-b from-[#DFE4DA] via-[#BAC6B7] to-[#2B3D31] flex flex-col justify-between">
             
             <!-- Header Atas Panel Kiri -->
-            <div class="relative z-10 p-4 md:p-5 flex items-center justify-between pointer-events-none">
+            <div class="relative z-10 p-3 sm:p-4 md:p-5 flex items-center justify-between pointer-events-none">
                 <!-- Badge Logo Gelap Semi-Transparan -->
-                <div class="bg-[#243329]/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center pointer-events-auto shadow-sm">
-                    <img src="{{ asset('images/logonama.png') }}" alt="Trackivo" class="h-7 md:h-8 w-auto object-contain">
+                <div class="bg-[#243329]/80 backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-white/10 flex items-center pointer-events-auto shadow-sm">
+                    <img src="{{ asset('images/logonama.png') }}" alt="Trackivo" class="h-6 sm:h-7 md:h-8 w-auto object-contain">
                 </div>
 
                 <!-- Pil Petunjuk Interaksi 360 Derajat -->
-                <div class="bg-[#243329]/70 backdrop-blur-md text-[#E6ECE4] text-[11px] px-3 py-1.5 rounded-full border border-white/10 pointer-events-none flex items-center space-x-1.5 shadow-sm">
+                <div class="bg-[#243329]/70 backdrop-blur-md text-[#E6ECE4] text-[10px] sm:text-[11px] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-white/10 pointer-events-none flex items-center space-x-1.5 shadow-sm">
                     <svg class="w-3.5 h-3.5 text-[#C8D3BE] animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    <span>Geser 360° untuk memutar</span>
+                    <span>360° Rotate</span>
                 </div>
             </div>
 
@@ -113,34 +113,34 @@
             </div>
 
             <!-- Overlay Teks Bawah Panel Kiri Khusus Registrasi -->
-            <div class="bg-gradient-to-t from-[#1B271F]/95 via-[#1B271F]/55 to-transparent pt-16 pb-7 px-6 text-center pointer-events-none relative z-10 mt-auto">
-                <h2 class="text-base md:text-lg font-medium text-white leading-snug">
+            <div class="bg-gradient-to-t from-[#1B271F]/95 via-[#1B271F]/65 to-transparent pt-8 sm:pt-16 pb-3 sm:pb-7 px-4 sm:px-6 text-center pointer-events-none relative z-10 mt-auto">
+                <h2 class="text-xs sm:text-base md:text-lg font-medium text-white leading-snug">
                     Bergabung dengan Jaringan Logistik Global Trackivo.
                 </h2>
-                <p class="text-sm text-[#D5DFD2] mt-1">
+                <p class="hidden sm:block text-xs sm:text-sm text-[#D5DFD2] mt-1">
                     Pantau kargo laut, udara, dan darat dengan deteksi keterlambatan otomatis.
                 </p>
-                <p class="text-[11px] text-[#9EB09E] mt-3 tracking-wide">
+                <p class="hidden sm:block text-[11px] text-[#9EB09E] mt-2 tracking-wide">
                     Registrasi Akun Customer — Trackivo Security
                 </p>
             </div>
         </div>
 
         <!-- Panel Kanan: Form Daftar Akun Customer Dark-Sage -->
-        <div class="lg:col-span-7 flex flex-col justify-center px-6 py-6 md:px-10 lg:px-12 text-white">
+        <div class="lg:col-span-7 flex flex-col justify-center px-4 py-5 sm:px-8 md:px-10 lg:px-12 text-white">
             <div class="w-full max-w-lg mx-auto">
                 
                 <!-- Judul & Badge Role Customer -->
-                <div class="mb-5">
+                <div class="mb-4 sm:mb-5">
                     <div class="flex items-center justify-between">
-                        <h1 class="text-2xl md:text-[26px] font-semibold text-white tracking-tight">
+                        <h1 class="text-xl sm:text-2xl md:text-[26px] font-semibold text-white tracking-tight">
                             Daftar Akun Customer
                         </h1>
-                        <span class="bg-[#2F4336] text-[#C8D3BE] border border-[#445D4C] rounded-full px-3 py-1 text-xs font-medium">
+                        <span class="bg-[#2F4336] text-[#C8D3BE] border border-[#445D4C] rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-medium">
                             Role: Customer
                         </span>
                     </div>
-                    <p class="text-sm text-[#9FB0A2] mt-1.5">
+                    <p class="text-xs sm:text-sm text-[#9FB0A2] mt-1">
                         Lengkapi data di bawah ini untuk memulai pemantauan pengiriman Anda.
                     </p>
                 </div>

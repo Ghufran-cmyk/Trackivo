@@ -116,8 +116,8 @@
             <span class="text-xs text-[#6F756C]">Menampilkan: <span class="font-semibold text-[#1C1E1B]">{{ $logs->count() }}</span> dari <span class="font-semibold text-[#1C1E1B]">{{ $logs->total() }}</span> total</span>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-sm">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm min-w-[680px]">
                 <thead>
                     <tr class="bg-[#F5F6F1] text-[#6F756C] uppercase text-[11px] font-bold tracking-wider border-b border-[#DFE1D8]/70">
                         <th class="py-3.5 px-5">Waktu (WIB)</th>

@@ -51,7 +51,7 @@
 <body class="bg-[#F6F7F3] text-[#243329] font-['Plus_Jakarta_Sans',sans-serif] antialiased min-h-screen py-8 px-4 sm:px-6 print:p-0 print:bg-white">
 
     <!-- Top Action Toolbar (Hidden during print) -->
-    <div class="max-w-3xl mx-auto mb-6 flex items-center justify-between print:hidden">
+    <div class="max-w-3xl mx-auto mb-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 print:hidden">
         <a href="{{ route('shipments.show', $shipment) }}"
            class="inline-flex items-center space-x-2 text-xs font-bold text-[#3E5245] hover:text-[#243329] transition bg-[#E9EAE4] hover:bg-[#DFE1D8] px-4 py-2 rounded-full border border-[#DFE1D8]">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -150,7 +150,7 @@
                         </div>
                         <button 
                             type="submit" 
-                            class="bg-[#C8D3BE] hover:bg-[#D7E0CE] text-[#1C2820] font-bold rounded-xl py-3 px-6 text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center space-x-2 shrink-0 active:scale-[0.98]">
+                            class="w-full sm:w-auto bg-[#C8D3BE] hover:bg-[#D7E0CE] text-[#1C2820] font-bold rounded-xl py-3 px-6 text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center space-x-2 shrink-0 active:scale-[0.98]">
                             <span>Lacak Resi</span>
                         </button>
                     </div>
@@ -372,7 +372,7 @@
 
                     <!-- Wadah Peta Leaflet.js -->
                     <div class="relative">
-                        <div id="public-shipment-map" style="height: 420px; width: 100%;" class="z-10"></div>
+                        <div id="public-shipment-map" class="z-10 w-full h-[300px] md:h-[420px]"></div>
 
                         @php
                             $hasOriginCoord = ($mapData['origin']['latitude'] ?? null) !== null && ($mapData['origin']['longitude'] ?? null) !== null;
@@ -571,7 +571,8 @@
                 const defaultCenter = [-6.1751, 106.8650];
                 const map = L.map('public-shipment-map', {
                     scrollWheelZoom: false,
-                    attributionControl: true
+                    attributionControl: true,
+                    minZoom: 1
                 }).setView(defaultCenter, 4);
 
                 // OpenStreetMap Tile Layer resmi dengan atribusi
@@ -716,13 +717,21 @@
 
                 // 5. Fit Bounds ke seluruh koordinat
                 if (boundsPoints.length > 1) {
+                    const isMobile = window.innerWidth < 768;
                     map.fitBounds(L.latLngBounds(boundsPoints), {
-                        padding: [45, 45],
+                        padding: isMobile ? [15, 15] : [45, 45],
                         maxZoom: 13
                     });
                 } else if (boundsPoints.length === 1) {
                     map.setView(boundsPoints[0], 9);
                 }
+
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 250);
+                window.addEventListener('resize', () => {
+                    map.invalidateSize();
+                });
 
                 function escapeHtml(str) {
                     if (!str) return '';

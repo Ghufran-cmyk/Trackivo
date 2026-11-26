@@ -6,19 +6,19 @@
 <div class="space-y-6">
 
     <!-- Row 1: 4 Baris KPI Dashboard (Persis Mengikuti Referensi Desain) -->
-    <div id="dashboard-kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div id="dashboard-kpi-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         
         <!-- 1. Total Shipment (Spent this month style) -->
-        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+        <div class="kpi-card bg-white rounded-[20px] sm:rounded-[24px] p-4 sm:p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
             <div class="space-y-1">
-                <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider block">Total Shipment</span>
-                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                <span class="text-[10.5px] sm:text-xs font-semibold text-[#6F756C] uppercase tracking-wider block">Total Shipment</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
                     <span class="kpi-count-up notranslate" data-target="{{ $kpis['total_shipments'] }}">{{ number_format($kpis['total_shipments']) }}</span>
                 </div>
-                <div class="text-[11px] text-[#6F756C]">Total volume terdata</div>
+                <div class="text-[10px] sm:text-[11px] text-[#6F756C]">Total volume terdata</div>
             </div>
             <!-- Mini bar chart decorative SVG -->
-            <div class="flex items-end space-x-1 h-9 px-2">
+            <div class="hidden sm:flex items-end space-x-1 h-9 px-2 shrink-0">
                 <div class="w-1.5 bg-[#DFE1D8] rounded-full h-4"></div>
                 <div class="w-1.5 bg-[#556E5C] rounded-full h-8"></div>
                 <div class="w-1.5 bg-[#DFE1D8] rounded-full h-5"></div>
@@ -28,26 +28,26 @@
         </div>
 
         <!-- 2. In Transit (New clients style) -->
-        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+        <div class="kpi-card bg-white rounded-[20px] sm:rounded-[24px] p-4 sm:p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
             <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                    <span class="w-7 h-7 rounded-full bg-[#F4EFE6] text-[#9A6721] flex items-center justify-center text-xs">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                    <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#F4EFE6] text-[#9A6721] flex items-center justify-center text-xs shrink-0">
+                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="1" y="3" width="15" height="13"></rect>
                             <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
                             <circle cx="5.5" cy="18.5" r="2.5"></circle>
                             <circle cx="18.5" cy="18.5" r="2.5"></circle>
                         </svg>
                     </span>
-                    <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider">In Transit</span>
+                    <span class="text-[10.5px] sm:text-xs font-semibold text-[#6F756C] uppercase tracking-wider">In Transit</span>
                 </div>
-                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
                     <span class="kpi-count-up notranslate" data-target="{{ $kpis['in_transit'] }}">{{ number_format($kpis['in_transit']) }}</span>
                 </div>
-                <div class="text-[11px] text-[#9A6721] font-medium">Dalam rute perjalanan</div>
+                <div class="text-[10px] sm:text-[11px] text-[#9A6721] font-medium">Dalam rute perjalanan</div>
             </div>
             <!-- Mini curve decorative SVG -->
-            <div class="w-16 h-8 text-[#9A6721]/60">
+            <div class="hidden sm:block w-16 h-8 text-[#9A6721]/60 shrink-0">
                 <svg viewBox="0 0 64 28" fill="none" class="w-full h-full stroke-current" stroke-width="2.5" stroke-linecap="round">
                     <path d="M2 24 C 18 24, 26 4, 42 16 C 50 22, 58 10, 62 4" />
                 </svg>
@@ -55,42 +55,42 @@
         </div>
 
         <!-- 3. Delivered (Earnings style) -->
-        <div class="kpi-card bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
+        <div class="kpi-card bg-white rounded-[20px] sm:rounded-[24px] p-4 sm:p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)] flex items-center justify-between hover:shadow-md transition">
             <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                    <span class="w-7 h-7 rounded-full bg-[#E6F0E9] text-[#2F6846] flex items-center justify-center text-xs">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                    <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#E6F0E9] text-[#2F6846] flex items-center justify-center text-xs shrink-0">
+                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                     </span>
-                    <span class="text-xs font-semibold text-[#6F756C] uppercase tracking-wider">Delivered</span>
+                    <span class="text-[10.5px] sm:text-xs font-semibold text-[#6F756C] uppercase tracking-wider">Delivered</span>
                 </div>
-                <div class="text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
+                <div class="text-2xl sm:text-3xl font-extrabold text-[#1C1E1B] tracking-tight">
                     <span class="kpi-count-up notranslate" data-target="{{ $kpis['delivered'] }}">{{ number_format($kpis['delivered']) }}</span>
                 </div>
-                <div class="text-[11px] text-[#2F6846] font-medium">Tiba sukses di tujuan</div>
+                <div class="text-[10px] sm:text-[11px] text-[#2F6846] font-medium">Tiba sukses di tujuan</div>
             </div>
             <!-- Progress Pill Indicator -->
-            <div class="w-14 h-14 rounded-full bg-[#E6F0E9] flex flex-col items-center justify-center text-[#2F6846] font-bold text-xs border border-[#C8DACD]">
-                <span>{{ $kpis['total_shipments'] > 0 ? round(($kpis['delivered'] / $kpis['total_shipments']) * 100) : 0 }}%</span>
-                <span class="text-[9px] font-normal uppercase text-[#2F6846]/75">Done</span>
+            <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-[#E6F0E9] flex flex-col items-center justify-center text-[#2F6846] font-bold text-xs border border-[#C8DACD] shrink-0">
+                <span class="text-[11px] sm:text-xs">{{ $kpis['total_shipments'] > 0 ? round(($kpis['delivered'] / $kpis['total_shipments']) * 100) : 0 }}%</span>
+                <span class="text-[8px] sm:text-[9px] font-normal uppercase text-[#2F6846]/75">Done</span>
             </div>
         </div>
 
         <!-- 4. Highlight Sage Card (Kartu Paling Kanan Sesuai Referensi) -->
-        <div class="kpi-card bg-gradient-to-br from-[#7B9581] to-[#4E6756] text-white rounded-[24px] p-6 shadow-sm flex items-center justify-between relative overflow-hidden hover:shadow-md transition">
+        <div class="kpi-card bg-gradient-to-br from-[#7B9581] to-[#4E6756] text-white rounded-[20px] sm:rounded-[24px] p-4 sm:p-6 shadow-sm flex items-center justify-between relative overflow-hidden hover:shadow-md transition">
             <div class="space-y-1 relative z-10">
-                <span class="text-xs font-semibold text-white/80 uppercase tracking-wider block">Operational Impact</span>
-                <div class="text-3xl font-extrabold text-white tracking-tight">
+                <span class="text-[10.5px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider block">Operational Impact</span>
+                <div class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     <span class="kpi-count-up notranslate" data-target="{{ $kpis['delayed'] }}">{{ number_format($kpis['delayed']) }}</span>
-                    <span class="text-xs font-normal text-white/80">delayed</span>
+                    <span class="text-[11px] sm:text-xs font-normal text-white/80">delayed</span>
                 </div>
-                <div class="text-[11px] text-white/90">
-                    {{ $kpis['open_exceptions'] }} active exceptions &bull; {{ number_format($kpis['delay_rate'], 1) }}% rate
+                <div class="text-[10px] sm:text-[11px] text-white/90">
+                    {{ $kpis['open_exceptions'] }} active &bull; {{ number_format($kpis['delay_rate'], 1) }}% rate
                 </div>
             </div>
             <!-- Wavy Smooth Curve SVG in Highlight Card -->
-            <div class="w-20 h-10 text-white/80 relative z-10">
+            <div class="hidden sm:block w-20 h-10 text-white/80 relative z-10 shrink-0">
                 <svg viewBox="0 0 80 32" fill="none" class="w-full h-full stroke-current" stroke-width="2.5" stroke-linecap="round">
                     <path d="M2 20 Q 20 2, 40 18 T 78 8" />
                 </svg>
@@ -224,7 +224,7 @@
                     <h2 class="text-base font-bold text-[#1C1E1B] tracking-tight">
                         {{ $user->isCustomer() ? 'Peta Sebaran Pengiriman Saya' : 'Peta Sebaran Pengiriman Global' }}
                     </h2>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F5F6F1] text-[#556E5C] border border-[#DFE1D8]">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F5F6F1] text-[#556E5C] border border-[#DFE1D8] whitespace-nowrap shrink-0">
                         <span id="map-shipment-count">{{ count($mapShipments) }}</span>&nbsp;Pengiriman Tampil
                     </span>
                 </div>
@@ -261,7 +261,7 @@
 
         <!-- Wadah Peta Leaflet.js -->
         <div class="relative rounded-[20px] overflow-hidden border border-[#DFE1D8]/80">
-            <div id="dashboard-global-map" style="height: 440px; width: 100%;" class="z-10"></div>
+            <div id="dashboard-global-map" class="z-10 w-full h-[300px] md:h-[440px]"></div>
 
             <!-- Empty notice overlay jika tidak ada pengiriman yang tampil -->
             <div id="map-empty-overlay" style="display: none;" class="absolute inset-0 bg-[#E9EAE4]/60 backdrop-blur-xs z-20 flex items-center justify-center pointer-events-none">
@@ -323,7 +323,8 @@
                     <p class="text-sm font-medium">Belum ada data shipment yang tersedia.</p>
                 </div>
             @else
-                <div class="overflow-x-auto mt-4 custom-scrollbar">
+                <!-- Desktop Table (md:block / hidden md:block) -->
+                <div class="hidden md:block overflow-x-auto mt-4 custom-scrollbar">
                     <table class="w-full text-left text-xs">
                         <thead>
                             <tr class="text-[#6F756C] uppercase font-semibold border-b border-[#DFE1D8]/60 text-[11px]">
@@ -405,6 +406,87 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile Shipment Cards (< 768px / md:hidden) -->
+                <div class="md:hidden space-y-3 mt-4">
+                    @foreach ($recentShipments as $shipment)
+                        <div class="bg-[#FAF9F5] rounded-2xl p-4 border border-[#DFE1D8]/80 space-y-2.5 shadow-xs">
+                            <!-- Baris 1: Nomor Resi & Status -->
+                            <div class="flex items-center justify-between">
+                                <a href="{{ route('shipments.show', $shipment) }}" class="font-mono font-bold text-xs text-[#1C1E1B] hover:text-[#556E5C] transition flex items-center space-x-1 notranslate">
+                                    <span>{{ $shipment->tracking_number }}</span>
+                                    <svg class="h-3 w-3 text-[#9EABA2]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </a>
+                                @php
+                                    $stMap = [
+                                        'CREATED'    => 'bg-[#F1F2EC] text-[#6F756C]',
+                                        'BOOKED'     => 'bg-[#EDF1EC] text-[#556E5C]',
+                                        'PICKED_UP'  => 'bg-[#F7EFE1] text-[#9A6721]',
+                                        'IN_TRANSIT' => 'bg-[#F7EFE1] text-[#9A6721]',
+                                        'DELIVERED'  => 'bg-[#E6F0E9] text-[#2F6846]',
+                                        'CANCELLED'  => 'bg-[#F9E6E6] text-[#B84242]',
+                                    ];
+                                @endphp
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {{ $stMap[$shipment->status] ?? 'bg-[#F1F2EC] text-[#6F756C]' }}">
+                                    {{ $shipment->status }}
+                                </span>
+                            </div>
+
+                            <!-- Baris 2: Deskripsi kargo & berat + Moda & Carrier -->
+                            <div class="flex items-center justify-between text-xs text-[#6F756C] pt-1 border-t border-[#DFE1D8]/50">
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full font-semibold text-[9px]
+                                        {{ $shipment->transport_mode === 'OCEAN' ? 'bg-[#E6F0E9] text-[#2F6846]' : 
+                                          ($shipment->transport_mode === 'AIR' ? 'bg-[#F4EFE6] text-[#9A6721]' : 
+                                          'bg-[#EDF1EC] text-[#556E5C]') }}">
+                                        {{ $shipment->transport_mode }}
+                                    </span>
+                                    <span class="truncate max-w-[120px] font-medium text-[#1C1E1B]">{{ $shipment->cargo_type }}</span>
+                                    <span>&bull;</span>
+                                    <span>{{ number_format($shipment->weight_kg, 0) }} kg</span>
+                                </div>
+                                <span class="text-[11px] font-medium text-[#1C1E1B] truncate max-w-[80px]">{{ $shipment->carrier->name ?? '-' }}</span>
+                            </div>
+
+                            <!-- Baris 3: Rute & ETA & Delay -->
+                            <div class="bg-white rounded-xl p-2.5 border border-[#DFE1D8]/70 flex items-center justify-between text-xs">
+                                <div>
+                                    <div class="font-bold text-[#1C1E1B] flex items-center space-x-1">
+                                        <span class="notranslate">{{ $shipment->originLocation->code ?? 'Origin' }}</span>
+                                        <span class="text-[#6F756C]">&rarr;</span>
+                                        <span class="notranslate">{{ $shipment->destinationLocation->code ?? 'Dest' }}</span>
+                                    </div>
+                                    <div class="text-[10px] text-[#6F756C] mt-0.5">
+                                        ETA: {{ $shipment->estimated_arrival ? $shipment->estimated_arrival->format('d M Y H:i') : '-' }}
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    @if ($shipment->delay_hours > 0)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold
+                                            {{ $shipment->delay_severity === 'HIGH' ? 'bg-[#F9E6E6] text-[#B84242]' : 
+                                              ($shipment->delay_severity === 'MEDIUM' ? 'bg-[#F7EFE1] text-[#9A6721]' : 
+                                              'bg-[#F7EFE1] text-[#9A6721]') }}">
+                                            +{{ $shipment->delay_hours }}h Delay
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center text-[#2F6846] text-[11px] font-semibold">
+                                            On-time
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Baris 4: Tombol aksi -->
+                            <div class="pt-1">
+                                <a href="{{ route('shipments.show', $shipment) }}" class="w-full min-h-[36px] inline-flex items-center justify-center px-4 py-2 rounded-xl bg-[#556E5C] hover:bg-[#425848] text-white text-xs font-semibold transition shadow-xs">
+                                    Detail Pengiriman
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             @endif
         </div>
@@ -1021,7 +1103,8 @@
 
         const map = L.map('dashboard-global-map', {
             scrollWheelZoom: false,
-            attributionControl: true
+            attributionControl: true,
+            minZoom: 1
         }).setView([15, 10], 2);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1195,7 +1278,10 @@
             });
 
             if (boundsPoints.length > 0) {
-                map.fitBounds(L.latLngBounds(boundsPoints).pad(0.12));
+                const isMobile = window.innerWidth < 768;
+                map.fitBounds(L.latLngBounds(boundsPoints).pad(isMobile ? 0.08 : 0.12), {
+                    padding: isMobile ? [12, 12] : [24, 24]
+                });
             }
         }
 
@@ -1233,6 +1319,9 @@
         setTimeout(() => {
             map.invalidateSize();
         }, 250);
+        window.addEventListener('resize', () => {
+            map.invalidateSize();
+        });
     });
 </script>
 @endpush
