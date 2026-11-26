@@ -425,21 +425,24 @@
     <!-- ===================================================================== -->
     <!-- C. SEKSI 1 — FULL-BLEED EDITORIAL HERO (hero-crane.jpg Utuh + 3D Tilt Parallax) -->
     <!-- ===================================================================== -->
-    <section id="hero" class="relative h-[100svh] min-h-[620px] max-h-[960px] overflow-hidden flex items-center bg-[#111C16]" style="perspective: 1000px;">
+    <section id="hero" class="relative h-[100svh] min-h-[620px] max-h-[960px] overflow-hidden flex items-end pb-16 sm:pb-20 lg:items-center lg:pb-0 bg-[#111C16]" style="perspective: 1000px;">
         <!-- Lapisan Foto Hero Utuh dengan Pembungkus Sedikit Diperbesar & Efek 3D Cursor Tilt Parallax -->
         <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <div class="w-full h-full scale-[1.04] overflow-hidden">
                 <div id="hero-tilt-wrapper" class="w-full h-full will-change-transform" style="transform-style: preserve-3d; backface-visibility: hidden;">
-                    <img src="{{ asset('images/landing/hero-crane.jpg') }}" alt="Trackivo Container Terminal & Logistics" class="w-full h-full object-cover object-center select-none" />
+                    <img src="{{ asset('images/landing/hero-crane.jpg') }}" alt="Trackivo Container Terminal & Logistics" class="w-full h-full object-cover object-[center_35%] lg:object-center select-none" />
                 </div>
             </div>
 
             <!-- Lapisan Gradasi Kiri: Lembut Terarah Menjaga Keterbacaan Teks (Area Kontainer Tetap Terang Alami) -->
             <div class="absolute inset-0 bg-gradient-to-r from-[#111C16]/75 via-[#111C16]/25 to-transparent pointer-events-none"></div>
+
+            <!-- Lapisan Gradasi Bawah Khusus Mobile: Memastikan teks Hero di paruh bawah terbaca 100% tanpa menabrak kontainer -->
+            <div class="lg:hidden absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#111C16]/85 via-[#111C16]/45 to-transparent pointer-events-none"></div>
         </div>
 
-        <!-- Kontainer Headline Hero: Pas di Tengah Vertikal & Rata Kiri -->
-        <div class="absolute inset-0 z-10 flex items-center pointer-events-none">
+        <!-- Kontainer Headline Hero: Bagian Bawah di Mobile & Pas di Tengah Vertikal di Desktop -->
+        <div class="absolute inset-0 z-10 flex items-end pb-16 sm:pb-20 lg:items-center lg:pb-0 pointer-events-none">
             <div class="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14">
                 <!-- Headline Editorial Display di Sisi Kiri (Tanpa Elemen Lain di Bawahnya) -->
                 <div class="max-w-4xl editorial-reveal pointer-events-auto">
@@ -658,7 +661,7 @@
     <!-- ===================================================================== -->
     <!-- F. SEKSI 4 — SOLUSI TRANSPORTASI + TRUK TRANSPARAN & 3 KARTU METRIK KOMPAK (#solusi, Seksi Terang Warm Sand #F3EFE6) -->
     <!-- ===================================================================== -->
-    <section id="solusi" data-nav-light="true" class="relative overflow-x-clip bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex items-center py-20 lg:py-0 border-t border-[#D8CBB3]/50">
+    <section id="solusi" data-nav-light="true" class="relative overflow-x-clip bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex items-center pt-28 pb-16 lg:py-0 border-t border-[#D8CBB3]/50">
         <div class="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
             <!-- Kolom Kiri (7 Kolom): Header Editorial + Truk Transparan Melaju -->
@@ -682,7 +685,7 @@
                 </div>
 
                 <!-- Truk Transparan Tanpa Kartu Belakang + Bayangan Lantai Alami -->
-                <div class="mt-4 lg:mt-5 lg:mb-6 relative top-5 lg:top-7 select-none w-full max-w-[680px] xl:max-w-[740px] lg:-ml-4">
+                <div class="mt-4 lg:mt-5 mb-6 lg:mb-6 relative top-0 lg:top-7 select-none w-full max-w-[680px] xl:max-w-[740px] lg:-ml-4">
                     <div id="truck-unit" class="w-full will-change-transform transition-none" style="transform: translateX(-95%); opacity: 0.15;">
                         <img id="truck-parallax-img" 
                              src="{{ asset('images/landing/solusi-truck.png') }}" 
@@ -695,10 +698,10 @@
             </div>
 
             <!-- Kolom Kanan (5 Kolom): 3 Kartu Metrik Susunan Vertikal Editorial Rapi & Kompak -->
-            <div class="lg:col-span-5 flex flex-col gap-3.5 max-w-[440px] lg:ml-auto w-full justify-center editorial-reveal">
+            <div class="lg:col-span-5 flex flex-col gap-4 lg:gap-3.5 max-w-[440px] lg:ml-auto w-full justify-center editorial-reveal">
                 
                 <!-- Kartu 1: Total Volume (Warm Alabaster) -->
-                <div class="rounded-2xl px-6 py-4.5 sm:px-7 sm:py-5 bg-[#FAF8F4] border border-[#16231B]/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_-14px_rgba(22,35,27,0.14)] transition-all duration-300 hover:-translate-y-0.5">
+                <div class="h-auto rounded-2xl p-6 pb-6 lg:px-7 lg:py-5 lg:pb-5 bg-[#FAF8F4] border border-[#16231B]/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_-14px_rgba(22,35,27,0.14)] transition-all duration-300 hover:-translate-y-0.5">
                     <!-- Baris 1: Label Atas + Aksen Garis Tipis -->
                     <div class="flex items-center justify-between">
                         <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#4E6E58]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Total Volume</span>
@@ -724,7 +727,7 @@
                 </div>
 
                 <!-- Kartu 2: Jaringan Fasilitas (Deep Forest Sage) -->
-                <div class="rounded-2xl px-6 py-4.5 sm:px-7 sm:py-5 bg-gradient-to-br from-[#1B2B21] to-[#111C16] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_32px_-14px_rgba(17,28,22,0.5)] transition-all duration-300 hover:-translate-y-0.5">
+                <div class="h-auto rounded-2xl p-6 pb-6 lg:px-7 lg:py-5 lg:pb-5 bg-gradient-to-br from-[#1B2B21] to-[#111C16] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_32px_-14px_rgba(17,28,22,0.5)] transition-all duration-300 hover:-translate-y-0.5">
                     <!-- Baris 1: Label Atas + Aksen Garis Tipis -->
                     <div class="flex items-center justify-between">
                         <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8FB09A]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Jaringan Fasilitas</span>
@@ -750,7 +753,7 @@
                 </div>
 
                 <!-- Kartu 3: SLA Ketepatan (Signature Forest Sage) -->
-                <div class="rounded-2xl px-6 py-4.5 sm:px-7 sm:py-5 bg-gradient-to-br from-[#52745D] to-[#3E5A47] border border-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_16px_32px_-14px_rgba(62,90,71,0.4)] transition-all duration-300 hover:-translate-y-0.5">
+                <div class="h-auto rounded-2xl p-6 pb-6 lg:px-7 lg:py-5 lg:pb-5 bg-gradient-to-br from-[#52745D] to-[#3E5A47] border border-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_16px_32px_-14px_rgba(62,90,71,0.4)] transition-all duration-300 hover:-translate-y-0.5">
                     <!-- Baris 1: Label Atas + Aksen Garis Tipis -->
                     <div class="flex items-center justify-between">
                         <span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#D8CBB3]" style="font-family: 'Plus Jakarta Sans', sans-serif;">SLA Ketepatan</span>
@@ -775,7 +778,7 @@
                     </div>
 
                     <!-- Bilah Progres Super Tipis Elegan Terisi Sesuai Persentase Dinamis SLA -->
-                    <div class="h-[3px] w-full rounded-full bg-white/15 mt-3 overflow-hidden">
+                    <div class="h-[3px] w-full rounded-full bg-white/15 mt-4 lg:mt-3 overflow-hidden">
                         <div class="h-full bg-[#F5F2EB] rounded-full transition-all duration-1000 ease-out" style="width: {{ min(100, max(0, (float)$onTimePercentage)) }}%;"></div>
                     </div>
                 </div>
@@ -788,7 +791,7 @@
     <!-- ===================================================================== -->
     <!-- G. SEKSI 5 — "DIBANGUN ATAS KEPERCAYAAN" V-PEEL OPENING (#performa, 1 Layar Penuh Anti-Kepotong) -->
     <!-- ===================================================================== -->
-    <section id="performa" class="scroll-mt-0 relative overflow-hidden bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex items-center py-20 lg:py-0">
+    <section id="performa" class="scroll-mt-0 relative overflow-hidden bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex flex-col lg:flex-row items-center py-0">
         
         <!-- Bidang Hijau Solid #111C16 dengan Efek Belahan V-Peel Bézier Halus di Ekor Pesawat (Desktop lg:) -->
         <svg viewBox="0 0 1440 900" 
@@ -822,36 +825,6 @@
                   stroke-width="1.5" />
         </svg>
 
-        <!-- Bidang Hijau Solid #111C16 dengan Bukaan V Vertikal Bersih (Mobile & Tablet < 1024px) -->
-        <svg viewBox="0 0 600 1000" 
-             preserveAspectRatio="none" 
-             class="block lg:hidden absolute -top-1 -bottom-1 -left-1 -right-1 w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-0" 
-             aria-hidden="true">
-            <defs>
-                <filter id="vPeelMobileShadow" x="-10%" y="-10%" width="120%" height="130%">
-                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#111C16" flood-opacity="0.18" />
-                </filter>
-                <linearGradient id="vPeelMobileShadowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#111C16" stop-opacity="0.16" />
-                    <stop offset="100%" stop-color="#111C16" stop-opacity="0" />
-                </linearGradient>
-            </defs>
-
-            <!-- Strip Bayangan Transparan Jatuh ke Krem -->
-            <polygon points="-10,480 300,535 610,480 610,505 300,560 -10,505" fill="url(#vPeelMobileShadowGrad)" />
-
-            <!-- Bidang Atas Hijau 100% Solid #111C16 Membelah ke Bawah -->
-            <path d="M -10,-10 L 610,-10 L 610,480 L 308,524 Q 300,528 292,524 L -10,480 Z" 
-                  fill="#111C16" 
-                  filter="url(#vPeelMobileShadow)" />
-
-            <!-- Kilau Lipatan Tipis Pinggiran Tepi Hijau Mobile -->
-            <path d="M -10,480 L 308,524 Q 300,528 292,524 L 610,480" 
-                  fill="none" 
-                  stroke="rgba(255,255,255,0.06)" 
-                  stroke-width="1.5" />
-        </svg>
-
         <!-- Visual Pesawat Kargo Terkunci Presisi di Titik Belahan (Desktop lg: Absolute Lock 40.5%, 50%) -->
         <div class="hidden lg:block lg:absolute lg:top-1/2 lg:left-[40.5%] lg:-translate-x-full lg:-translate-y-1/2 lg:z-20 lg:w-[34vw] lg:max-w-[470px] pointer-events-none">
             <div id="performa-plane-anim-wrap" class="relative will-change-transform w-full">
@@ -880,11 +853,9 @@
             </div>
         </div>
 
-        <!-- Konten Utama: Responsif Mobile Vertikal (< lg) & Kolom Kanan Aman di Area Krem Desktop (lg:) -->
-        <div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 flex flex-col lg:flex-row items-center">
-            
-            <!-- Mobile (< lg): Visual Pesawat & 2 Metrik Tertata Vertikal Rapi -->
-            <div class="w-full flex lg:hidden flex-col justify-center items-center relative z-10 editorial-reveal mb-8">
+        <!-- BLOK 1 MOBILE: Latar Hijau Solid #111C16 Berisi Pesawat & 2 Metrik (lg:contents agar transparan/menyatu di desktop) -->
+        <div class="w-full bg-[#111C16] lg:bg-transparent lg:contents">
+            <div class="w-full px-6 pt-24 pb-10 lg:p-0 flex lg:hidden flex-col justify-center items-center relative z-10 editorial-reveal mb-0">
                 <!-- Wrapper Pesawat Kargo Mobile -->
                 <div class="relative w-full flex justify-center">
                     <div class="relative will-change-transform w-full flex justify-center">
@@ -913,83 +884,95 @@
                 </div>
             </div>
 
-            <!-- Kolom Konten Kanan: Tetap Aman di Area Krem Sebelah Kanan Kurva (lg:ml-auto lg:w-[46%] xl:w-[45%] relative z-20) -->
-            <div class="w-full lg:ml-auto lg:w-[46%] xl:w-[45%] relative z-20 p-4 sm:p-6 lg:p-0 editorial-reveal">
-                
-                <!-- Label Atas: KOMITMEN INTEGRITAS dengan Garis Aksen Tipis -->
-                <div class="flex items-center gap-3 lg:justify-end">
-                    <span class="w-8 h-[1.5px] bg-[#4E6E58] lg:order-2"></span>
-                    <span class="text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase text-[#4E6E58] lg:order-1" style="font-family: 'Plus Jakarta Sans', sans-serif;">KOMITMEN INTEGRITAS</span>
-                </div>
+            <!-- Pemisah Bukaan V Full-Bleed Khusus Mobile (Menempel Rapi di Tepi Bawah Blok Hijau) -->
+            <div class="block lg:hidden w-full overflow-hidden leading-none bg-[#111C16] -mb-px">
+                <svg viewBox="0 0 100 12" preserveAspectRatio="none" class="block w-full h-9">
+                    <path d="M0,0 L50,12 L100,0 L100,12 L0,12 Z" fill="#F3EFE6" />
+                </svg>
+            </div>
+        </div>
 
-                <!-- Judul Utama: Manrope font-light, leading-[1.32], tracking-[-0.01em] -->
-                <h2 class="mt-4 text-3xl sm:text-4xl lg:text-[2.45rem] xl:text-[2.6rem] text-[#16231B] leading-[1.32] tracking-[-0.01em] font-light text-left lg:text-right" style="font-family: 'Manrope', sans-serif; font-weight: 300;">
-                    Dibangun atas kepercayaan.<br>
-                    Digerakkan oleh <span class="italic font-serif font-normal text-[#4E6E58] tracking-normal" style="font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-style: italic; letter-spacing: normal;">performa.</span>
-                </h2>
-
-                <!-- Subjudul / Deskripsi: mt-5, leading-[1.8], text-[0.94rem] text-[#435349] max-w-[490px] -->
-                <p class="mt-5 text-[0.94rem] leading-[1.8] text-[#435349] max-w-[490px] text-left lg:text-right lg:ml-auto" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                    Kami menjunjung transparansi mutlak di setiap etape distribusi logistik dengan pelaporan real-time yang dapat dipertanggungjawabkan.
-                </p>
-
-                <!-- 3 Poin Kompak, Rapi & 100% Muat 1 Layar Penuh: mt-7, gap-0 editorial minimalis -->
-                <div class="mt-7 flex flex-col">
+        <!-- BLOK 2: Konten Teks Latar Krem Solid (#F3EFE6) Terpisah 100% di Bawah V-Pemisah di Mobile -->
+        <div class="w-full bg-[#F3EFE6] px-6 pt-8 pb-16 lg:bg-transparent lg:p-0 relative z-10">
+            <div class="w-full max-w-[1440px] mx-auto sm:px-10 lg:px-14 flex flex-col lg:flex-row items-center">
+                <!-- Kolom Konten Kanan: Tetap Aman di Area Krem Sebelah Kanan Kurva (lg:ml-auto lg:w-[46%] xl:w-[45%] relative z-20) -->
+                <div class="w-full lg:ml-auto lg:w-[46%] xl:w-[45%] relative z-20 p-0 editorial-reveal">
                     
-                    <!-- Poin 01: Default Aktif -->
-                    <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 border-[#4E6E58] bg-transparent transition-all duration-300 cursor-pointer" data-index="0">
-                        <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
-                            <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58] shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">01</span>
-                            <div class="performa-body flex-1 transition-opacity">
-                                <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Visibilitas Real-Time</h3>
-                                <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                                    Jalur logistik bebas blind spot dengan pelacakan kontainer dan armada darat di setiap titik transit.
-                                </p>
-                            </div>
-                        </div>
-                    </button>
+                    <!-- Label Atas: KOMITMEN INTEGRITAS dengan Garis Aksen Tipis -->
+                    <div class="flex items-center gap-3 lg:justify-end">
+                        <span class="w-8 h-[1.5px] bg-[#4E6E58] lg:order-2"></span>
+                        <span class="text-xs sm:text-sm font-semibold tracking-[0.14em] uppercase text-[#4E6E58] lg:order-1" style="font-family: 'Plus Jakarta Sans', sans-serif;">KOMITMEN INTEGRITAS</span>
+                    </div>
 
-                    <!-- Poin 02 -->
-                    <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 lg:border-r-transparent bg-transparent opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer" data-index="1">
-                        <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
-                            <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58]/60 shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">02</span>
-                            <div class="performa-body flex-1 transition-opacity">
-                                <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Pengiriman Andal & Terukur</h3>
-                                <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                                    Keamanan muatan terstandardisasi dengan penjadwalan kapal dan pesawat kargo langsung dari terminal utama.
-                                </p>
-                            </div>
-                        </div>
-                    </button>
+                    <!-- Judul Utama: Manrope font-light, leading-[1.32], tracking-[-0.01em] -->
+                    <h2 class="mt-4 text-3xl sm:text-4xl lg:text-[2.45rem] xl:text-[2.6rem] text-[#16231B] leading-[1.32] tracking-[-0.01em] font-light text-left lg:text-right" style="font-family: 'Manrope', sans-serif; font-weight: 300;">
+                        Dibangun atas kepercayaan.<br>
+                        Digerakkan oleh <span class="italic font-serif font-normal text-[#4E6E58] tracking-normal" style="font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; font-style: italic; letter-spacing: normal;">performa.</span>
+                    </h2>
 
-                    <!-- Poin 03 -->
-                    <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 lg:border-r-transparent bg-transparent opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer" data-index="2">
-                        <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
-                            <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58]/60 shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">03</span>
-                            <div class="performa-body flex-1 transition-opacity">
-                                <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Manajemen Kontainer Fleksibel</h3>
-                                <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
-                                    Penataan depot kontainer 20ft dan 40ft High Cube yang terkoordinasi rapi untuk efisiensi bongkar muat.
-                                </p>
+                    <!-- Subjudul / Deskripsi: mt-5, leading-[1.8], text-[0.94rem] text-[#435349] max-w-[490px] -->
+                    <p class="mt-5 text-[0.94rem] leading-[1.8] text-[#435349] max-w-[490px] text-left lg:text-right lg:ml-auto" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                        Kami menjunjung transparansi mutlak di setiap etape distribusi logistik dengan pelaporan real-time yang dapat dipertanggungjawabkan.
+                    </p>
+
+                    <!-- 3 Poin Kompak, Rapi & 100% Muat 1 Layar Penuh: mt-7, gap-0 editorial minimalis -->
+                    <div class="mt-7 flex flex-col">
+                        
+                        <!-- Poin 01: Default Aktif -->
+                        <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 border-[#4E6E58] bg-transparent transition-all duration-300 cursor-pointer" data-index="0">
+                            <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
+                                <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58] shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">01</span>
+                                <div class="performa-body flex-1 transition-opacity">
+                                    <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Visibilitas Real-Time</h3>
+                                    <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                                        Jalur logistik bebas blind spot dengan pelacakan kontainer dan armada darat di setiap titik transit.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </button>
+                        </button>
+
+                        <!-- Poin 02 -->
+                        <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 lg:border-r-transparent bg-transparent opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer" data-index="1">
+                            <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
+                                <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58]/60 shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">02</span>
+                                <div class="performa-body flex-1 transition-opacity">
+                                    <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Pengiriman Andal & Terukur</h3>
+                                    <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                                        Keamanan muatan terstandardisasi dengan penjadwalan kapal dan pesawat kargo langsung dari terminal utama.
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Poin 03 -->
+                        <button type="button" class="performa-item group w-full text-left lg:text-right px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#16231B]/10 lg:border-r-2 lg:border-r-transparent bg-transparent opacity-75 hover:opacity-100 transition-all duration-300 cursor-pointer" data-index="2">
+                            <div class="flex items-start gap-4 lg:flex-row-reverse lg:text-right">
+                                <span class="performa-num font-light text-base sm:text-lg text-[#4E6E58]/60 shrink-0 transition-colors" style="font-family: 'Manrope', sans-serif; font-weight: 300;">03</span>
+                                <div class="performa-body flex-1 transition-opacity">
+                                    <h3 class="font-semibold text-[0.95rem] text-[#16231B]" style="font-family: 'Plus Jakarta Sans', sans-serif;">Manajemen Kontainer Fleksibel</h3>
+                                    <p class="mt-0.5 text-[0.84rem] leading-relaxed text-[#526358]" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                                        Penataan depot kontainer 20ft dan 40ft High Cube yang terkoordinasi rapi untuk efisiensi bongkar muat.
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     </section>
 
     <!-- ===================================================================== -->
     <!-- H. SEKSI 6 — PELACAKAN PENGIRIMAN KARGO PUBLIK (#pelacakan, Warm Sand Cream #F3EFE6) -->
     <!-- ===================================================================== -->
-    <section id="pelacakan" data-nav-light="true" class="relative bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex items-center py-20 lg:py-0">
+    <section id="pelacakan" data-nav-light="true" class="relative bg-[#F3EFE6] min-h-[100svh] lg:h-[100svh] lg:max-h-[900px] flex items-center pt-24 pb-16 lg:py-0">
         <div class="w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-10">
 
             <!-- 1. KARTU BESAR HIJAU TUA TRACKIVO (#16231B) -->
-            <div class="bg-[#16231B] rounded-[28px] px-6 py-10 sm:px-10 sm:py-12 lg:py-14 text-center shadow-[0_24px_60px_-20px_rgba(17,28,22,0.35)] editorial-reveal">
+            <div class="bg-[#16231B] rounded-[28px] px-6 py-10 sm:px-10 sm:py-12 lg:py-14 text-center shadow-[0_24px_60px_-20px_rgba(17,28,22,0.35)] editorial-reveal overflow-hidden">
                 
                 <!-- Pil Badge Atas -->
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs font-medium text-[#D8E2DC]">
@@ -1008,21 +991,23 @@
                 </p>
 
                 <!-- Form Pencarian Resi -->
-                <form action="{{ url('/track') }}" method="GET" class="mt-7 max-w-xl mx-auto flex items-center gap-2 p-2 rounded-2xl bg-black/25 border border-white/10 focus-within:border-[#6FA37F]/60 transition">
-                    <svg class="w-5 h-5 text-[#8FA396] ml-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input 
-                        type="text" 
-                        name="tracking_number" 
-                        id="tracking_number" 
-                        placeholder="Masukkan nomor resi (contoh: TRK-2026-JKT-RTM-001)" 
-                        required
-                        autocomplete="off"
-                        class="flex-1 bg-transparent border-0 text-sm text-[#F5F2EB] placeholder-[#8FA396] focus:ring-0 focus:outline-none px-2 py-2.5 font-mono">
+                <form action="{{ url('/track') }}" method="GET" class="mt-7 max-w-xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-2 p-2.5 sm:p-2 rounded-2xl bg-black/25 border border-white/10 focus-within:border-[#6FA37F]/60 transition">
+                    <div class="flex items-center flex-1 min-w-0">
+                        <svg class="w-5 h-5 text-[#8FA396] ml-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input 
+                            type="text" 
+                            name="tracking_number" 
+                            id="tracking_number" 
+                            placeholder="Masukkan nomor resi (contoh: TRK-2026-JKT-RTM-001)" 
+                            required
+                            autocomplete="off"
+                            class="w-full min-w-0 bg-transparent border-0 text-sm text-[#F5F2EB] placeholder-[#8FA396] focus:ring-0 focus:outline-none px-2 py-2.5 font-mono">
+                    </div>
                     <button 
                         type="submit" 
-                        class="px-6 py-2.5 rounded-xl bg-[#EFECE3] hover:bg-[#F7F5EE] text-[#16231B] font-semibold text-sm transition cursor-pointer shrink-0">
+                        class="w-full sm:w-auto py-3 sm:py-2.5 px-6 rounded-xl bg-[#EFECE3] hover:bg-[#F7F5EE] text-[#16231B] font-semibold text-sm transition cursor-pointer shrink-0">
                         Lacak Resi
                     </button>
                 </form>
