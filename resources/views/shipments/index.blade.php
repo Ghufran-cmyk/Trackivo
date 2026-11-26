@@ -173,7 +173,7 @@
                         @endif
                         <th class="py-3.5 px-4 whitespace-nowrap">Est. Tiba</th>
                         <th class="py-3.5 px-4 whitespace-nowrap">Delay</th>
-                        <th class="py-3.5 px-4 text-right whitespace-nowrap">Aksi</th>
+                        <th class="py-3.5 px-4 text-center whitespace-nowrap">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#DFE1D8]/40">
@@ -274,8 +274,8 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
-                                <a href="{{ route('shipments.show', $shipment) }}" class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] text-xs font-semibold transition" title="Lihat Rincian">
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                <a href="{{ route('shipments.show', $shipment) }}" class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] text-xs font-semibold transition" title="Lihat Rincian">
                                     Detail
                                 </a>
                             </td>

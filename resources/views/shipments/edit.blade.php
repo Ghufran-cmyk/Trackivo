@@ -229,11 +229,11 @@
                     <table class="w-full text-left text-xs sm:text-sm" id="itemsTable">
                         <thead class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold border-b border-slate-200">
                             <tr>
-                                <th class="py-2.5 px-3 w-1/3">Nama Item Kargo <span class="text-rose-500">*</span></th>
-                                <th class="py-2.5 px-3 w-24">Jumlah (Qty) <span class="text-rose-500">*</span></th>
-                                <th class="py-2.5 px-3 w-32">Berat (Kg) <span class="text-rose-500">*</span></th>
-                                <th class="py-2.5 px-3">Deskripsi / Catatan Tambahan</th>
-                                <th class="py-2.5 px-3 w-16 text-center">Aksi</th>
+                                <th class="py-2.5 px-3 w-1/3 whitespace-nowrap align-middle">Nama Item Kargo <span class="text-rose-500">*</span></th>
+                                <th class="py-2.5 px-3 w-28 min-w-[115px] text-center whitespace-nowrap align-middle">Jumlah (Qty) <span class="text-rose-500">*</span></th>
+                                <th class="py-2.5 px-3 w-32 whitespace-nowrap align-middle">Berat (Kg) <span class="text-rose-500">*</span></th>
+                                <th class="py-2.5 px-3 whitespace-nowrap align-middle">Deskripsi / Catatan Tambahan</th>
+                                <th class="py-2.5 px-3 w-16 text-center whitespace-nowrap align-middle">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="itemsTbody" class="divide-y divide-slate-100">

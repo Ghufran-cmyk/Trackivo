@@ -152,9 +152,6 @@
                             type="submit" 
                             class="bg-[#C8D3BE] hover:bg-[#D7E0CE] text-[#1C2820] font-bold rounded-xl py-3 px-6 text-xs sm:text-sm transition-all shadow-sm flex items-center justify-center space-x-2 shrink-0 active:scale-[0.98]">
                             <span>Lacak Resi</span>
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
                         </button>
                     </div>
                 </form>

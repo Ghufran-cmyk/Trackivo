@@ -14,11 +14,8 @@
             </p>
         </div>
         <div class="shrink-0 flex items-center space-x-3">
-            <a href="{{ route('shipments.index') }}" class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-white border border-[#DFE1D8] hover:bg-[#F5F6F1] text-[#1C1E1B] text-xs sm:text-sm font-semibold shadow-xs transition">
-                <svg class="h-4 w-4 text-[#6F756C]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Lihat Seluruh Pengiriman</span>
+            <a href="{{ route('shipments.index') }}" class="inline-flex items-center px-5 py-2.5 rounded-full bg-white border border-[#DFE1D8] hover:bg-[#F5F6F1] text-[#1C1E1B] text-xs sm:text-sm font-semibold shadow-xs transition">
+                Lihat Seluruh Pengiriman
             </a>
         </div>
     </div>

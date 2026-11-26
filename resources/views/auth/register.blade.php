@@ -280,9 +280,6 @@
                         <button type="submit" 
                                 class="w-full bg-[#C8D3BE] hover:bg-[#D7E0CE] text-[#1C2820] font-semibold rounded-xl py-3.5 px-5 text-sm transition-all shadow-sm cursor-pointer flex items-center justify-center space-x-2 active:scale-[0.99]">
                             <span>Daftar Akun Customer Sekarang</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
                         </button>
                     </div>
                 </form>

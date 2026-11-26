@@ -198,7 +198,7 @@
 
             <!-- Isi Kartu Kanan: Daftar Bar Horizontal Modern -->
             <div class="my-auto py-2">
-                <div id="allocation-items-container" class="space-y-1.5 max-h-[225px] overflow-y-auto custom-scrollbar pr-1">
+                <div id="allocation-items-container" class="space-y-3">
                     <!-- Populated by JavaScript with Horizontal Ranked Allocation Rows -->
                 </div>
             </div>
@@ -206,9 +206,8 @@
             <!-- Footer Kartu Kanan -->
             <div class="pt-3.5 border-t border-[#DFE1D8]/60 flex items-center justify-between text-xs text-[#6F756C] mt-3">
                 <span id="allocation-footer-summary">Total Carrier Terlibat: <strong class="text-[#1C2820]">{{ count($carrierDistribution) }} Carrier</strong></span>
-                <a href="{{ route('shipments.index') }}" class="font-medium text-[#556E5C] hover:text-[#3E5245] transition flex items-center space-x-1 group">
-                    <span>Lihat di daftar pengiriman</span>
-                    <span class="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                <a href="{{ route('shipments.index') }}" class="inline-flex items-center px-3 py-1 rounded-full bg-[#F1F4EE] text-[#243329] border border-[#DFE1D8] text-xs font-medium hover:bg-[#E4ECE0] transition-colors">
+                    Daftar Pengiriman
                 </a>
             </div>
         </div>
@@ -311,8 +310,8 @@
                     </h2>
                     <p class="text-xs text-[#6F756C] mt-0.5">Visibilitas 6 data pengiriman kargo terbaru</p>
                 </div>
-                <a href="{{ route('shipments.index') }}" class="text-xs font-semibold px-4 py-2 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] transition">
-                    Lihat Semua &rarr;
+                <a href="{{ route('shipments.index') }}" class="inline-flex items-center px-3 py-1 rounded-full bg-[#F1F4EE] text-[#243329] border border-[#DFE1D8] text-xs font-medium hover:bg-[#E4ECE0] transition-colors whitespace-nowrap">
+                    Lihat Semua
                 </a>
             </div>
 
@@ -333,7 +332,7 @@
                                 <th class="pb-3">Rute</th>
                                 <th class="pb-3">Status</th>
                                 <th class="pb-3">Delay</th>
-                                <th class="pb-3 text-right">Aksi</th>
+                                <th class="pb-3 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-[#DFE1D8]/40 text-[#1C1E1B]">
@@ -397,8 +396,8 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="py-3.5 text-right">
-                                        <a href="{{ route('shipments.show', $shipment) }}" class="px-3 py-1 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] text-xs font-semibold transition">
+                                    <td class="py-3.5 text-center">
+                                        <a href="{{ route('shipments.show', $shipment) }}" class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#F5F6F1] hover:bg-[#556E5C] hover:text-white text-[#1C1E1B] text-xs font-semibold transition">
                                             Detail
                                         </a>
                                     </td>
@@ -421,8 +420,8 @@
                             <h3 class="text-sm font-bold text-[#1C1E1B] uppercase tracking-wider">Exception Aktif</h3>
                             <p class="text-[11px] text-[#6F756C]">Kendala OPEN / INVESTIGATING</p>
                         </div>
-                        <a href="{{ route('exceptions.index') }}" class="text-xs font-semibold text-[#B84242] hover:underline transition">
-                            Ke Halaman Exceptions &rarr;
+                        <a href="{{ route('exceptions.index') }}" class="inline-flex items-center px-3 py-1 rounded-full bg-[#FBF1EE] text-[#A85542] border border-[#F0D6CE] text-xs font-medium hover:bg-[#F6E4DE] transition-colors whitespace-nowrap">
+                            Ke Halaman Exceptions
                         </a>
                     </div>
 
@@ -466,8 +465,8 @@
             <div class="bg-white rounded-[24px] p-6 border border-[#DFE1D8]/80 shadow-[0_4px_20px_rgba(28,30,27,0.04)]">
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#DFE1D8]/60">
                     <h3 class="text-sm font-bold text-[#1C1E1B] uppercase tracking-wider">Pembaruan Notifikasi</h3>
-                    <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-[#556E5C] hover:text-[#425848] transition">
-                        Semua Notifikasi &rarr;
+                    <a href="{{ route('notifications.index') }}" class="inline-flex items-center px-3 py-1 rounded-full bg-[#F1F4EE] text-[#243329] border border-[#DFE1D8] text-xs font-medium hover:bg-[#E4ECE0] transition-colors whitespace-nowrap">
+                        Semua Notifikasi
                     </a>
                 </div>
 
@@ -892,7 +891,7 @@
                         const grad = rankGradients[idx % rankGradients.length];
 
                         const row = document.createElement('div');
-                        row.className = 'allocation-row group cursor-pointer p-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
+                        row.className = 'allocation-row group cursor-pointer py-1.5 px-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
 
                         row.innerHTML = `
                             <div class="flex items-center justify-between mb-1.5">
@@ -945,7 +944,7 @@
                         const sharePct = Math.round((m.total / sumModeTotal) * 100);
 
                         const row = document.createElement('div');
-                        row.className = 'allocation-row group cursor-pointer p-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
+                        row.className = 'allocation-row group cursor-pointer py-1.5 px-2 rounded-xl transition-all duration-200 border border-transparent hover:bg-[#F7F8F4] hover:border-[#DFE1D8]/60';
 
                         row.innerHTML = `
                             <div class="flex items-center justify-between mb-1.5">
