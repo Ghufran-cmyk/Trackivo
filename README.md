@@ -79,7 +79,7 @@ Trackivo bridges this gap by offering:
 ## Visual Showcase
 
 ### 1. Interactive 3D Cargo Authentication
-![Login 3D Container Showcase](docs/screenshots/login-3d.png)
+![Login 3D Container Showcase](docs/screenshots/login-3d-v2.png)
 *Interactive 3D intermodal cargo container rendered with Three.js, dynamic lighting, and orbital camera interaction on the authentication portal.*
 
 ---
